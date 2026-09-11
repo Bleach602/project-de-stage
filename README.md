@@ -1,0 +1,1 @@
+Plateforme web complète développée avec Spring Boot & PostgreSQL pour la promotion d'un Institut de Formation Professionnelle. Elle automatise le processus d'admission en ligne, la génération dynamique de fiches d'inscription et le stockage sécurisé des dossiers sur le cloud
