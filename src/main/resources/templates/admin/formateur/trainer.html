@@ -1,0 +1,1683 @@
+<!-- ============================================ -->
+<!-- admin/formateur/trainer.html -->
+<!-- Gestion des Formateurs IFP-PO -->
+<!-- Version UI/UX Pro v13.0 -->
+<!-- ============================================ -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="fr"
+      th:replace="~{admin/layouts/admin_layout :: layout(~{::section})}">
+
+<section>
+
+    <link rel="stylesheet" th:href="@{/css/adminCSS/trainer.css}">
+
+    <!-- ==========================================
+         EN-TÊTE
+         ========================================== -->
+    <div class="page-header">
+
+        <div class="page-header-left">
+
+            <h1 class="page-title">
+                <span class="page-icon">
+                    <i class='bx bx-user-voice'></i>
+                </span>
+                <span>Gestion des formateurs</span>
+            </h1>
+
+            <p class="page-subtitle">
+                <span class="subtitle-line"></span>
+                <span>Liste complète des formateurs inscrits</span>
+            </p>
+
+        </div>
+
+        <div class="header-actions">
+
+            <!-- Recherche -->
+            <form th:action="@{/dashboard/formateurs}"
+                  method="get"
+                  class="search-form">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
+                <div class="search-wrapper">
+
+                    <i class='bx bx-search'></i>
+
+                    <input type="text"
+                           name="keyWord"
+                           th:value="${keyWord}"
+                           class="search-input"
+                           placeholder="Rechercher un formateur..."
+                           autocomplete="off">
+
+                </div>
+
+            </form>
+
+            <!-- Ajouter -->
+            <button type="button"
+                    class="btn btn-primary btn-add"
+                    onclick="ouvrirModal('creerModal')">
+
+                <i class='bx bx-plus'></i>
+                <span>Ajouter</span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==========================================
+         TOAST SUCCÈS
+         ========================================== -->
+    <div th:if="${successMessage}"
+         class="toast toast-success">
+
+        <div class="toast-content">
+
+            <i class='bx bx-check-circle'></i>
+
+            <span th:text="${successMessage}">
+                Opération effectuée avec succès.
+            </span>
+
+        </div>
+
+        <button type="button"
+                class="toast-close"
+                aria-label="Fermer"
+                onclick="this.closest('.toast').remove()">
+
+            <i class='bx bx-x'></i>
+
+        </button>
+
+    </div>
+
+
+    <!-- ==========================================
+         TOAST ERREUR
+         ========================================== -->
+    <div th:if="${errorMessage}"
+         class="toast toast-error">
+
+        <div class="toast-content">
+
+            <i class='bx bx-error-circle'></i>
+
+            <span th:text="${errorMessage}">
+                Une erreur est survenue.
+            </span>
+
+        </div>
+
+        <button type="button"
+                class="toast-close"
+                aria-label="Fermer"
+                onclick="this.closest('.toast').remove()">
+
+            <i class='bx bx-x'></i>
+
+        </button>
+
+    </div>
+
+
+    <!-- ==========================================
+         TABLEAU
+         ========================================== -->
+    <div class="card-table">
+
+        <!-- HEADER TABLE -->
+        <div class="card-header">
+
+            <div class="card-header-left">
+
+                <div class="card-icon">
+                    <i class='bx bx-user-voice'></i>
+                </div>
+
+                <h2 class="card-title">
+                    Liste des formateurs
+                </h2>
+
+                <span class="badge-count"
+                      th:text="${formateursPage.totalElements}">
+                    0
+                </span>
+
+            </div>
+
+            <div class="card-header-right">
+                <span class="card-subtitle">Total</span>
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+        <div class="table-wrap">
+
+            <table class="trainer-table">
+
+                <thead>
+
+                <tr>
+
+                    <th class="col-photo">
+                        <span class="th-icon">
+                            <i class='bx bx-image'></i>
+                        </span>
+                        <span>Photo</span>
+                    </th>
+
+                    <th class="col-name">
+                        <span class="th-icon">
+                            <i class='bx bx-user'></i>
+                        </span>
+                        <span>Nom complet</span>
+                    </th>
+
+                    <th class="col-poste hide-tablet">
+                        <span class="th-icon">
+                            <i class='bx bx-briefcase'></i>
+                        </span>
+                        <span>Poste</span>
+                    </th>
+
+                    <th class="col-contact hide-mobile">
+                        <span class="th-icon">
+                            <i class='bx bx-phone'></i>
+                        </span>
+                        <span>Contacts</span>
+                    </th>
+
+                    <th class="col-actions text-center">
+                        <span class="th-icon">
+                            <i class='bx bx-cog'></i>
+                        </span>
+                        <span>Actions</span>
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                <!-- ======================================
+                     FORMATEURS
+                     ====================================== -->
+                <tr th:each="f : ${formateursPage.content}">
+
+                    <!-- ==========================================
+                         PHOTO - CHARGEMENT DIRECT CLOUDINARY
+                         ========================================== -->
+                    <td class="col-photo">
+
+                        <div class="avatar-wrapper">
+
+                            <img class="trainer-avatar"
+                                 th:src="${f.photoUrl != null ? f.photoUrl : '/images/default-avatar.png'}"
+                                 th:alt="'Photo de ' + ${f.prenom} + ' ' + ${f.nom}"
+                                 loading="lazy"
+                                 onerror="this.src='/images/default-avatar.png'">
+
+                            <span class="avatar-status online"
+                                  aria-label="Actif"></span>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- NOM -->
+                    <td class="col-name">
+
+                        <div class="name-wrapper">
+
+                            <span class="trainer-name"
+                                  th:text="${f.prenom + ' ' + f.nom}">
+                                Nom Prénom
+                            </span>
+
+                            <span class="trainer-initials"
+                                  th:text="${#strings.substring(f.prenom,0,1) + #strings.substring(f.nom,0,1)}">
+                                NP
+                            </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- POSTE -->
+                    <td class="col-poste hide-tablet">
+
+                        <span class="poste-tag"
+                              th:text="${f.poste}">
+                            Formateur
+                        </span>
+
+                    </td>
+
+
+                    <!-- CONTACT -->
+                    <td class="col-contact hide-mobile">
+
+                        <div class="contact-info">
+
+                            <span class="contact-item">
+
+                                <i class='bx bx-envelope'></i>
+
+                                <span th:text="${f.adresseMail ?: 'Non renseigné'}">
+                                    email@example.com
+                                </span>
+
+                            </span>
+
+
+                            <span class="contact-item">
+
+                                <i class='bx bxl-whatsapp'></i>
+
+                                <span th:text="${f.whatsAppNumber ?: 'Non renseigné'}">
+                                    +237 600000000
+                                </span>
+
+                            </span>
+
+                        </div>
+
+                    </td>
+
+
+                    <!-- ACTIONS -->
+                    <td class="col-actions text-center">
+
+                        <div class="action-group">
+
+                            <!-- VOIR -->
+                            <button type="button"
+                                    class="btn-action btn-view"
+
+                                    th:data-nom="${f.prenom + ' ' + f.nom}"
+                                    th:data-poste="${f.poste}"
+                                    th:data-mail="${f.adresseMail}"
+                                    th:data-whatsapp="${f.whatsAppNumber}"
+                                    th:data-bio="${f.bio}"
+
+                                    th:data-photo="${f.photoUrl != null ? f.photoUrl : '/images/default-avatar.png'}"
+
+                                    onclick="ouvrirModalDetails(this)"
+                                    title="Voir les détails"
+                                    aria-label="Voir les détails">
+
+                                <i class='bx bx-show'></i>
+
+                                <span class="btn-tooltip">
+                                    Détails
+                                </span>
+
+                            </button>
+
+
+                            <!-- MODIFIER -->
+                            <button type="button"
+                                    class="btn-action btn-edit"
+
+                                    th:data-id="${f.id}"
+                                    th:data-nom="${f.nom}"
+                                    th:data-prenom="${f.prenom}"
+                                    th:data-poste="${f.poste}"
+                                    th:data-mail="${f.adresseMail}"
+                                    th:data-whatsapp="${f.whatsAppNumber}"
+                                    th:data-bio="${f.bio}"
+
+                                    onclick="ouvrirModalModification(this)"
+                                    title="Modifier"
+                                    aria-label="Modifier">
+
+                                <i class='bx bx-edit-alt'></i>
+
+                                <span class="btn-tooltip">
+                                    Modifier
+                                </span>
+
+                            </button>
+
+
+                            <!-- SUPPRIMER -->
+                            <button type="button"
+                                    class="btn-action btn-delete"
+
+                                    th:data-id="${f.id}"
+                                    th:data-nom="${f.prenom + ' ' + f.nom}"
+
+                                    onclick="ouvrirModalSuppression(this)"
+                                    title="Supprimer"
+                                    aria-label="Supprimer">
+
+                                <i class='bx bx-trash'></i>
+
+                                <span class="btn-tooltip">
+                                    Supprimer
+                                </span>
+
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+
+                <!-- ======================================
+                     AUCUN FORMATEUR
+                     ====================================== -->
+                <tr th:if="${formateursPage.totalElements == 0}">
+
+                    <td colspan="5"
+                        class="empty-state">
+
+                        <div class="empty-content">
+
+                            <i class='bx bx-user-x'></i>
+
+                            <p>
+                                Aucun formateur trouvé
+                            </p>
+
+                            <span>
+                                Aucun formateur ne correspond à vos critères.
+                            </span>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- ==========================================
+             PAGINATION
+             ========================================== -->
+        <div class="table-footer"
+             th:if="${totalPages > 0}">
+
+            <div class="pagination-info">
+
+                <i class='bx bx-file'></i>
+
+                <span>
+                    Affichage
+                </span>
+
+                <strong th:text="${formateursPage.number * formateursPage.size + 1}">
+                    1
+                </strong>
+
+                <span>-</span>
+
+                <strong th:text="${(formateursPage.number + 1) * formateursPage.size > formateursPage.totalElements
+                                  ? formateursPage.totalElements
+                                  : (formateursPage.number + 1) * formateursPage.size}">
+                    5
+                </strong>
+
+                <span>
+                    sur
+                </span>
+
+                <strong th:text="${formateursPage.totalElements}">
+                    10
+                </strong>
+
+                <span>
+                    formateurs
+                </span>
+
+            </div>
+
+
+            <nav class="pagination-group"
+                 aria-label="Pagination">
+
+                <!-- PRÉCÉDENT -->
+                <a th:href="@{/dashboard/formateurs(
+                                page=${currentPage - 1},
+                                keyWord=${keyWord})}"
+
+                   class="page-link"
+
+                   th:classappend="${currentPage == 0} ? ' disabled' : ''"
+
+                   aria-label="Page précédente">
+
+                    <i class='bx bx-chevron-left'></i>
+
+                </a>
+
+
+                <!-- NUMÉROS -->
+                <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+
+                   th:href="@{/dashboard/formateurs(
+                                page=${i},
+                                keyWord=${keyWord})}"
+
+                   th:text="${i + 1}"
+
+                   class="page-link"
+
+                   th:classappend="${i == currentPage} ? ' active' : ''"
+
+                   th:aria-current="${i == currentPage ? 'page' : null}">
+
+                    1
+
+                </a>
+
+
+                <!-- SUIVANT -->
+                <a th:href="@{/dashboard/formateurs(
+                                page=${currentPage + 1},
+                                keyWord=${keyWord})}"
+
+                   class="page-link"
+
+                   th:classappend="${currentPage + 1 >= totalPages} ? ' disabled' : ''"
+
+                   aria-label="Page suivante">
+
+                    <i class='bx bx-chevron-right'></i>
+
+                </a>
+
+            </nav>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MODAL DÉTAILS
+         ===================================================== -->
+    <div id="detailsModal"
+         class="modal-overlay"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="detailsModalTitle">
+
+        <div class="modal-box">
+
+            <div class="modal-head">
+
+                <div class="modal-icon gold">
+                    <i class='bx bx-id-card'></i>
+                </div>
+
+                <div class="modal-heading">
+
+                    <h3 id="detailsModalTitle"
+                        class="modal-title">
+                        Profil du formateur
+                    </h3>
+
+                    <p class="modal-sub">
+                        Informations complètes du formateur
+                    </p>
+
+                </div>
+
+                <button type="button"
+                        class="modal-close"
+                        onclick="fermerModal('detailsModal')"
+                        aria-label="Fermer">
+
+                    <i class='bx bx-x'></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="profile-header">
+
+                    <!-- ✅ PHOTO DANS LA MODALE -->
+                    <img id="viewPhoto"
+                         src="/images/default-avatar.png"
+                         class="profile-avatar"
+                         alt="Photo de profil"
+                         onerror="this.src='/images/default-avatar.png'">
+
+                    <div class="profile-info">
+
+                        <h4 id="viewNomComplet"
+                            class="profile-name">
+                            Nom Prénom
+                        </h4>
+
+                        <span id="viewPoste"
+                              class="profile-badge">
+                            Poste
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-details">
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            <i class='bx bx-envelope'></i>
+                            Email
+                        </span>
+
+                        <p id="viewMail"
+                           class="profile-value">
+                            -
+                        </p>
+
+                    </div>
+
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            <i class='bx bxl-whatsapp'></i>
+                            WhatsApp
+                        </span>
+
+                        <p id="viewWhatsapp"
+                           class="profile-value">
+                            -
+                        </p>
+
+                    </div>
+
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            <i class='bx bx-detail'></i>
+                            Biographie
+                        </span>
+
+                        <p id="viewBio"
+                           class="profile-value bio-text">
+                            -
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-foot">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        onclick="fermerModal('detailsModal')">
+
+                    Fermer
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MODAL CRÉATION
+         ===================================================== -->
+    <div id="creerModal"
+         class="modal-overlay"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="creerModalTitle">
+
+        <div class="modal-box">
+
+            <form th:action="@{/dashboard/formateurs/creer}"
+                  method="post"
+                  th:object="${formateurDTO}"
+                  enctype="multipart/form-data">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
+                <div class="modal-head">
+
+                    <div class="modal-icon primary">
+                        <i class='bx bx-user-plus'></i>
+                    </div>
+
+                    <div class="modal-heading">
+
+                        <h3 id="creerModalTitle"
+                            class="modal-title">
+                            Ajouter un formateur
+                        </h3>
+
+                        <p class="modal-sub">
+                            Remplissez les informations ci-dessous
+                        </p>
+
+                    </div>
+
+                    <button type="button"
+                            class="modal-close"
+                            onclick="fermerModal('creerModal')"
+                            aria-label="Fermer">
+
+                        <i class='bx bx-x'></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    <!-- PHOTO -->
+                    <div class="photo-upload">
+
+                        <div class="photo-preview">
+
+                            <i class='bx bx-camera'
+                               id="iconPreviewCreer"></i>
+
+                            <img id="imgPreviewCreer"
+                                 class="hidden"
+                                 alt="Aperçu de la photo">
+
+                        </div>
+
+                        <div class="photo-field">
+
+                            <label class="form-label">
+                                Photo
+                                <span class="optional">
+                                    (optionnelle)
+                                </span>
+                            </label>
+
+                            <input type="file"
+                                   th:field="*{photo}"
+                                   class="form-control"
+                                   accept="image/*"
+                                   onchange="previsualiserPhoto(
+                                       this,
+                                       'imgPreviewCreer',
+                                       'iconPreviewCreer'
+                                   )">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOM / PRÉNOM -->
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="nom">
+                                Nom
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class='bx bx-user'></i>
+
+                                <input type="text"
+                                       id="nom"
+                                       th:field="*{nom}"
+                                       class="form-control"
+                                       placeholder="Nom"
+                                       autocomplete="family-name"
+                                       required>
+
+                            </div>
+
+                            <span class="error-msg"
+                                  th:if="${#fields.hasErrors('nom')}"
+                                  th:errors="*{nom}">
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="prenom">
+                                Prénom
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class='bx bx-user'></i>
+
+                                <input type="text"
+                                       id="prenom"
+                                       th:field="*{prenom}"
+                                       class="form-control"
+                                       placeholder="Prénom"
+                                       autocomplete="given-name"
+                                       required>
+
+                            </div>
+
+                            <span class="error-msg"
+                                  th:if="${#fields.hasErrors('prenom')}"
+                                  th:errors="*{prenom}">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- POSTE -->
+                    <div class="form-group">
+
+                        <label for="poste">
+                            Poste / Fonction
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="input-icon">
+
+                            <i class='bx bx-briefcase'></i>
+
+                            <input type="text"
+                                   id="poste"
+                                   th:field="*{poste}"
+                                   class="form-control"
+                                   placeholder="Ex : Formateur Senior Java"
+                                   required>
+
+                        </div>
+
+                        <span class="error-msg"
+                              th:if="${#fields.hasErrors('poste')}"
+                              th:errors="*{poste}">
+                        </span>
+
+                    </div>
+
+
+                    <!-- CONTACTS -->
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="whatsAppNumber">
+                                WhatsApp
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class='bx bxl-whatsapp'></i>
+
+                                <input type="text"
+                                       id="whatsAppNumber"
+                                       th:field="*{whatsAppNumber}"
+                                       class="form-control"
+                                       placeholder="+237 6 00 00 00 00"
+                                       autocomplete="tel"
+                                       required>
+
+                            </div>
+
+                            <span class="error-msg"
+                                  th:if="${#fields.hasErrors('whatsAppNumber')}"
+                                  th:errors="*{whatsAppNumber}">
+                            </span>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="adresseMail">
+                                Email
+                                <span class="optional">
+                                    (optionnel)
+                                </span>
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class='bx bx-envelope'></i>
+
+                                <input type="email"
+                                       id="adresseMail"
+                                       th:field="*{adresseMail}"
+                                       class="form-control"
+                                       placeholder="email@exemple.com"
+                                       autocomplete="email">
+
+                            </div>
+
+                            <span class="error-msg"
+                                  th:if="${#fields.hasErrors('adresseMail')}"
+                                  th:errors="*{adresseMail}">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BIO -->
+                    <div class="form-group">
+
+                        <label for="bio">
+                            Biographie
+                            <span class="optional">
+                                (optionnelle)
+                            </span>
+                        </label>
+
+                        <div class="input-icon textarea-icon">
+
+                            <i class='bx bx-detail'></i>
+
+                            <textarea id="bio"
+                                      th:field="*{bio}"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Courte biographie du formateur..."></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-foot">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            onclick="fermerModal('creerModal')">
+
+                        Annuler
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class='bx bx-check'></i>
+
+                        <span>Enregistrer</span>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MODAL MODIFICATION
+         ===================================================== -->
+    <div id="modifierModal"
+         class="modal-overlay"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="modifierModalTitle">
+
+        <div class="modal-box">
+
+            <form id="formModifier"
+                  method="post"
+                  th:object="${formateurDTO}"
+                  enctype="multipart/form-data">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
+                <div class="modal-head">
+
+                    <div class="modal-icon gold">
+                        <i class='bx bx-edit-alt'></i>
+                    </div>
+
+                    <div class="modal-heading">
+
+                        <h3 id="modifierModalTitle"
+                            class="modal-title">
+                            Modifier le formateur
+                        </h3>
+
+                        <p class="modal-sub">
+                            Mettez à jour les informations
+                        </p>
+
+                    </div>
+
+                    <button type="button"
+                            class="modal-close"
+                            onclick="fermerModal('modifierModal')"
+                            aria-label="Fermer">
+
+                        <i class='bx bx-x'></i>
+
+                    </button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    <!-- PHOTO -->
+                    <div class="photo-upload">
+
+                        <div class="photo-preview">
+
+                            <i class='bx bx-camera'
+                               id="iconPreviewModif"></i>
+
+                            <img id="imgPreviewModif"
+                                 class="hidden"
+                                 alt="Aperçu">
+
+                        </div>
+
+                        <div class="photo-field">
+
+                            <label class="form-label">
+                                Changer la photo
+                            </label>
+
+                            <input type="file"
+                                   th:field="*{photo}"
+                                   class="form-control"
+                                   accept="image/*"
+                                   onchange="previsualiserPhoto(
+                                       this,
+                                       'imgPreviewModif',
+                                       'iconPreviewModif'
+                                   )">
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NOM / PRÉNOM -->
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="editNom">
+                                Nom
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class='bx bx-user'></i>
+
+                                <input type="text"
+                                       id="editNom"
+                                       th:field="*{nom}"
+                                       class="form-control"
+                                       required>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="editPrenom">
+                                Prénom
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class='bx bx-user'></i>
+
+                                <input type="text"
+                                       id="editPrenom"
+                                       th:field="*{prenom}"
+                                       class="form-control"
+                                       required>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- POSTE -->
+                    <div class="form-group">
+
+                        <label for="editPoste">
+                            Poste / Fonction
+                            <span class="required">*</span>
+                        </label>
+
+                        <div class="input-icon">
+
+                            <i class='bx bx-briefcase'></i>
+
+                            <input type="text"
+                                   id="editPoste"
+                                   th:field="*{poste}"
+                                   class="form-control"
+                                   required>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CONTACT -->
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="editWhatsapp">
+                                WhatsApp
+                                <span class="required">*</span>
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class='bx bxl-whatsapp'></i>
+
+                                <input type="text"
+                                       id="editWhatsapp"
+                                       th:field="*{whatsAppNumber}"
+                                       class="form-control"
+                                       required>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="editMail">
+                                Email
+                                <span class="optional">
+                                    (optionnel)
+                                </span>
+                            </label>
+
+                            <div class="input-icon">
+
+                                <i class='bx bx-envelope'></i>
+
+                                <input type="email"
+                                       id="editMail"
+                                       th:field="*{adresseMail}"
+                                       class="form-control">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BIO -->
+                    <div class="form-group">
+
+                        <label for="editBio">
+                            Biographie
+                            <span class="optional">
+                                (optionnelle)
+                            </span>
+                        </label>
+
+                        <div class="input-icon textarea-icon">
+
+                            <i class='bx bx-detail'></i>
+
+                            <textarea id="editBio"
+                                      th:field="*{bio}"
+                                      class="form-control"
+                                      rows="3"></textarea>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-foot">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            onclick="fermerModal('modifierModal')">
+
+                        Annuler
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class='bx bx-check'></i>
+
+                        <span>Mettre à jour</span>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MODAL SUPPRESSION
+         ===================================================== -->
+    <div id="supprimerModal"
+         class="modal-overlay"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="supprimerModalTitle">
+
+        <div class="modal-box modal-danger">
+
+            <div class="modal-head">
+
+                <div class="modal-icon danger">
+
+                    <i class='bx bx-trash'></i>
+
+                </div>
+
+                <div class="modal-heading">
+
+                    <h3 id="supprimerModalTitle"
+                        class="modal-title">
+
+                        Confirmer la suppression
+
+                    </h3>
+
+                    <p class="modal-sub">
+                        Cette action est irréversible
+                    </p>
+
+                </div>
+
+                <button type="button"
+                        class="modal-close"
+                        onclick="fermerModal('supprimerModal')"
+                        aria-label="Fermer">
+
+                    <i class='bx bx-x'></i>
+
+                </button>
+
+            </div>
+
+
+            <form id="formSupprimer"
+                  method="post">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
+                <div class="modal-body text-center">
+
+                    <p>
+                        Êtes-vous sûr de vouloir supprimer le formateur ?
+                    </p>
+
+                    <h4 id="nomFormateurSuppression"
+                        class="delete-name">
+                        Nom Prénom
+                    </h4>
+
+                    <p class="delete-warning">
+                        Cette action est irréversible.
+                    </p>
+
+                </div>
+
+
+                <div class="modal-foot center">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            onclick="fermerModal('supprimerModal')">
+
+                        Annuler
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class='bx bx-trash'></i>
+
+                        <span>Supprimer</span>
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        // =================================================
+        // VARIABLES THYMELEAF
+        // =================================================
+
+        const modalToOpen = /*[[${openModal}]]*/ null;
+        const activeId = /*[[${activeFormateurId}]]*/ null;
+
+
+        // =================================================
+        // OUVERTURE MODALE
+        // =================================================
+
+        function ouvrirModal(id) {
+
+            const modal = document.getElementById(id);
+
+            if (!modal) {
+                console.warn('Modal introuvable :', id);
+                return;
+            }
+
+            modal.classList.add('active');
+
+            document.body.classList.add('modal-open');
+
+            setTimeout(() => {
+
+                const focusable =
+                    modal.querySelector(
+                        'button:not(.modal-close), input, textarea, select'
+                    );
+
+                if (focusable) {
+                    focusable.focus();
+                }
+
+            }, 100);
+
+        }
+
+
+        // =================================================
+        // FERMETURE MODALE
+        // =================================================
+
+        function fermerModal(id) {
+
+            const modal = document.getElementById(id);
+
+            if (!modal) {
+                return;
+            }
+
+            modal.classList.remove('active');
+
+            if (!document.querySelector('.modal-overlay.active')) {
+                document.body.classList.remove('modal-open');
+            }
+
+        }
+
+
+        // =================================================
+        // MODIFICATION
+        // =================================================
+
+        function ouvrirModalModification(btn) {
+
+            const id = btn.dataset.id;
+
+            const form = document.getElementById('formModifier');
+
+            if (!form || !id) {
+                return;
+            }
+
+            form.action =
+                '/dashboard/formateurs/modifier/' + id;
+
+            document.getElementById('editNom').value =
+                btn.dataset.nom || '';
+
+            document.getElementById('editPrenom').value =
+                btn.dataset.prenom || '';
+
+            document.getElementById('editPoste').value =
+                btn.dataset.poste || '';
+
+            document.getElementById('editMail').value =
+                btn.dataset.mail || '';
+
+            document.getElementById('editWhatsapp').value =
+                btn.dataset.whatsapp || '';
+
+            document.getElementById('editBio').value =
+                btn.dataset.bio || '';
+
+            // Reset photo preview
+            const img = document.getElementById('imgPreviewModif');
+            const icon = document.getElementById('iconPreviewModif');
+
+            img.src = '';
+            img.classList.add('hidden');
+            icon.classList.remove('hidden');
+
+            ouvrirModal('modifierModal');
+        }
+
+
+        // =================================================
+        // SUPPRESSION
+        // =================================================
+
+        function ouvrirModalSuppression(btn) {
+
+            const id = btn.dataset.id;
+
+            const form =
+                document.getElementById('formSupprimer');
+
+            const nom =
+                document.getElementById('nomFormateurSuppression');
+
+            if (!form || !id) {
+                return;
+            }
+
+            form.action =
+                '/dashboard/formateurs/supprimer/' + id;
+
+            nom.textContent =
+                btn.dataset.nom || 'Formateur';
+
+            ouvrirModal('supprimerModal');
+        }
+
+
+        // =================================================
+        // DÉTAILS
+        // =================================================
+
+        function ouvrirModalDetails(btn) {
+
+            const photo =
+                btn.dataset.photo ||
+                '/images/default-avatar.png';
+
+            document.getElementById('viewPhoto').src =
+                photo;
+
+            document.getElementById('viewNomComplet').textContent =
+                btn.dataset.nom || 'Non renseigné';
+
+            document.getElementById('viewPoste').textContent =
+                btn.dataset.poste || 'Aucun poste défini';
+
+            document.getElementById('viewMail').textContent =
+                btn.dataset.mail || 'Non renseigné';
+
+            document.getElementById('viewWhatsapp').textContent =
+                btn.dataset.whatsapp || 'Non renseigné';
+
+            const bio = btn.dataset.bio;
+
+            document.getElementById('viewBio').textContent =
+                bio && bio.trim() !== ''
+                    ? bio
+                    : 'Aucune biographie disponible pour ce formateur.';
+
+            ouvrirModal('detailsModal');
+        }
+
+
+        // =================================================
+        // PREVIEW PHOTO
+        // =================================================
+
+        function previsualiserPhoto(input, imgId, iconId) {
+
+            if (!input.files || !input.files[0]) {
+                return;
+            }
+
+            const file = input.files[0];
+
+            if (!file.type.startsWith('image/')) {
+                input.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = function (event) {
+
+                const img =
+                    document.getElementById(imgId);
+
+                const icon =
+                    document.getElementById(iconId);
+
+                img.src = event.target.result;
+
+                img.classList.remove('hidden');
+
+                icon.classList.add('hidden');
+
+            };
+
+            reader.readAsDataURL(file);
+        }
+
+
+        // =================================================
+        // DOM READY
+        // =================================================
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+
+            // --------------------------------------------------
+            // Réouverture après erreur de validation
+            // --------------------------------------------------
+
+            if (modalToOpen) {
+
+                if (modalToOpen === 'modifierModal' && activeId) {
+
+                    const form =
+                        document.getElementById('formModifier');
+
+                    if (form) {
+
+                        form.action =
+                            '/dashboard/formateurs/modifier/' +
+                            activeId;
+
+                    }
+
+                }
+
+                ouvrirModal(modalToOpen);
+
+            }
+
+
+            // --------------------------------------------------
+            // Fermeture clic extérieur
+            // --------------------------------------------------
+
+            document
+                .querySelectorAll('.modal-overlay')
+                .forEach(function (modal) {
+
+                    modal.addEventListener(
+                        'click',
+                        function (event) {
+
+                            if (event.target === modal) {
+
+                                fermerModal(modal.id);
+
+                            }
+
+                        }
+                    );
+
+                });
+
+
+            // --------------------------------------------------
+            // ESC pour fermer
+            // --------------------------------------------------
+
+            document.addEventListener(
+                'keydown',
+                function (event) {
+
+                    if (event.key === 'Escape') {
+
+                        const activeModal =
+                            document.querySelector(
+                                '.modal-overlay.active'
+                            );
+
+                        if (activeModal) {
+
+                            fermerModal(activeModal.id);
+
+                        }
+
+                    }
+
+                }
+            );
+
+
+            // --------------------------------------------------
+            // Toast automatique
+            // --------------------------------------------------
+
+            document
+                .querySelectorAll('.toast')
+                .forEach(function (toast) {
+
+                    setTimeout(function () {
+
+                        toast.style.opacity = '0';
+                        toast.style.transform =
+                            'translateX(20px)';
+
+                        setTimeout(function () {
+
+                            toast.remove();
+
+                        }, 500);
+
+                    }, 5000);
+
+                });
+
+        });
+
+
+        // =================================================
+        // IMAGE FALLBACK
+        // =================================================
+
+        document.addEventListener(
+            'error',
+            function (event) {
+
+                if (
+                    event.target.tagName === 'IMG' &&
+                    event.target.classList.contains('trainer-avatar')
+                ) {
+
+                    event.target.src =
+                        '/img/logo.jpg';
+
+                }
+
+            },
+            true
+        );
+
+        /*]]>*/
+    </script>
+
+</section>
+
+</html>

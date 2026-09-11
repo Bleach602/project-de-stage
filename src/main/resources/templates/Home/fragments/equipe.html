@@ -1,0 +1,117 @@
+<div th:fragment="equipe">
+
+    <!-- ============================================================
+       SECTION ÉQUIPE (SLIDER)
+       ============================================================ -->
+    <section class="equipe-section" id="equipe">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="sub-title">Notre équipe</span>
+                <h2>Des formateurs <span>d'exception</span></h2>
+                <p>Des professionnels expérimentés et passionnés, entièrement dédiés à votre réussite.</p>
+            </div>
+
+            <!-- Conteneur du slider -->
+            <div class="slider-wrapper">
+                <div class="slider-container" id="equipeSlider" data-aos="fade-up">
+                    <!-- ============================================================
+                    TH:EACH PLACÉ SUR CHAQUE SLIDE INDIVIDUELLE
+                    ============================================================ -->
+                    <div class="slide" th:each="formateur : ${formateurs}">
+                        <div class="equipe-card">
+                            <div class="avatar avatar-initials">
+                                <img th:src="${formateur.photoUrl != null ? formateur.photoUrl : '/images/default-avatar.png'}"
+                                     th:alt="'Photo de ' + ${formateur.prenom} + ' ' + ${formateur.nom}"
+                                     loading="lazy"
+                                     onerror="this.src='/images/default-avatar.png'">
+                            </div>
+                            <h3 th:text="${formateur.prenom} + ' ' + ${formateur.nom}">Dr. Jean KAMGA</h3>
+                            <p class="poste" th:text="${formateur.poste}">Directeur Général</p>
+                            <p class="bio" th:text="${formateur.bio}">Expert en formation professionnelle, 20 ans d'expérience dans l'éducation.</p>
+                            <div class="social">
+                                <a th:href="${'mailto:' + (formateur.adresseMail ?: '')}"
+                                   target="_blank" title="Email">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
+                                <a th:href="@{|https://wa.me/${formateur.whatsAppNumber != null ? formateur.whatsAppNumber : ''}|}"
+                                   target="_blank" title="WhatsApp">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Flèches de navigation -->
+                <button class="slider-btn prev" id="prevSlide" aria-label="Précédent">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-btn next" id="nextSlide" aria-label="Suivant">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <!-- Indicateurs (dots) -->
+            <div class="slider-dots" id="sliderDots"></div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+       PALMARÈS & RÉUSSITES
+       ============================================================ -->
+    <section class="palmares-section" id="palmares">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="sub-title">Palmarès</span>
+                <h2>Nos <span>lauréats</span></h2>
+                <p>100% de réussite aux examens nationaux depuis 2021.</p>
+            </div>
+
+            <div class="palmares-grid">
+                <div class="palmares-card" data-aos="fade-up" data-aos-delay="100">
+                    <img th:src="@{/img/IMG-20250725-WA0091.jpg}" alt="Promo 2025">
+                    <div class="info">
+                        <h4>Promotion 2025</h4>
+                        <p class="filiere">Toutes filières confondues</p>
+                        <p class="annee">🏆 100% de réussite</p>
+                    </div>
+                </div>
+
+                <div class="palmares-card" data-aos="fade-up" data-aos-delay="200">
+                    <img th:src="@{/img/IMG-20250725-WA0092.jpg}" alt="Promo 2024">
+                    <div class="info">
+                        <h4>Promotion 2024</h4>
+                        <p class="filiere">Toutes filières confondues</p>
+                        <p class="annee">🏆 100% de réussite</p>
+                    </div>
+                </div>
+
+                <div class="palmares-card" data-aos="fade-up" data-aos-delay="300">
+                    <img th:src="@{/img/IMG-20250729-WA0011.jpg}" alt="Promo 2023">
+                    <div class="info">
+                        <h4>Promotion 2023</h4>
+                        <p class="filiere">Toutes filières confondues</p>
+                        <p class="annee">🏆 100% de réussite</p>
+                    </div>
+                </div>
+
+                <div class="palmares-card" data-aos="fade-up" data-aos-delay="400">
+                    <img th:src="@{/img/raouf1.png}" alt="Promo 2022">
+                    <div class="info">
+                        <h4>Promotion 2022</h4>
+                        <p class="filiere">Toutes filières confondues</p>
+                        <p class="annee">🏆 100% de réussite</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-detailed">
+                <div class="stat-box"><h3>100%</h3><p>Taux de réussite</p></div>
+                <div class="stat-box"><h3>85%</h3><p>Insertion à 6 mois</p></div>
+                <div class="stat-box"><h3>50+</h3><p>Entreprises partenaires</p></div>
+                <div class="stat-box"><h3>7</h3><p>Filières d'excellence</p></div>
+            </div>
+        </div>
+    </section>
+
+</div>

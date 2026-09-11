@@ -1,0 +1,73 @@
+<!-- ============================================================
+     ONGLET MON PROFIL (fragment : fragments/profil)
+     ============================================================ -->
+<div id="profilTab" class="tab-content active-tab" th:fragment="profil">
+    <div class="card"
+         th:with="profilComplet=${Candidat.nom != null and Candidat.prenom != null and Candidat.telephone != null and Candidat.email != null}">
+
+        <div class="profil-card">
+
+            <!-- ---------- En-tête ---------- -->
+            <div class="profil-header">
+                <div class="profil-header-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <div>
+                    <h4>Mes informations personnelles</h4>
+                    <span class="profil-subtitle">Vos données d'identification et de contact</span>
+                </div>
+
+                <span class="profil-status" th:classappend="${profilComplet} ? '' : 'incomplet'">
+                    <i class="fas" th:classappend="${profilComplet} ? 'fa-check-circle' : 'fa-exclamation-circle'"></i>
+                    <span th:text="${profilComplet} ? 'Profil complet' : 'Profil incomplet'"></span>
+                </span>
+            </div>
+
+            <!-- ---------- Grille des informations ---------- -->
+            <div class="profil-grid" id="profilDisplay">
+
+                <div class="profil-item">
+                    <span class="profil-label"><i class="fas fa-user"></i> Nom</span>
+                    <span class="profil-value" id="displayNom" th:text="${Candidat.nom} ?: '—'"></span>
+                </div>
+
+                <div class="profil-item">
+                    <span class="profil-label"><i class="fas fa-user"></i> Prénom</span>
+                    <span class="profil-value" id="displayPrenom" th:text="${Candidat.prenom} ?: '—'"></span>
+                </div>
+
+                <div class="profil-item">
+                    <span class="profil-label"><i class="fas fa-phone"></i> Téléphone</span>
+                    <span class="profil-value" id="displayTelephone" th:text="${Candidat.telephone} ?: '—'"></span>
+                </div>
+
+                <div class="profil-item full-width email">
+                    <span class="profil-label"><i class="fas fa-envelope"></i> Adresse e-mail</span>
+                    <span class="profil-value">
+                        <i class="fas fa-envelope"></i>
+                        <span id="displayEmail" th:text="${Candidat.email} ?: '—'"></span>
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- ---------- Actions ---------- -->
+            <div class="profil-actions">
+                <button class="btn btn-primary" id="openEditProfilModal">
+                    <i class="fas fa-edit"></i> Modifier mon profil
+                </button>
+
+                <a th:href="@{/candidat/attestation/maFiche}"
+                   class="btn btn-success"
+                   th:if="${ficheExiste}">
+                    <i class="fas fa-download"></i> Télécharger ma fiche
+                </a>
+
+                <span class="btn btn-outline disabled" th:unless="${ficheExiste}">
+                    <i class="fas fa-file-circle-exclamation"></i> Fiche non générée
+                </span>
+            </div>
+
+        </div>
+    </div>
+</div>

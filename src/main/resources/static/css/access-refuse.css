@@ -1,0 +1,79 @@
+/* ==========================================
+   Variables de thèmes & Couleurs
+   ========================================== */
+:root {
+    --bg-body: #f4f7fe;
+    --color-primary: #1b254b;  /* Bleu nuit principal */
+    --color-accent: #d97706;   /* Doré / Ambre pour les boutons */
+    --color-accent-hover: #b45309;
+    --color-danger: #ef4444;   /* Rouge alerte */
+    --text-muted: #a3b1cc;
+}
+
+/* ==========================================
+   Page & Alignement Global
+   ========================================== */
+body {
+    background-color: var(--bg-body);
+    font-family: 'Poppins', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==========================================
+   Carte Access Refusé (.card)
+   ========================================== */
+.card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: transform 0.2s ease;
+}
+
+/* Petit cercle léger autour de l'icône de cadenas pour un rendu moderne */
+.card i.bx-lock-alt {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background-color: #fef2f2;
+    border-radius: 50%;
+    margin-bottom: 12px;
+}
+
+.card h2 {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+/* ==========================================
+   Boutons (.btn & .btn-primary)
+   ========================================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* Espace entre l'icône flèche et le texte */
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: var(--color-accent);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.25);
+}
+
+.btn-primary:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(217, 119, 6, 0.35);
+}

@@ -1,0 +1,49 @@
+# ============================================================
+# ROBOTS.TXT - IFP-PERLE D'OR
+# ============================================================
+
+# Tous les robots
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /logout
+Disallow: /error
+
+# Sitemap
+Sitemap: https://ifp-perle.com/sitemap.xml
+
+# Délai de crawl
+Crawl-delay: 5
+
+# ============================================================
+# GOOGLE
+# ============================================================
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 3
+
+# ============================================================
+# BING
+# ============================================================
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 5
+
+# ============================================================
+# ROBOTS DE SCRAPING (Bloqués)
+# ============================================================
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

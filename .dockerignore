@@ -1,0 +1,44 @@
+# Fichiers de build
+
+
+# Fichiers IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Fichiers de configuration
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Dossiers temporaires
+tmp/
+temp/
+logs/
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Données
+uploads/
+*.db
+*.sqlite
+
+# Système
+.DS_Store
+Thumbs.db
+mvnw
+mvnw.cmd
+HELP.md
+.mvn/

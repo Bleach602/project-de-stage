@@ -1,0 +1,1146 @@
+/* ============================================================
+   CHARTE IFP-PO – PAGE DE CONFIRMATION
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #1a5276;
+    --primary-light: #2e86c1;
+    --primary-dark: #0e2f44;
+    --primary-gradient: linear-gradient(135deg, #1a5276 0%, #2e86c1 100%);
+    --primary-soft: rgba(26, 82, 118, 0.06);
+
+    --gold: #d4af37;
+    --gold-light: #f1c40f;
+    --gold-dark: #b8860b;
+    --gold-gradient: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+    --gold-soft: rgba(212, 175, 55, 0.12);
+
+    --cream: #fdfcf8;
+    --cream-dark: #f8f6f0;
+    --white: #ffffff;
+    --dark: #1a1a2e;
+    --text: #2c3e50;
+    --text-light: #7f8c8d;
+    --gray: #ecf0f1;
+    --gray-dark: #bdc3c7;
+    --success: #27ae60;
+    --success-soft: rgba(39, 174, 96, 0.1);
+    --danger: #e74c3c;
+    --warning: #f39c12;
+
+    --radius: 20px;
+    --radius-sm: 12px;
+    --shadow: 0 25px 60px -20px rgba(26, 82, 118, .15);
+    --shadow-hover: 0 30px 70px -20px rgba(26, 82, 118, .25);
+    --ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background:
+            radial-gradient(ellipse at 20% 50%, rgba(212, 175, 55, .04) 0%, transparent 60%),
+            radial-gradient(ellipse at 80% 50%, rgba(26, 82, 118, .04) 0%, transparent 60%),
+            var(--cream);
+}
+
+.confirmation-wrapper {
+    width: 100%;
+    max-width: 560px;
+    animation: fadeUp .6s var(--ease);
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.confirmation-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 48px 40px 36px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    border: 1px solid rgba(26, 82, 118, .04);
+    transition: box-shadow .3s var(--ease);
+}
+
+.confirmation-card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+/* ============================================================
+   ICÔNE DE SUCCÈS
+   ============================================================ */
+.success-icon {
+    margin-bottom: 24px;
+}
+
+.success-ring {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--success-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    position: relative;
+    animation: pulseRing 2s ease-in-out infinite;
+}
+
+@keyframes pulseRing {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(39, 174, 96, .2); }
+    50% { box-shadow: 0 0 0 16px rgba(39, 174, 96, 0); }
+}
+
+.success-ring i {
+    font-size: 32px;
+    color: var(--success);
+}
+
+/* ============================================================
+   TITRE
+   ============================================================ */
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    color: var(--text-light);
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.subtitle span {
+    color: var(--primary);
+    font-weight: 500;
+}
+
+/* ============================================================
+   ALERTE D'INACTIVITÉ – 3 JOURS
+   ============================================================ */
+.alert-inactivite {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1px solid #f59e0b;
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    position: relative;
+    animation: alertAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    text-align: left;
+}
+
+@keyframes alertAppear {
+    from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.alert-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    background: rgba(245, 158, 11, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #b45309;
+    animation: pulseAlert 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes pulseAlert {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.alert-content {
+    flex: 1;
+    border:1px solid var(--bleu-cyan);
+
+}
+
+.alert-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.alert-title i {
+    color: #f59e0b;
+    font-size: 14px;
+}
+
+.alert-content p {
+    font-size: 13px;
+    color: #78350f;
+    margin: 0 0 10px 0;
+    line-height: 1.5;
+}
+
+.alert-content p strong {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+/* ============================================================
+   COMPTEUR À REBOURS
+   ============================================================ */
+.alert-countdown {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.countdown-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #78350f;
+}
+
+.countdown-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-family: 'Inter', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: #1a2332;
+    letter-spacing: 1px;
+    backdrop-filter: blur(4px);
+}
+
+.countdown-unit {
+    display: inline-block;
+    min-width: 24px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.6);
+    padding: 0 4px;
+    border-radius: 4px;
+}
+
+.countdown-separator {
+    opacity: 0.5;
+    font-weight: 300;
+    margin: 0 2px;
+}
+
+/* ============================================================
+   BOUTON FERMER L'ALERTE
+   ============================================================ */
+.alert-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #92400e;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    opacity: 0.6;
+}
+
+.alert-close:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* ============================================================
+   ÉTAT D'URGENCE (moins de 24h)
+   ============================================================ */
+.alert-inactivite.urgent {
+
+    background-color: var(--bleu-cyan);
+    /*background: linear-gradient(135deg, #fee2e2 0%, #fca5a5 100%);*/
+    /*border-color: #dc2626;*/
+    border-color:var(--bleu-cyan);
+    animation: alertPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes alertPulse {
+    0%, 100% { border-color: #dc2626; }
+    50% { border-color: #fca5a5; box-shadow: 0 0 20px rgba(220, 38, 38, 0.1); }
+}
+
+.alert-inactivite.urgent .alert-icon {
+    background: rgba(220, 38, 38, 0.15);
+    color: #dc2626;
+}
+
+.alert-inactivite.urgent .alert-title {
+    color: #991b1b;
+}
+
+.alert-inactivite.urgent .alert-title i {
+    color: #dc2626;
+}
+
+.alert-inactivite.urgent .alert-content p {
+    color: #7f1d1d;
+}
+
+.alert-inactivite.urgent .countdown-label {
+    color: #7f1d1d;
+}
+
+/* ============================================================
+   SÉPARATEUR
+   ============================================================ */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 20px 0 28px;
+}
+
+.divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+
+.divider-dot {
+    color: var(--gold);
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   MODE OPÉRATOIRE – STEPS
+   ============================================================ */
+.steps {
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.steps-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--primary);
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.steps-title i {
+    color: var(--gold);
+    font-size: 16px;
+}
+
+.step-item {
+    display: flex;
+    gap: 16px;
+    padding: 14px 16px;
+    border-radius: var(--radius-sm);
+    transition: background .3s var(--ease);
+    border-left: 3px solid transparent;
+}
+
+.step-item:hover {
+    background: var(--cream);
+    border-left-color: var(--gold);
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gold-gradient);
+    color: var(--white);
+    font-size: 12px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.step-content {
+    display: flex;
+    gap: 14px;
+    flex: 1;
+}
+
+.step-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--gold-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--gold-dark);
+    font-size: 15px;
+    transition: background .3s var(--ease);
+}
+
+.step-item:hover .step-icon {
+    background: var(--gold);
+    color: var(--white);
+}
+
+.step-text h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+}
+
+.step-text p {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.step-text p strong {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* ============================================================
+   INFO BOX
+   ============================================================ */
+.info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 18px;
+    background: var(--primary-gradient);
+    border-radius: var(--radius-sm);
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+.info-box i {
+    color: var(--white);
+    font-size: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.info-box div {
+    color: rgba(255, 255, 255, .85);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.info-box strong {
+    color: var(--white);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.info-box small {
+    display: block;
+    opacity: .7;
+    font-size: 11px;
+    margin-top: 2px;
+}
+
+/* ============================================================
+   ACTION BUTTONS
+   ============================================================ */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font: 700 15px 'Inter', sans-serif;
+    cursor: pointer;
+    transition: transform .25s var(--ease), box-shadow .25s var(--ease);
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    color: var(--white);
+    box-shadow: 0 6px 20px -4px rgba(26, 82, 118, .3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px -4px rgba(26, 82, 118, .4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn i {
+    font-size: 16px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer-note {
+    font-size: 12px;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.footer-note i {
+    color: var(--gold);
+    font-size: 14px;
+}
+
+.footer-note strong {
+    color: var(--primary);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 600px) {
+    .confirmation-card {
+        padding: 32px 20px 24px;
+        border-radius: 16px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    .success-ring {
+        width: 64px;
+        height: 64px;
+    }
+
+    .success-ring i {
+        font-size: 26px;
+    }
+    /* ============================================================
+       ALERTE D'INACTIVITÉ – 3 JOURS (FOND BLEU IFP-PO)
+       ============================================================ */
+
+    .alert-inactivite {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        background: var(--bleu-cyan-gradient);
+        border: 1px solid var(--bleu-cyan-fonce);
+        border-radius: var(--radius-sm);
+        padding: 16px 20px;
+        margin-bottom: 24px;
+        position: relative;
+        animation: alertAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        text-align: left;
+        box-shadow: 0 4px 16px rgba(0, 150, 220, 0.15);
+    }
+
+    @keyframes alertAppear {
+        from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Effet de brillance sur l'alerte */
+    .alert-inactivite::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+                105deg,
+                transparent 30%,
+                rgba(255, 255, 255, 0.08) 45%,
+                rgba(255, 255, 255, 0.08) 55%,
+                transparent 70%
+        );
+        background-size: 300% 100%;
+        animation: shimmerBadge 4s ease-in-out infinite;
+        pointer-events: none;
+        border-radius: var(--radius-sm);
+    }
+
+    @keyframes shimmerBadge {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    .alert-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: #fff;
+        animation: pulseAlert 2s ease-in-out infinite;
+        flex-shrink: 0;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    @keyframes pulseAlert {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .alert-content {
+        flex: 1;
+    }
+
+    .alert-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 4px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .alert-title i {
+        color: var(--or);
+        font-size: 14px;
+    }
+
+    .alert-content p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.85);
+        margin: 0 0 10px 0;
+        line-height: 1.5;
+    }
+
+    .alert-content p strong {
+        color: #fff;
+        font-weight: 700;
+        background: rgba(220, 38, 38, 0.2);
+        padding: 1px 6px;
+        border-radius: 4px;
+    }
+
+    /* ============================================================
+       COMPTEUR À REBOURS (sur fond bleu)
+       ============================================================ */
+    .alert-countdown {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .countdown-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    .countdown-timer {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        background: rgba(255, 255, 255, 0.12);
+        padding: 4px 12px;
+        border-radius: 8px;
+        font-family: 'Inter', monospace;
+        font-weight: 700;
+        font-size: 16px;
+        color: #fff;
+        letter-spacing: 1px;
+        backdrop-filter: blur(4px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .countdown-unit {
+        display: inline-block;
+        min-width: 24px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.08);
+        padding: 0 4px;
+        border-radius: 4px;
+    }
+
+    .countdown-separator {
+        opacity: 0.5;
+        font-weight: 300;
+        margin: 0 2px;
+    }
+
+    /* ============================================================
+       BOUTON FERMER (sur fond bleu)
+       ============================================================ */
+    .alert-close {
+        position: absolute;
+        top: 12px;
+        right: 14px;
+        background: none;
+        border: none;
+        font-size: 16px;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        padding: 4px 6px;
+        border-radius: 6px;
+        transition: all 0.2s ease;
+    }
+
+    .alert-close:hover {
+        color: #fff;
+        background: rgba(255, 255, 255, 0.1);
+        transform: rotate(90deg);
+    }
+
+    /* ============================================================
+       ÉTAT D'URGENCE (moins de 24h) – Fond plus intense
+       ============================================================ */
+    .alert-inactivite.urgent {
+        background: linear-gradient(135deg, #0072b3 0%, #0096dc 100%);
+        border-color: #fff;
+        animation: alertPulse 1.5s ease-in-out infinite;
+        box-shadow: 0 4px 24px rgba(0, 150, 220, 0.3);
+    }
+
+    @keyframes alertPulse {
+        0%, 100% { box-shadow: 0 4px 24px rgba(0, 150, 220, 0.3); }
+        50% { box-shadow: 0 4px 40px rgba(0, 150, 220, 0.5); }
+    }
+
+    .alert-inactivite.urgent .alert-icon {
+        background: rgba(220, 38, 38, 0.2);
+        color: #fff;
+        border-color: rgba(220, 38, 38, 0.3);
+    }
+
+    .alert-inactivite.urgent .alert-title {
+        color: #fff;
+    }
+
+    .alert-inactivite.urgent .alert-title i {
+        color: #ff6b6b;
+    }
+
+    .alert-inactivite.urgent .alert-content p {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .alert-inactivite.urgent .alert-content p strong {
+        background: rgba(220, 38, 38, 0.25);
+        color: #fff;
+    }
+
+    .alert-inactivite.urgent .countdown-label {
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .alert-inactivite.urgent .countdown-timer {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .alert-inactivite.urgent .alert-close {
+        color: rgba(255, 255, 255, 0.6);
+    }
+
+    .alert-inactivite.urgent .alert-close:hover {
+        color: #fff;
+        background: rgba(220, 38, 38, 0.2);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 600px) {
+        .alert-inactivite {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 16px;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            font-size: 16px;
+        }
+
+        .alert-title {
+            font-size: 13px;
+            justify-content: center;
+        }
+
+        .alert-content p {
+            font-size: 12px;
+        }
+
+        .alert-countdown {
+            justify-content: center;
+        }
+
+        .countdown-timer {
+            font-size: 14px;
+            padding: 3px 8px;
+        }
+
+        .countdown-unit {
+            min-width: 20px;
+            font-size: 14px;
+        }
+
+        .alert-close {
+            top: 8px;
+            right: 10px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .countdown-timer {
+            font-size: 12px;
+            padding: 2px 6px;
+            gap: 1px;
+        }
+
+        .countdown-unit {
+            min-width: 16px;
+            font-size: 12px;
+            padding: 0 2px;
+        }
+
+        .alert-title {
+            font-size: 12px;
+        }
+
+        .alert-content p {
+            font-size: 11px;
+        }
+    }}
+
+/* ============================================================
+   ALERTE D'INACTIVITÉ – 3 JOURS (FOND GOLD COMME LE BOUTON)
+   ============================================================ */
+
+.alert-inactivite {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: linear-gradient(135deg, var(--gold-300) 0%, var(--gold-600) 100%);
+    border: 2px solid var(--gold-500);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    position: relative;
+    animation: alertAppear 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    text-align: left;
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.25);
+}
+
+@keyframes alertAppear {
+    from { opacity: 0; transform: translateY(-10px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Effet de brillance sur l'alerte */
+.alert-inactivite::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+            105deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.15) 45%,
+            rgba(255, 255, 255, 0.15) 55%,
+            transparent 70%
+    );
+    background-size: 300% 100%;
+    animation: shimmerBadge 4s ease-in-out infinite;
+    pointer-events: none;
+    border-radius: var(--radius-sm);
+}
+
+@keyframes shimmerBadge {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.alert-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: var(--navy-950);
+    animation: pulseAlert 2s ease-in-out infinite;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@keyframes pulseAlert {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy-950);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.alert-title i {
+    color: #dc2626;
+    font-size: 14px;
+}
+
+.alert-content p {
+    font-size: 13px;
+    color: var(--navy-900);
+    margin: 0 0 10px 0;
+    line-height: 1.5;
+}
+
+.alert-content p strong {
+    color: #dc2626;
+    font-weight: 700;
+    background: rgba(220, 38, 38, 0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+}
+
+/* ============================================================
+   COMPTEUR À REBOURS (sur fond gold)
+   ============================================================ */
+.alert-countdown {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.countdown-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--navy-900);
+}
+
+.countdown-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 4px 12px;
+    border-radius: 8px;
+    font-family: 'Inter', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--navy-950);
+    letter-spacing: 1px;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.countdown-unit {
+    display: inline-block;
+    min-width: 24px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0 4px;
+    border-radius: 4px;
+}
+
+.countdown-separator {
+    opacity: 0.5;
+    font-weight: 300;
+    margin: 0 2px;
+}
+
+/* ============================================================
+   BOUTON FERMER (sur fond gold)
+   ============================================================ */
+.alert-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: var(--navy-900);
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    opacity: 0.5;
+}
+
+.alert-close:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* ============================================================
+   ÉTAT D'URGENCE (moins de 24h) – Couleur plus intense
+   ============================================================ */
+.alert-inactivite.urgent {
+    background: linear-gradient(135deg, var(--gold-400) 0%, var(--gold-600) 100%);
+    border-color: #dc2626;
+    animation: alertPulse 1.5s ease-in-out infinite;
+    box-shadow: 0 4px 24px rgba(212, 175, 55, 0.3);
+}
+
+@keyframes alertPulse {
+    0%, 100% { box-shadow: 0 4px 24px rgba(212, 175, 55, 0.3); }
+    50% { box-shadow: 0 4px 40px rgba(212, 175, 55, 0.4); }
+}
+
+.alert-inactivite.urgent .alert-icon {
+    background: rgba(220, 38, 38, 0.12);
+    color: #dc2626;
+    border-color: rgba(220, 38, 38, 0.2);
+}
+
+.alert-inactivite.urgent .alert-title i {
+    color: #dc2626;
+}
+
+.alert-inactivite.urgent .alert-content p strong {
+    background: rgba(220, 38, 38, 0.15);
+    color: #dc2626;
+}
+
+.alert-inactivite.urgent .countdown-timer {
+    background: rgba(255, 255, 255, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 600px) {
+    .alert-inactivite {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .alert-icon {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        font-size: 16px;
+    }
+
+    .alert-title {
+        font-size: 13px;
+        justify-content: center;
+    }
+
+    .alert-content p {
+        font-size: 12px;
+    }
+
+    .alert-countdown {
+        justify-content: center;
+    }
+
+    .countdown-timer {
+        font-size: 14px;
+        padding: 3px 8px;
+    }
+
+    .countdown-unit {
+        min-width: 20px;
+        font-size: 14px;
+    }
+
+    .alert-close {
+        top: 8px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .countdown-timer {
+        font-size: 12px;
+        padding: 2px 6px;
+        gap: 1px;
+    }
+
+    .countdown-unit {
+        min-width: 16px;
+        font-size: 12px;
+        padding: 0 2px;
+    }
+
+    .alert-title {
+        font-size: 12px;
+    }
+
+    .alert-content p {
+        font-size: 11px;
+    }
+}

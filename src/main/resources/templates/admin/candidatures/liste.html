@@ -1,0 +1,167 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layouts/admin_layout :: layout(~{::main})}">
+<body>
+<main>
+    <link rel="stylesheet" th:href="@{/css/adminCSS/candidaturesCSS.css}">
+
+    <!-- =========================================================
+         EN-TÊTE
+         ========================================================= -->
+    <div class="page-header">
+        <h2>
+            <i class='bx bx-folder-open'></i>
+            Gestion des candidatures
+        </h2>
+        <p class="subtitle">Consultez, filtrez et traitez l'ensemble des candidatures soumises</p>
+    </div>
+
+    <!-- =========================================================
+         BANNIÈRE RÉSOUMISSION
+         ========================================================= -->
+    <div class="banner-info" th:if="${nombreResoumissions > 0}">
+        <i class='bx bx-refresh'></i>
+        <span>
+            <strong th:text="${nombreResoumissions}"></strong> candidature(s) resoumise(s) suite à une demande de correction
+            <span style="font-weight: 400; color: #78350f;">— à réexaminer</span>
+        </span>
+    </div>
+
+    <!-- =========================================================
+         STATISTIQUES RAPIDES
+         ========================================================= -->
+    <div class="stats-bar" th:if="${not candidatures.empty}">
+        <div class="stat-card stat-total">
+            <div class="stat-number" th:text="${#lists.size(candidatures)}">0</div>
+            <div class="stat-label">Total</div>
+        </div>
+        <div class="stat-card stat-attente">
+            <div class="stat-number" th:text="${#lists.size(candidatures.?[statutCandidature.name() == 'EN_ATTENTE'])}">0</div>
+            <div class="stat-label">En attente</div>
+        </div>
+        <div class="stat-card stat-valide">
+            <div class="stat-number" th:text="${#lists.size(candidatures.?[statutCandidature.name() == 'VALIDE'])}">0</div>
+            <div class="stat-label">Validées</div>
+        </div>
+        <div class="stat-card stat-rejete">
+            <div class="stat-number" th:text="${#lists.size(candidatures.?[statutCandidature.name() == 'REJETE'])}">0</div>
+            <div class="stat-label">Rejetées</div>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         TOASTS
+         ========================================================= -->
+    <div id="toast-succes" class="toast toast-succes" th:if="${succes}">
+        <i class='bx bx-check-circle'></i>
+        <span th:text="${succes}"></span>
+    </div>
+    <div id="toast-erreur" class="toast toast-erreur" th:if="${erreur}">
+        <i class='bx bx-error-circle'></i>
+        <span th:text="${erreur}"></span>
+    </div>
+
+    <!-- =========================================================
+         FILTRES
+         ========================================================= -->
+    <form class="filters-bar" method="get" th:action="@{/dashboard/candidatures}">
+        <select name="sessionId">
+            <option value="">Toutes les sessions</option>
+            <option th:each="s : ${toutesLesSessions}" th:value="${s.id}"
+                    th:text="${s.anneeAcademique}" th:selected="${s.id == sessionId}"></option>
+        </select>
+
+        <select name="statut">
+            <option value="">Tous les statuts</option>
+            <option th:each="st : ${tousLesStatuts}" th:value="${st}"
+                    th:text="${st}" th:selected="${st == statut}"></option>
+        </select>
+
+        <select name="filiereId">
+            <option value="">Toutes les filières</option>
+            <option th:each="f : ${toutesLesFilieres}" th:value="${f.id}"
+                    th:text="${f.nom}" th:selected="${f.id == filiereId}"></option>
+        </select>
+
+        <select name="specialiteId">
+            <option value="">Toutes les spécialités</option>
+            <option th:each="sp : ${toutesLesSpecialites}" th:value="${sp.id}"
+                    th:text="${sp.nom}" th:selected="${sp.id == specialiteId}"></option>
+        </select>
+
+        <button type="submit" class="btn">
+            <i class='bx bx-filter-alt'></i> Filtrer
+        </button>
+    </form>
+
+    <!-- =========================================================
+         TABLEAU DES CANDIDATURES
+         ========================================================= -->
+    <div class="table-wrapper" th:if="${not candidatures.empty}">
+        <div class="table-scroll">
+            <table class="table-roles">
+                <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Candidat</th>
+                    <th>Filière</th>
+                    <th>Spécialité</th>
+                    <th>Session</th>
+                    <th>Statut</th>
+                    <th style="text-align: center;">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${candidatures}">
+                    <td th:text="${c.reference}"></td>
+                    <td class="candidat-cell">
+                        <span class="candidat-nom" th:text="${c.utilisateur.nom} + ' ' + ${c.utilisateur.prenom}"></span>
+                        <span class="candidat-email" th:text="${c.utilisateur.email}"></span>
+                    </td>
+                    <td th:text="${c.specialite.filiere.nom}"></td>
+                    <td th:text="${c.specialite.nom}"></td>
+                    <td th:text="${c.sessionCandidature.anneeAcademique}"></td>
+                    <td>
+                        <span class="statut-badge"
+                              th:classappend="'statut-' + ${#strings.replace(#strings.toLowerCase(c.statutCandidature), '_', '-')}"
+                              th:text="${c.statutCandidature}">
+                        </span>
+                        <span th:if="${c.nombreTentativesCorrection > 0 and c.statutCandidature.name() == 'EN_ATTENTE'}" class="permission-badge">
+                            <i class='bx bx-refresh'></i> Resoumise (<span th:text="${c.nombreTentativesCorrection}"></span>/2)
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        <div class="actions-cell" style="justify-content: center;">
+                            <a th:href="@{/dashboard/candidatures/{id}(id=${c.id})}" class="btn-action" title="Voir les détails">
+                                <i class='bx bx-show'></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- =========================================================
+         ÉTAT VIDE
+         ========================================================= -->
+    <div class="empty-state" th:if="${candidatures.empty}">
+        <i class='bx bx-folder-open'></i>
+        <span>Aucune candidature trouvée</span>
+        <p class="empty-sub">Aucune candidature ne correspond à vos critères de recherche</p>
+    </div>
+
+    <!-- =========================================================
+         PAGINATION
+         ========================================================= -->
+    <div class="pagination" th:if="${candidatures.totalPages > 1}">
+        <a th:each="i : ${#numbers.sequence(0, candidatures.totalPages - 1)}"
+           th:href="@{/dashboard/candidatures(sessionId=${sessionId}, statut=${statut}, filiereId=${filiereId}, specialiteId=${specialiteId}, page=${i})}"
+           th:text="${i + 1}" class="page-link"
+           th:classappend="${i == candidatures.number} ? 'page-active'">
+        </a>
+    </div>
+
+</main>
+</body>
+</html>

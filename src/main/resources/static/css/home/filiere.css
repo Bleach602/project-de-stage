@@ -1,0 +1,475 @@
+/* ============================================================
+          FILIÈRES SECTION
+          ============================================================ */
+.filiere-section {
+    padding: 5rem 0;
+    background: var(--bg-body);
+}
+
+.filiere-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 2rem;
+}
+
+.filiere-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    border: 1px solid var(--gris-clair);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.filiere-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: var(--bleu-cyan-gradient);
+}
+
+.filiere-card::after {
+    content: '✦';
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 1.2rem;
+    color: var(--or);
+    opacity: 0.3;
+}
+
+.filiere-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--bleu-cyan);
+}
+
+.filiere-card .category-tag {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 15px;
+    background: var(--or-transparent);
+    color: var(--or-fonce);
+}
+
+.filiere-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    min-height: 50px;
+}
+
+.filiere-card .filiere-desc {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.filiere-card .tarif-details {
+    background: var(--bg-section);
+    border-radius: var(--radius-sm);
+    padding: 1.2rem;
+    margin-bottom: 1.2rem;
+    border: 1px solid var(--gris-clair);
+}
+
+.filiere-card .tarif-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--gris-clair);
+}
+
+.filiere-card .tarif-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.filiere-card .tarif-row .label {
+    color: var(--text-muted);
+}
+
+.filiere-card .tarif-row .value {
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.filiere-card .tarif-row .total {
+    color: var(--bleu-cyan);
+    font-size: 1.1rem;
+}
+
+.btn-filiere {
+    width: 100%;
+    padding: 14px;
+    border-radius: var(--radius-sm);
+    border: none;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--blanc);
+    transition: var(--transition);
+    background: var(--bleu-cyan-gradient);
+}
+
+.btn-filiere:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 150, 220, 0.25);
+}
+
+/* Bonus Box */
+.bonus-box {
+    margin-top: 2.5rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--or-transparent) 0%, var(--bleu-cyan-transparent) 100%);
+    border-radius: var(--radius);
+    border: 1px solid var(--or-transparent);
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.bonus-box i {
+    color: var(--or);
+    font-size: 2rem;
+}
+
+.bonus-box h4 {
+    font-weight: 700;
+    color: var(--bleu-cyan);
+}
+
+.bonus-box p {
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+/* ============================================================
+   DÉBOUCHÉS & AVANTAGES
+   ============================================================ */
+.debouches-section {
+    padding: 5rem 0;
+    background: var(--bg-section);
+}
+
+.debouches-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.debouche-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 2rem;
+    border: 1px solid var(--gris-clair);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.debouche-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--or);
+}
+
+.debouche-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--bleu-cyan-gradient);
+    color: var(--or);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1.2rem;
+}
+
+.debouche-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    min-height: 48px;
+}
+
+.debouche-jobs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 1.3rem;
+}
+
+.debouche-jobs span {
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 30px;
+    background: var(--bg-section);
+    color: var(--bleu-cyan-fonce);
+    border: 1px solid var(--gris-clair);
+}
+
+.debouche-avantage {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding-top: 1.1rem;
+    border-top: 1px dashed var(--gris-medium);
+}
+
+.debouche-avantage i {
+    color: var(--or);
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.debouche-avantage p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+/* ============================================================
+          MODALITÉS SECTION
+          ============================================================ */
+.modalites-section {
+    padding: 5rem 0;
+    background: var(--bg-section);
+}
+
+.modalites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.modalite-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 2rem;
+    border: 1px solid var(--gris-clair);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.modalite-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--bleu-cyan);
+}
+
+.modalite-card .icon-top {
+    font-size: 2.5rem;
+    color: var(--bleu-cyan);
+    margin-bottom: 1rem;
+}
+
+.modalite-card h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+.modalite-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.modalite-card ul li {
+    padding: 6px 0;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--gris-clair);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modalite-card ul li:last-child {
+    border-bottom: none;
+}
+
+.modalite-card ul li i {
+    color: var(--or);
+    font-size: 0.8rem;
+}
+
+/* ============================================================
+                  STYLES POUR LES CARTES FILIÈRES (avec boutons alignés)
+                  ============================================================ */
+
+.filiere-card {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px 20px 20px;
+    border: 1px solid #eef2f6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 100%;
+    position: relative;
+}
+
+.filiere-card:hover {
+    box-shadow: 0 8px 30px rgba(0, 150, 220, 0.10);
+    transform: translateY(-4px);
+    border-color: #0096dc;
+}
+
+/* Badge / Sigle */
+.category-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 150, 220, 0.08);
+    color: #0072b3;
+    padding: 4px 14px;
+    border-radius: 40px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    align-self: flex-start;
+    margin-bottom: 12px;
+}
+
+.category-tag i {
+    color: #d4af37;
+}
+
+/* Titre */
+.filiere-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+    line-height: 1.3;
+}
+
+/* Description */
+.filiere-desc {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 14px;
+    flex: 0 0 auto;
+}
+
+/* Tarifs */
+.tarif-details {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 16px;
+    border: 1px solid #eef2f6;
+    flex: 1;
+}
+
+.tarif-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 0.85rem;
+}
+
+.tarif-row .label {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.tarif-row .value {
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.tarif-row.total {
+    border-top: 1px solid #d1d5db;
+    margin-top: 4px;
+    padding-top: 6px;
+}
+
+.tarif-row.total .label,
+.tarif-row.total .value {
+    font-weight: 700;
+    color: #0072b3;
+    font-size: 0.9rem;
+}
+
+/* ============================================================
+   BOUTONS ALIGNÉS EN BAS DE CARTE
+   ============================================================ */
+.filiere-card .btn-group-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #eef2f6;
+    width: 100%;
+}
+
+.filiere-card .btn-group-actions .btn-filiere {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #0096dc 0%, #0072b3 100%);
+    color: #ffffff;
+    padding: 10px 16px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    min-height: 44px;
+}
+
+.filiere-card .btn-group-actions .btn-filiere:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0, 150, 220, 0.30);
+}
+
+.filiere-card .btn-group-actions .btn-voir-plus {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: transparent;
+    color: #0096dc;
+    padding: 10px 16px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    border: 1.5px solid #0096dc;
+    cursor: pointer;
+    text-align: center;
+    min-height: 44px;
+}
+
+.filiere-card .btn-group-actions .btn-voir-plus:hover {
+    background: #0096dc;
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(0, 150, 220, 0.20);
+}
+

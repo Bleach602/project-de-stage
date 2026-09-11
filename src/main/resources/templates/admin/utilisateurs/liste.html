@@ -1,0 +1,543 @@
+<!-- ============================================================
+   admin/pages/utilisateurs.html
+   Gestion des Utilisateurs IFP-PO
+   Version Premium - UI/UX Rafiné
+   ============================================================ -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layouts/admin_layout :: layout(~{::main})}">
+
+<body>
+<main>
+
+    <link rel="stylesheet" th:href="@{/css/adminCSS/utilisateursCSS.css}">
+
+    <!-- ============================================================
+    TOAST NOTIFICATIONS
+    ============================================================ -->
+    <div th:if="${succes}" class="toast toast-success">
+        <div class="toast-icon"><i class='bx bx-check-circle'></i></div>
+        <div class="toast-content">
+            <span class="toast-title">Succès</span>
+            <span class="toast-message" th:text="${succes}">Opération réussie</span>
+        </div>
+        <button type="button" class="toast-close" onclick="this.parentElement.remove()">
+            <i class='bx bx-x'></i>
+        </button>
+    </div>
+
+    <div th:if="${erreur}" class="toast toast-error">
+        <div class="toast-icon"><i class='bx bx-error-circle'></i></div>
+        <div class="toast-content">
+            <span class="toast-title">Erreur</span>
+            <span class="toast-message" th:text="${erreur}">Une erreur est survenue</span>
+        </div>
+        <button type="button" class="toast-close" onclick="this.parentElement.remove()">
+            <i class='bx bx-x'></i>
+        </button>
+    </div>
+
+    <!-- ============================================================
+    EN-TÊTE DE PAGE
+    ============================================================ -->
+    <div class="page-header">
+        <div class="page-header-left">
+            <div class="header-icon-wrapper">
+                <i class='bx bx-group'></i>
+            </div>
+            <div>
+                <h1 class="page-title">Gestion des utilisateurs</h1>
+                <p class="page-subtitle">Gérez les comptes utilisateurs de la plateforme</p>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg" onclick="openModal('modalCreate')">
+            <i class='bx bx-plus'></i>
+            <span>Nouvel utilisateur</span>
+        </button>
+    </div>
+
+    <!-- ============================================================
+    ONGLETS DE CATÉGORIE
+    ============================================================ -->
+    <div class="tabs-container">
+        <div class="tabs">
+            <a th:href="@{/dashboard/utilisateurs(categorie='tous')}"
+               th:classappend="${categorie == 'tous'} ? 'active' : ''"
+               class="tab">
+                <i class='bx bx-list-ul'></i>
+                Tous
+                <span class="tab-count" th:text="${totalTous != null ? totalTous : 0}">0</span>
+            </a>
+            <a th:href="@{/dashboard/utilisateurs(categorie='administratifs')}"
+               th:classappend="${categorie == 'administratifs'} ? 'active' : ''"
+               class="tab">
+                <i class='bx bx-user-check'></i>
+                Administrateurs
+                <span class="tab-count" th:text="${totalAdmin != null ? totalAdmin : 0}">0</span>
+            </a>
+            <a th:href="@{/dashboard/utilisateurs(categorie='candidats')}"
+               th:classappend="${categorie == 'candidats'} ? 'active' : ''"
+               class="tab">
+                <i class='bx bx-user'></i>
+                Candidats
+                <span class="tab-count" th:text="${totalCandidats != null ? totalCandidats : 0}">0</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    BARRE DE FILTRES
+    ============================================================ -->
+    <form class="filters-bar" method="get" th:action="@{/dashboard/utilisateurs}">
+        <input type="hidden" name="categorie" th:value="${categorie}" />
+
+        <div class="filter-group">
+            <!-- Recherche -->
+            <div class="filter-item search">
+                <i class='bx bx-search'></i>
+                <input type="text" name="recherche" placeholder="Ex:  Njoya, Mbombo..." th:value="${recherche}" />
+            </div>
+
+            <!-- Rôle -->
+            <div class="filter-item select">
+                <i class='bx bx-shield-quarter'></i>
+                <select name="roleId">
+                    <option value="">Tous les rôles</option>
+                    <option th:each="role : ${tousLesRoles}" th:value="${role.id}"
+                            th:text="${role.intitule}" th:selected="${role.id == roleId}"></option>
+                </select>
+            </div>
+
+            <!-- Statut -->
+            <div class="filter-item select">
+                <i class='bx bx-circle'></i>
+                <select name="statut">
+                    <option value="">Tous les statuts</option>
+                    <option th:each="s : ${tousLesStatuts}" th:value="${s}"
+                            th:text="${s}" th:selected="${s == statut}"></option>
+                </select>
+            </div>
+
+            <div class="filter-actions">
+                <button type="submit" class="btn btn-filter">
+                    <i class='bx bx-filter-alt'></i> Filtrer
+                </button>
+                <a th:href="@{/dashboard/utilisateurs(categorie=${categorie})}" class="btn btn-reset" title="Réinitialiser">
+                    <i class='bx bx-reset'></i>
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <!-- ============================================================
+    TABLEAU DES UTILISATEURS
+    ============================================================ -->
+    <div class="card-table">
+        <div class="table-wrap">
+            <table class="users-table" th:if="${not utilisateurs.empty}">
+                <thead>
+                <tr>
+                    <th class="col-user">Utilisateur</th>
+                    <th class="col-email hide-mobile">Email</th>
+                    <th class="col-role">Rôle</th>
+                    <th class="col-status hide-tablet">Statut</th>
+                    <th class="col-actions text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="u : ${utilisateurs}">
+                    <td class="col-user">
+                        <div class="user-info">
+                            <div class="user-avatar"
+                                 th:style="'background: ' + (${u.prenom != null ? '#0d47a1' : '#94a3b8'}) + ';'">
+                                <span th:text="${u.prenom != null ? #strings.substring(u.prenom, 0, 1) + #strings.substring(u.nom, 0, 1) : '??'}">JD</span>
+                            </div>
+                            <div class="user-details">
+                                <span class="user-name" th:text="${u.prenom} + ' ' + ${u.nom}">Arafat </span>
+                                <span class="user-email hide-desktop" th:text="${u.email}">Admin@email.com</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="col-email hide-mobile">
+                        <span class="user-email" th:text="${u.email}">Admin@email.com</span>
+                    </td>
+                    <td class="col-role">
+                            <span class="role-badge"
+                                  th:classappend="${u.role.intitule == 'ROLE_ADMIN' ? 'admin' : (u.role.intitule == 'ROLE_CANDIDAT' ? 'candidat' : 'staff')}"
+                                  th:text="${u.role.intitule}">
+                                ROLE_ADMIN
+                            </span>
+                    </td>
+                    <td class="col-status hide-tablet">
+                            <span class="status-badge"
+                                  th:classappend="${u.statutCompte.name() == 'ACTIF'} ? 'active' : 'inactive'"
+                                  th:text="${u.statutCompte.name() == 'ACTIF'} ? 'Actif' : 'Bloqué'">
+                                Actif
+                            </span>
+                    </td>
+                    <td class="col-actions text-center">
+                        <div class="action-group">
+                            <button type="button" class="btn-action action-edit"
+                                    th:data-id="${u.id}"
+                                    th:data-nom="${u.nom}"
+                                    th:data-prenom="${u.prenom}"
+                                    th:data-email="${u.email}"
+                                    th:data-telephone="${u.telephone}"
+                                    th:data-role-id="${u.role.id}"
+                                    th:data-role-intitule="${u.role.intitule}"
+                                    th:data-statut="${u.statutCompte}"
+                                    onclick="openUpdateModal(this)"
+                                    title="Modifier">
+                                <i class='bx bx-edit-alt'></i>
+                            </button>
+                            <form th:action="@{/dashboard/utilisateurs/{id}/statut(id=${u.id})}" method="post" style="display:inline;">
+                                <input type="hidden" name="newStatut"
+                                       th:value="${u.statutCompte.name() == 'ACTIF'} ? 'BLOQUE' : 'ACTIF'" />
+                                <button type="submit" class="btn-action"
+                                        th:classappend="${u.statutCompte.name() == 'ACTIF'} ? 'action-block' : 'action-activate'"
+                                        title="${u.statutCompte.name() == 'ACTIF'} ? 'Bloquer' : 'Activer'">
+                                    <i class='bx bx-power-off'></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ÉTAT VIDE ===== -->
+        <div class="empty-state" th:if="${utilisateurs.empty}">
+            <div class="empty-icon"><i class='bx bx-user-x'></i></div>
+            <h3>Aucun utilisateur trouvé</h3>
+            <p>Aucun utilisateur ne correspond à vos critères de recherche.</p>
+        </div>
+
+        <!-- ===== PAGINATION ===== -->
+        <div class="table-footer" th:if="${utilisateurs.totalPages > 1}">
+            <div class="pagination-info">
+                <i class='bx bx-file'></i>
+                <span th:text="${utilisateurs.number * utilisateurs.size + 1}">1</span>
+                -
+                <span th:text="${(utilisateurs.number + 1) * utilisateurs.size > utilisateurs.totalElements ? utilisateurs.totalElements : (utilisateurs.number + 1) * utilisateurs.size}">5</span>
+                sur <span th:text="${utilisateurs.totalElements}">10</span> utilisateurs
+            </div>
+
+            <div class="pagination-group">
+                <a th:href="@{/dashboard/utilisateurs(categorie=${categorie}, roleId=${roleId}, statut=${statut}, recherche=${recherche}, page=${utilisateurs.number - 1})}"
+                   class="page-link"
+                   th:classappend="${utilisateurs.number == 0} ? 'disabled' : ''">
+                    <i class='bx bx-chevron-left'></i>
+                </a>
+
+                <a th:each="i : ${#numbers.sequence(0, utilisateurs.totalPages - 1)}"
+                   th:href="@{/dashboard/utilisateurs(categorie=${categorie}, roleId=${roleId}, statut=${statut}, recherche=${recherche}, page=${i})}"
+                   th:text="${i + 1}"
+                   class="page-link"
+                   th:classappend="${i == utilisateurs.number} ? 'active' : ''">
+                    1
+                </a>
+
+                <a th:href="@{/dashboard/utilisateurs(categorie=${categorie}, roleId=${roleId}, statut=${statut}, recherche=${recherche}, page=${utilisateurs.number + 1})}"
+                   class="page-link"
+                   th:classappend="${utilisateurs.number + 1 == utilisateurs.totalPages} ? 'disabled' : ''">
+                    <i class='bx bx-chevron-right'></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODALE CRÉATION – DESIGN PREMIUM
+    ============================================================ -->
+    <div id="modalCreate" class="modal-overlay">
+        <div class="modal-box modal-create">
+            <div class="modal-head">
+                <div class="modal-icon primary">
+                    <i class='bx bx-user-plus'></i>
+                </div>
+                <div class="modal-head-text">
+                    <h3 class="modal-title">Nouvel utilisateur</h3>
+                    <p class="modal-sub">Créez un nouveau compte utilisateur</p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeModal('modalCreate')">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <form th:action="@{/dashboard/utilisateurs/nouveau}" th:object="${userCreateDTO}" method="post">
+                <div class="modal-body">
+                    <!-- Nom + Prénom -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nom <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-user'></i>
+                                <input type="text" th:field="*{nom}" class="form-control" placeholder="Ex: Mbombo Arouna" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Prénom <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-user'></i>
+                                <input type="text" th:field="*{prenom}" class="form-control" placeholder="Ex: Fadil" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email + Téléphone -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-envelope'></i>
+                                <input type="email" th:field="*{email}" class="form-control" placeholder="Ex: jean@email.com" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone</label>
+                            <div class="input-icon">
+                                <i class='bx bx-phone'></i>
+                                <input type="text" th:field="*{telephone}" class="form-control" placeholder="Ex: +237 6XX XXX XXX" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mot de passe + Rôle -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Mot de passe <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-lock'></i>
+                                <input type="password" th:field="*{motDePasse}" class="form-control" placeholder="••••••••" required />
+                            </div>
+                            <span class="form-hint"><i class='bx bx-info-circle'></i> Minimum 8 caractères</span>
+                        </div>
+                        <div class="form-group">
+                            <label>Rôle <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-shield-quarter'></i>
+                                <select th:field="*{roleId}" class="form-control">
+                                    <option th:each="r : ${rolesAdministratifs}" th:value="${r.id}" th:text="${r.intitule}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-foot">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalCreate')">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class='bx bx-check'></i> Créer l'utilisateur
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODALE MODIFICATION – DESIGN PREMIUM
+    ============================================================ -->
+    <div id="modalUpdate" class="modal-overlay">
+        <div class="modal-box modal-update">
+            <div class="modal-head">
+                <div class="modal-icon gold">
+                    <i class='bx bx-edit-alt'></i>
+                </div>
+                <div class="modal-head-text">
+                    <h3 class="modal-title">Modifier l'utilisateur</h3>
+                    <p class="modal-sub">Mettez à jour les informations du compte</p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeModal('modalUpdate')">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <form id="formUpdateUser" method="post" th:object="${userUpdateDTO}">
+                <div class="modal-body">
+                    <input type="hidden" id="update-id" th:field="*{id}"/>
+                    <input type="hidden" id="hidden-role-id" name="roleId"/>
+
+                    <!-- Nom + Prénom -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nom <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-user'></i>
+                                <input type="text" id="update-nom" th:field="*{nom}" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Prénom <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-user'></i>
+                                <input type="text" id="update-prenom" th:field="*{prenom}" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email + Téléphone -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-envelope'></i>
+                                <input type="email" id="update-email" th:field="*{email}" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Téléphone</label>
+                            <div class="input-icon">
+                                <i class='bx bx-phone'></i>
+                                <input type="text" id="update-telephone" th:field="*{telephone}" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rôle + Statut -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Rôle <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-shield-quarter'></i>
+                                <select id="update-role" class="form-control">
+                                    <option th:each="r : ${tousLesRoles}"
+                                            th:value="${r.id}"
+                                            th:text="${r.intitule}"
+                                            th:data-intitule="${r.intitule}"></option>
+                                </select>
+                            </div>
+                            <small id="role-disabled-hint" class="form-hint" style="display:none;">
+                                <i class='bx bx-info-circle'></i>
+                                Le rôle d'un candidat ne peut pas être modifié.
+                            </small>
+                        </div>
+                        <div class="form-group">
+                            <label>Statut <span class="required">*</span></label>
+                            <div class="input-icon">
+                                <i class='bx bx-circle'></i>
+                                <select id="update-statut" th:field="*{statutCompte}" class="form-control">
+                                    <option th:each="s : ${tousLesStatuts}" th:value="${s}" th:text="${s}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-foot">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalUpdate')">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class='bx bx-save'></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    SCRIPTS
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // 1. GESTION DES MODALES
+        // ============================================================
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Fermeture au clic extérieur
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.modal-overlay').forEach(function(modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+        });
+
+        // Fermeture avec Échap
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(function(modal) {
+                    closeModal(modal.id);
+                });
+            }
+        });
+
+        // ============================================================
+        // 2. OUVERTURE MODALE DE MODIFICATION
+        // ============================================================
+        function openUpdateModal(btn) {
+            const id = btn.getAttribute('data-id');
+            const roleId = btn.getAttribute('data-role-id');
+            const roleIntitule = btn.getAttribute('data-role-intitule');
+            const estCandidat = (roleIntitule === 'ROLE_CANDIDAT');
+
+            document.getElementById('update-id').value = id;
+            document.getElementById('update-nom').value = btn.getAttribute('data-nom') || '';
+            document.getElementById('update-prenom').value = btn.getAttribute('data-prenom') || '';
+            document.getElementById('update-email').value = btn.getAttribute('data-email') || '';
+            document.getElementById('update-telephone').value = btn.getAttribute('data-telephone') || '';
+            document.getElementById('update-statut').value = btn.getAttribute('data-statut') || '';
+
+            const roleSelect = document.getElementById('update-role');
+            const hiddenRoleId = document.getElementById('hidden-role-id');
+            const hint = document.getElementById('role-disabled-hint');
+
+            // Filtrer les options selon le rôle
+            Array.from(roleSelect.options).forEach(function(option) {
+                const optIntitule = option.getAttribute('data-intitule');
+                if (estCandidat) {
+                    option.style.display = (optIntitule === 'ROLE_CANDIDAT') ? '' : 'none';
+                } else {
+                    option.style.display = (optIntitule === 'ROLE_CANDIDAT') ? 'none' : '';
+                }
+            });
+
+            roleSelect.value = roleId;
+            hiddenRoleId.value = roleId;
+
+            if (estCandidat) {
+                roleSelect.disabled = true;
+                roleSelect.removeAttribute('name');
+                hiddenRoleId.setAttribute('name', 'roleId');
+                hint.style.display = 'block';
+            } else {
+                roleSelect.disabled = false;
+                roleSelect.setAttribute('name', 'roleId');
+                hiddenRoleId.removeAttribute('name');
+                hint.style.display = 'none';
+            }
+
+            document.getElementById('formUpdateUser').action = '/dashboard/utilisateurs/' + id + '/modifier';
+            openModal('modalUpdate');
+        }
+
+        // ============================================================
+        // 3. TOAST AUTO-DISPARITION
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toast').forEach(function(toast) {
+                setTimeout(function() {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(30px)';
+                    toast.style.transition = 'all 0.5s ease';
+                    setTimeout(function() { toast.remove(); }, 500);
+                }, 5000);
+            });
+        });
+    </script>
+
+</main>
+</body>
+</html>

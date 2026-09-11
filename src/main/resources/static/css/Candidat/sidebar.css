@@ -1,0 +1,1621 @@
+/* ============================================================
+   SIDEBAR – DESIGN PREMIUM ULTRA
+   ============================================================ */
+
+/* ============================================================
+   VARIABLES SPÉCIFIQUES
+   ============================================================ */
+:root {
+    --sidebar-bg-start: #0c0c1a;
+    --sidebar-bg-end: #111128;
+    --sidebar-border: rgba(255, 255, 255, 0.04);
+    --sidebar-text-primary: #e8edf5;
+    --sidebar-text-secondary: rgba(255, 255, 255, 0.55);
+    --sidebar-text-muted: rgba(255, 255, 255, 0.25);
+    --sidebar-hover-bg: rgba(255, 255, 255, 0.05);
+    --sidebar-active-bg: rgba(0, 150, 255, 0.08);
+    --sidebar-active-border: rgba(0, 150, 255, 0.12);
+
+    --gold: #f5a623;
+    --gold-gradient: linear-gradient(135deg, #f5a623, #f7c948);
+    --gold-light: rgba(245, 166, 35, 0.12);
+    --gold-glow: 0 0 30px rgba(245, 166, 35, 0.06);
+
+    --blue-cyan: #0096dc;
+    --blue-cyan-gradient: linear-gradient(135deg, #0096dc, #00b4d8);
+    --blue-cyan-light: rgba(0, 150, 220, 0.08);
+
+    --success-green: #22c55e;
+    --danger-red: #ef4444;
+    --danger-red-light: rgba(239, 68, 68, 0.08);
+
+    --sidebar-radius-sm: 8px;
+    --sidebar-radius-md: 12px;
+    --sidebar-radius-lg: 16px;
+    --sidebar-radius-full: 9999px;
+
+    --sidebar-shadow: 4px 0 40px rgba(0, 0, 0, 0.4);
+    --sidebar-transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --sidebar-transition-slow: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   CONTENEUR PRINCIPAL
+   ============================================================ */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 50%, var(--sidebar-bg-start) 100%);
+    color: var(--sidebar-text-primary);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    flex-shrink: 0;
+    transition: var(--sidebar-transition);
+    z-index: 100;
+    border-right: 1px solid var(--sidebar-border);
+    box-shadow: var(--sidebar-shadow);
+}
+
+/* Effet de brillance latérale */
+.sidebar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.02) 30%,
+    rgba(245, 166, 35, 0.05) 50%,
+    rgba(255, 255, 255, 0.02) 70%,
+    transparent 100%
+    );
+    pointer-events: none;
+}
+
+/* Overlay de fond subtil */
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+            radial-gradient(ellipse at 20% 50%, rgba(0, 150, 220, 0.03) 0%, transparent 70%),
+            radial-gradient(ellipse at 80% 20%, rgba(245, 166, 35, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Scrollbar personnalisée */
+.sidebar::-webkit-scrollbar {
+    width: 3px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    transition: var(--sidebar-transition);
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* ============================================================
+   EN-TÊTE
+   ============================================================ */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.6rem 1.5rem 1.2rem;
+    border-bottom: 1px solid var(--sidebar-border);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.sidebar-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 15%;
+    width: 70%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(245, 166, 35, 0.08), transparent);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.brand-visual {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--sidebar-radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(0, 150, 220, 0.2);
+}
+
+.brand-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.brand-visual-overlay {
+    position: absolute;
+    inset: 0;
+    background: var(--blue-cyan-gradient);
+    opacity: 0.65;
+    mix-blend-mode: overlay;
+}
+
+.brand-icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    width: 100%;
+    height: 100%;
+}
+
+.brand-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
+.brand-content h1 {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.brand-content h1 span {
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+.brand-content p {
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--sidebar-text-muted);
+    font-weight: 600;
+    margin: 0.1rem 0 0 0;
+}
+
+.sidebar-close {
+    display: none;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--sidebar-border);
+    color: var(--sidebar-text-secondary);
+    cursor: pointer;
+    padding: 6px;
+    transition: var(--sidebar-transition);
+    border-radius: var(--sidebar-radius-sm);
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.sidebar-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+.sidebar-close:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.08);
+    transform: rotate(90deg);
+}
+
+/* ============================================================
+   CARTE CANDIDAT (PREMIUM)
+   ============================================================ */
+.candidate-card {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.9rem 1rem;
+    margin: 0.8rem 1.2rem 1.2rem;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: var(--sidebar-radius-md);
+    border: 1px solid var(--sidebar-border);
+    backdrop-filter: blur(10px);
+    transition: var(--sidebar-transition);
+    position: relative;
+    flex-shrink: 0;
+}
+
+.candidate-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sidebar-radius-md);
+    background: linear-gradient(135deg, rgba(0, 150, 220, 0.04), rgba(245, 166, 35, 0.02));
+    pointer-events: none;
+}
+
+.candidate-card:hover {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.06);
+    transform: translateY(-1px);
+}
+
+.candidate-avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.candidate-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--blue-cyan-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 4px 16px rgba(0, 150, 220, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.04);
+}
+
+.candidate-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 12px;
+    height: 12px;
+    background: var(--success-green);
+    border-radius: 50%;
+    border: 2.5px solid var(--sidebar-bg-start);
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.25);
+}
+
+.candidate-information {
+    flex: 1;
+    min-width: 0;
+}
+
+.candidate-name {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 0.88rem;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.candidate-role {
+    font-size: 0.6rem;
+    color: var(--sidebar-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    display: block;
+}
+
+.candidate-menu-indicator {
+    color: var(--sidebar-text-muted);
+    flex-shrink: 0;
+    transition: var(--sidebar-transition);
+}
+
+.candidate-menu-indicator svg {
+    width: 18px;
+    height: 18px;
+}
+
+.candidate-card:hover .candidate-menu-indicator {
+    color: var(--sidebar-text-secondary);
+}
+
+/* ============================================================
+   NAVIGATION — OCCUPE TOUT L'ESPACE
+   ============================================================ */
+.sidebar-nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.3rem 0.8rem 0;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+.nav-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    height: 100%;
+    gap: 0.25rem;
+}
+
+.nav-section {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Section qui prend tout l'espace restant */
+.nav-section-fill {
+    flex: 1;
+}
+
+.nav-section-fill ul {
+    flex: 1;
+}
+
+.nav-section-title {
+    display: block;
+    font-size: 0.55rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--sidebar-text-muted);
+    font-weight: 700;
+    padding: 0.5rem 1rem 0.3rem;
+    opacity: 0.6;
+}
+
+.sidebar-nav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 0;
+    margin: 0;
+}
+
+/* Liens de navigation agrandis */
+.sidebar-nav ul li a {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--sidebar-radius-sm);
+    font-weight: 500;
+    font-size: 0.88rem;
+    color: var(--sidebar-text-secondary);
+    transition: var(--sidebar-transition);
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+}
+
+/* Augmentation de la taille des éléments */
+.sidebar-nav ul li a .nav-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex-shrink: 0;
+    transition: var(--sidebar-transition);
+}
+
+.sidebar-nav ul li a .nav-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar-nav ul li a .nav-text {
+    flex: 1;
+    font-weight: 500;
+    font-size: 0.88rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Flèche de navigation */
+.sidebar-nav ul li a .nav-arrow {
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: var(--sidebar-transition);
+    color: var(--sidebar-text-muted);
+    flex-shrink: 0;
+    width: 1.2rem;
+    height: 1.2rem;
+}
+
+.sidebar-nav ul li a .nav-arrow svg {
+    width: 100%;
+    height: 100%;
+}
+
+.sidebar-nav ul li a:hover .nav-arrow,
+.sidebar-nav ul li a.active .nav-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: var(--gold);
+}
+
+/* Badges et statuts */
+.sidebar-nav ul li a .nav-status {
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.6rem;
+    border-radius: var(--sidebar-radius-full);
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.sidebar-nav ul li a .nav-badge {
+    font-size: 0.45rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.1rem 0.5rem;
+    border-radius: var(--sidebar-radius-full);
+    background: var(--gold-light);
+    color: var(--gold);
+    font-weight: 700;
+    flex-shrink: 0;
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+.sidebar-nav ul li a .notification-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 7px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #ffffff;
+    font-size: 0.55rem;
+    font-weight: 700;
+    border-radius: var(--sidebar-radius-full);
+    border: 2px solid var(--sidebar-bg-start);
+    box-shadow: 0 2px 10px rgba(239, 68, 68, 0.3);
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+/* Hover & Active States */
+.sidebar-nav ul li a:hover {
+    background: var(--sidebar-hover-bg);
+    color: #ffffff;
+    transform: translateX(4px);
+}
+
+.sidebar-nav ul li a:hover .nav-icon {
+    color: var(--gold);
+}
+
+.sidebar-nav ul li a.active {
+    background: var(--sidebar-active-bg);
+    color: #ffffff;
+    border: 1px solid var(--sidebar-active-border);
+    box-shadow: inset 0 0 20px rgba(0, 150, 220, 0.03);
+}
+
+.sidebar-nav ul li a.active .nav-icon {
+    color: var(--gold);
+}
+
+/* Indicateur de sélection (barre latérale) */
+.sidebar-nav ul li a::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    background: var(--gold-gradient);
+    border-radius: 0 4px 4px 0;
+    transition: var(--sidebar-transition);
+    opacity: 0;
+}
+
+.sidebar-nav ul li a.active::before {
+    height: 60%;
+    opacity: 1;
+}
+
+/* Effet de brillance au survol */
+.sidebar-nav ul li a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sidebar-radius-sm);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    transition: var(--sidebar-transition);
+}
+
+.sidebar-nav ul li a:hover::after {
+    opacity: 1;
+}
+
+/* ============================================================
+   ZONE DE DÉCONNEXION
+   ============================================================ */
+/* ============================================================
+   BOUTON DE DÉCONNEXION - DESIGN PREMIUM
+   ============================================================ */
+
+/* Conteneur du formulaire */
+.logout-form {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Bouton de déconnexion */
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--sidebar-radius-sm, 8px);
+    font-weight: 500;
+    font-size: 0.88rem;
+    color: rgba(239, 68, 68, 0.45);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    font-family: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Effet de brillance au survol */
+.logout-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sidebar-radius-sm, 8px);
+    background: rgba(239, 68, 68, 0.04);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.logout-btn:hover::before {
+    opacity: 1;
+}
+
+/* Icône de déconnexion */
+.logout-btn .nav-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    flex-shrink: 0;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
+}
+
+.logout-btn .nav-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Texte du bouton */
+.logout-btn .nav-text {
+    flex: 1;
+    font-weight: 500;
+    font-size: 0.88rem;
+    position: relative;
+    z-index: 1;
+    white-space: nowrap;
+}
+
+/* Flèche de navigation */
+.logout-btn .nav-arrow {
+    opacity: 0;
+    transform: translateX(-8px);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--sidebar-text-muted, rgba(255, 255, 255, 0.25));
+    flex-shrink: 0;
+    width: 1.2rem;
+    height: 1.2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.logout-btn .nav-arrow svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* États du bouton */
+.logout-btn:hover {
+    color: #fca5a5;
+    transform: translateX(4px);
+}
+
+.logout-btn:hover .nav-icon {
+    color: #ef4444;
+}
+
+.logout-btn:hover .nav-arrow {
+    opacity: 1;
+    transform: translateX(0);
+    color: #ef4444;
+}
+
+/* Effet de pulsation au survol */
+.logout-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--sidebar-radius-sm, 8px);
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.02) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.logout-btn:hover::after {
+    opacity: 1;
+}
+
+/* Focus visible pour l'accessibilité */
+.logout-btn:focus-visible {
+    outline: 2px solid #ef4444;
+    outline-offset: 2px;
+}
+
+/* Désactivation pendant le chargement */
+.logout-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* ============================================================
+   VARIANTE AVEC BORDURE ET ICÔNE ROUGE
+   ============================================================ */
+.logout-btn-danger {
+    background: rgba(239, 68, 68, 0.04);
+    border: 1px solid rgba(239, 68, 68, 0.08);
+    color: rgba(239, 68, 68, 0.6);
+}
+
+.logout-btn-danger:hover {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+.logout-btn-danger .nav-icon {
+    color: rgba(239, 68, 68, 0.5);
+}
+
+.logout-btn-danger:hover .nav-icon {
+    color: #ef4444;
+}
+
+/* ============================================================
+   SPINNER PENDANT LA DÉCONNEXION
+   ============================================================ */
+.logout-btn.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.logout-btn.loading .nav-text {
+    opacity: 0;
+}
+
+.logout-btn.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(239, 68, 68, 0.1);
+    border-top-color: #ef4444;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+    .logout-btn {
+        padding: 0.7rem 0.85rem;
+        font-size: 0.82rem;
+        gap: 0.7rem;
+    }
+
+    .logout-btn .nav-icon {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+
+    .logout-btn .nav-text {
+        font-size: 0.82rem;
+    }
+
+    .logout-btn .nav-arrow {
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logout-btn {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.78rem;
+        gap: 0.6rem;
+    }
+
+    .logout-btn .nav-icon {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+
+    .logout-btn .nav-text {
+        font-size: 0.78rem;
+    }
+
+    .logout-btn .nav-arrow {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .logout-btn {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.72rem;
+        gap: 0.5rem;
+    }
+
+    .logout-btn .nav-icon {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .logout-btn .nav-text {
+        font-size: 0.72rem;
+    }
+}
+
+/* ============================================================
+   RÉDUCTION DE MOUVEMENT
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .logout-btn,
+    .logout-btn .nav-icon,
+    .logout-btn .nav-arrow,
+    .logout-btn::before,
+    .logout-btn::after {
+        transition: none !important;
+    }
+
+    .logout-btn .nav-arrow {
+        opacity: 1;
+        transform: none;
+    }
+
+    .logout-btn:hover {
+        transform: none;
+    }
+
+    .logout-btn.loading::after {
+        animation: none;
+    }
+}
+/* ============================================================
+   PIED DE PAGE
+   ============================================================ */
+.sidebar-footer {
+    padding: 0.7rem 1.5rem 1rem;
+    border-top: 1px solid var(--sidebar-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.55rem;
+    color: var(--sidebar-text-muted);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    flex-shrink: 0;
+    opacity: 0.5;
+}
+
+.footer-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.footer-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: inline-block;
+}
+
+.footer-version {
+    font-weight: 300;
+}
+
+/* ============================================================
+   OVERLAY MOBILE
+   ============================================================ */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 98;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+/* ============================================================
+   RESPONSIVE — OPTIMISÉ
+   ============================================================ */
+
+/* Tablettes */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 260px;
+    }
+
+    .brand-content h1 {
+        font-size: 0.95rem;
+    }
+
+    .candidate-avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 0.9rem;
+    }
+
+    .candidate-name {
+        font-size: 0.82rem;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 0.75rem 0.9rem;
+        font-size: 0.82rem;
+    }
+
+    .sidebar-nav ul li a .nav-icon {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+    .sidebar-nav ul li a .nav-text {
+        font-size: 0.82rem;
+    }
+
+    .nav-footer .logout-link {
+        padding: 0.75rem 0.9rem;
+        font-size: 0.82rem;
+    }
+
+    .nav-footer .logout-link .nav-icon {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+    .nav-footer .logout-link .nav-text {
+        font-size: 0.82rem;
+    }
+}
+
+/* Mobiles */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 300px;
+        height: 100vh;
+        transform: translateX(-100%);
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
+        border-right: none;
+        border-radius: 0 20px 20px 0;
+        z-index: 99;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+        animation: sidebarSlideIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes sidebarSlideIn {
+        from {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    .sidebar-close {
+        display: flex;
+    }
+
+    .sidebar-header {
+        padding: 1rem 1rem 0.9rem;
+    }
+
+    .brand-visual {
+        width: 38px;
+        height: 38px;
+    }
+
+    .brand-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .brand-content h1 {
+        font-size: 0.9rem;
+    }
+
+    .brand-content p {
+        font-size: 0.45rem;
+    }
+
+    .candidate-card {
+        padding: 0.8rem 0.9rem;
+        margin: 0.6rem 0.9rem 1rem;
+        gap: 0.7rem;
+    }
+
+    .candidate-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 0.85rem;
+    }
+
+    .candidate-status {
+        width: 10px;
+        height: 10px;
+    }
+
+    .candidate-name {
+        font-size: 0.82rem;
+    }
+
+    .candidate-role {
+        font-size: 0.55rem;
+    }
+
+    .sidebar-nav {
+        padding: 0 0.4rem;
+    }
+
+    .nav-section-title {
+        font-size: 0.5rem;
+        padding: 0.4rem 0.8rem 0.2rem;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 0.7rem 0.85rem;
+        font-size: 0.82rem;
+        gap: 0.7rem;
+        border-radius: var(--sidebar-radius-sm);
+    }
+
+    .sidebar-nav ul li a .nav-icon {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+
+    .sidebar-nav ul li a .nav-text {
+        font-size: 0.82rem;
+    }
+
+    .sidebar-nav ul li a .nav-status {
+        font-size: 0.45rem;
+        padding: 0.05rem 0.4rem;
+    }
+
+    .sidebar-nav ul li a .nav-badge {
+        font-size: 0.4rem;
+        padding: 0.05rem 0.4rem;
+    }
+
+    .sidebar-nav ul li a .notification-count {
+        min-width: 20px;
+        height: 20px;
+        font-size: 0.5rem;
+        padding: 0 5px;
+        border-width: 1.5px;
+    }
+
+    .sidebar-nav ul li a .nav-arrow {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .sidebar-nav ul li a::before {
+        left: -3px;
+        width: 2px;
+    }
+
+    .sidebar-nav ul li a.active::before {
+        height: 50%;
+    }
+
+    .nav-footer {
+        padding: 0.4rem 0.4rem 0.2rem;
+    }
+
+    .nav-footer .logout-link {
+        padding: 0.7rem 0.85rem;
+        font-size: 0.82rem;
+        gap: 0.7rem;
+    }
+
+    .nav-footer .logout-link .nav-icon {
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+
+    .nav-footer .logout-link .nav-text {
+        font-size: 0.82rem;
+    }
+
+    .nav-footer .logout-link .nav-arrow {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .sidebar-footer {
+        padding: 0.6rem 1rem 0.9rem;
+        font-size: 0.5rem;
+    }
+}
+
+/* Petits mobiles */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+        max-width: 340px;
+        border-radius: 0;
+        border-right: none;
+    }
+
+    .sidebar.open {
+        border-radius: 0;
+    }
+
+    .sidebar-header {
+        padding: 0.8rem 0.9rem 0.7rem;
+    }
+
+    .brand-visual {
+        width: 34px;
+        height: 34px;
+        border-radius: var(--sidebar-radius-sm);
+    }
+
+    .brand-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .brand-content h1 {
+        font-size: 0.82rem;
+    }
+
+    .brand-content p {
+        font-size: 0.4rem;
+        letter-spacing: 0.15em;
+    }
+
+    .sidebar-close {
+        width: 32px;
+        height: 32px;
+        padding: 4px;
+    }
+
+    .sidebar-close svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .candidate-card {
+        padding: 0.6rem 0.8rem;
+        margin: 0.5rem 0.7rem 0.8rem;
+        gap: 0.6rem;
+        border-radius: var(--sidebar-radius-sm);
+    }
+
+    .candidate-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 0.75rem;
+        border-width: 1.5px;
+    }
+
+    .candidate-status {
+        width: 9px;
+        height: 9px;
+        border-width: 2px;
+    }
+
+    .candidate-name {
+        font-size: 0.78rem;
+    }
+
+    .candidate-role {
+        font-size: 0.5rem;
+        letter-spacing: 0.06em;
+    }
+
+    .candidate-menu-indicator svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .sidebar-nav {
+        padding: 0 0.3rem;
+    }
+
+    .nav-section-title {
+        font-size: 0.45rem;
+        padding: 0.3rem 0.6rem 0.2rem;
+    }
+
+    .sidebar-nav ul {
+        gap: 0;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.78rem;
+        gap: 0.6rem;
+        /*border-radius: var(--sidebar-radius-xs);*/
+    }
+
+    .sidebar-nav ul li a .nav-icon {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+
+    .sidebar-nav ul li a .nav-text {
+        font-size: 0.78rem;
+    }
+
+    .sidebar-nav ul li a .nav-status {
+        font-size: 0.4rem;
+        padding: 0.05rem 0.35rem;
+    }
+
+    .sidebar-nav ul li a .nav-badge {
+        font-size: 0.35rem;
+        padding: 0.05rem 0.3rem;
+    }
+
+    .sidebar-nav ul li a .notification-count {
+        min-width: 18px;
+        height: 18px;
+        font-size: 0.45rem;
+        padding: 0 4px;
+        border-width: 1.5px;
+    }
+
+    .sidebar-nav ul li a .nav-arrow {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+
+    .nav-footer .logout-link {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.78rem;
+        gap: 0.6rem;
+    }
+
+    .nav-footer .logout-link .nav-icon {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+
+    .nav-footer .logout-link .nav-text {
+        font-size: 0.78rem;
+    }
+
+    .nav-footer .logout-link .nav-arrow {
+        width: 0.9rem;
+        height: 0.9rem;
+    }
+
+    .sidebar-footer {
+        padding: 0.5rem 0.9rem 0.7rem;
+        font-size: 0.45rem;
+    }
+
+    .footer-dot {
+        width: 3px;
+        height: 3px;
+    }
+}
+
+/* Très petits écrans (iPhone SE) */
+@media (max-width: 380px) {
+    .sidebar {
+        max-width: 290px;
+    }
+
+    .sidebar-header {
+        padding: 0.6rem 0.7rem 0.5rem;
+    }
+
+    .brand-visual {
+        width: 30px;
+        height: 30px;
+    }
+
+    .brand-icon svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .brand-content h1 {
+        font-size: 0.72rem;
+    }
+
+    .brand-content p {
+        font-size: 0.35rem;
+    }
+
+    .sidebar-close {
+        width: 28px;
+        height: 28px;
+    }
+
+    .sidebar-close svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .candidate-card {
+        padding: 0.5rem 0.6rem;
+        margin: 0.4rem 0.5rem 0.6rem;
+        gap: 0.5rem;
+    }
+
+    .candidate-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.65rem;
+    }
+
+    .candidate-status {
+        width: 8px;
+        height: 8px;
+        border-width: 1.5px;
+    }
+
+    .candidate-name {
+        font-size: 0.7rem;
+    }
+
+    .candidate-role {
+        font-size: 0.45rem;
+    }
+
+    .candidate-menu-indicator svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.72rem;
+        gap: 0.5rem;
+    }
+
+    .sidebar-nav ul li a .nav-icon {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .sidebar-nav ul li a .nav-text {
+        font-size: 0.72rem;
+    }
+
+    .nav-footer .logout-link {
+        padding: 0.5rem 0.6rem;
+        font-size: 0.72rem;
+        gap: 0.5rem;
+    }
+
+    .nav-footer .logout-link .nav-icon {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .nav-footer .logout-link .nav-text {
+        font-size: 0.72rem;
+    }
+
+    .sidebar-footer {
+        padding: 0.4rem 0.7rem 0.6rem;
+        font-size: 0.4rem;
+    }
+}
+
+/* Mobile en orientation paysage */
+@media (max-height: 500px) and (orientation: landscape) {
+    .sidebar {
+        width: 260px;
+    }
+
+    .sidebar-header {
+        padding: 0.7rem 1rem 0.6rem;
+    }
+
+    .brand-visual {
+        width: 32px;
+        height: 32px;
+    }
+
+    .brand-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .brand-content h1 {
+        font-size: 0.8rem;
+    }
+
+    .candidate-card {
+        padding: 0.5rem 0.8rem;
+        margin: 0.4rem 0.8rem 0.6rem;
+        gap: 0.6rem;
+    }
+
+    .candidate-avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 0.75rem;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.75rem;
+    }
+
+    .sidebar-nav ul li a .nav-icon {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .nav-footer .logout-link {
+        padding: 0.5rem 0.7rem;
+        font-size: 0.75rem;
+    }
+
+    .sidebar-footer {
+        padding: 0.3rem 1rem 0.5rem;
+        font-size: 0.45rem;
+    }
+}
+
+/* ============================================================
+   RÉDUCTION DE MOUVEMENT
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .sidebar {
+        transition: transform 0.01ms ease;
+    }
+
+    .sidebar.open {
+        animation: none;
+    }
+
+    .sidebar-nav ul li a,
+    .candidate-card,
+    .sidebar-close,
+    .nav-footer .logout-link {
+        transition: none;
+    }
+
+    .sidebar-nav ul li a::before,
+    .sidebar-nav ul li a::after {
+        transition: none;
+    }
+
+    .sidebar-nav ul li a .nav-arrow {
+        transition: none;
+    }
+
+    .nav-footer .logout-link .nav-arrow {
+        transition: none;
+    }
+
+    @keyframes badgePulse {
+        0%, 100% { opacity: 1; }
+    }
+}
+
+
+/* ============================================================
+   LOGO INSTITUTIONNEL
+   ============================================================ */
+
+.brand-logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 30px;
+    display: block;
+    transition: var(--sidebar-transition-slow);
+    padding: 2px;
+}
+
+/* Effet de brillance au survol du logo */
+.brand-visual:hover .brand-logo-img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+/* Icône décorative en surbrillance */
+.brand-icon-text {
+    font-size: 1.2rem;
+    color: var(--gold);
+    opacity: 0.8;
+    text-shadow: 0 0 20px rgba(245, 166, 35, 0.3);
+    animation: sparkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
+}
+
+/* Overlay plus subtil pour le logo */
+.brand-visual-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg,
+    rgba(0, 150, 220, 0.15) 0%,
+    rgba(245, 166, 35, 0.08) 100%);
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    transition: var(--sidebar-transition);
+    pointer-events: none;
+}
+
+.brand-visual:hover .brand-visual-overlay {
+    opacity: 0.6;
+}
+
+/* Effet de bordure dorée autour du logo */
+.brand-visual {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--sidebar-radius-sm);
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid rgba(245, 166, 35, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 150, 220, 0.15),
+    inset 0 0 30px rgba(245, 166, 35, 0.05);
+    transition: var(--sidebar-transition);
+}
+
+.brand-visual:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 30px rgba(245, 166, 35, 0.2),
+    inset 0 0 30px rgba(245, 166, 35, 0.1);
+}
+
+/* Effet de lumière au survol du logo */
+.brand-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%,
+    rgba(245, 166, 35, 0.1) 0%,
+    transparent 70%);
+    opacity: 0;
+    transition: var(--sidebar-transition);
+    pointer-events: none;
+}
+
+.brand-visual:hover::after {
+    opacity: 1;
+}
+
+/* Version mobile adaptée */
+@media (max-width: 768px) {
+    .brand-visual {
+        width: 42px;
+        height: 42px;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-visual {
+        width: 36px;
+        height: 36px;
+        border-width: 1.5px;
+    }
+
+    .brand-icon-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .brand-visual {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+/* ============================================================
+   SUPPORT DE LA HAUTEUR D'ÉCRAN (vh)
+   ============================================================ */
+@supports (height: 100dvh) {
+    .sidebar {
+        height: 100dvh;
+    }
+}

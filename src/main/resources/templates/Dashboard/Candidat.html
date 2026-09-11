@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>IFP-PERLE D'OR | Tableau de bord candidat</title>
+    <meta name="description" content="Institut de Formation Professionnelle agréé MINEFOP à Magba, Foumban. 100% de réussite aux examens nationaux depuis 2021. Secrétariat, Informatique, Santé, Agropastoral, BTP, Hôtellerie. Inscriptions ouvertes.">
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
+    <link rel="stylesheet" th:href="@{/css/Candidat/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/Candidat/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/Candidat/Fiche.css}">
+    <link rel="stylesheet" th:href="@{/css/Candidat/profil.css}">
+
+
+    </head>
+<body>
+
+    <div class="dashboard">
+
+        <div th:replace="~{Dashboard/fragments/sidebar :: sidebar}"> </div>
+        <!-- Overlay mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+        <!-- ============================================================
+  MAIN CONTENT
+  ============================================================ -->
+        <!-- ============================================================
+     TOP BAR – VERSION PREMIUM
+     ============================================================ -->
+        <main class="main-content">
+
+            <!-- Top Bar -->
+            <div class="top-bar">
+
+                <!-- Partie gauche -->
+                <div class="top-bar-left">
+                    <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <div class="top-bar-title">
+                        <h3 id="pageTitle">Tableau de bord</h3>
+                        <span class="top-bar-breadcrumb">
+                    <i class="fas fa-home"></i> / <span id="pageBreadcrumb">Accueil</span>
+                </span>
+                    </div>
+                </div>
+
+                <!-- Partie droite -->
+                <div class="top-bar-right">
+
+                    <!-- Recherche rapide -->
+                    <div class="top-bar-search">
+                        <input type="text" placeholder="Rechercher..." id="topSearch">
+                        <i class="fas fa-search"></i>
+                    </div>
+
+                    <!-- Notifications (icône) -->
+                    <div class="top-bar-notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="notif-dot" th:if="${nombreNotifications > 0}">
+                    <span th:text="${nombreNotifications}">3</span>
+                </span>
+                    </div>
+
+                    <!-- Profil utilisateur -->
+                    <div class="top-bar-user">
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <div class="user-info">
+                            <span class="user-name" th:text="${Candidat.nom}">Arouna Idriss</span>
+                            <span class="user-role">Candidat</span>
+                        </div>
+                        <i class="fas fa-chevron-down user-dropdown"></i>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- ============================================================
+            RESTE DU CONTENU...
+            ============================================================ -->
+
+            <!-- ============================================================
+            NOTIFICATIONS
+            ============================================================ -->
+
+            <div id="notification-container">
+
+                <!-- Succès -->
+                <div
+                        th:if="${successMessage}"
+                        class="notification success"
+                        id="successNotification">
+
+                    <div class="notification-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+
+                    <div class="notification-content">
+                        <h4>Opération réussie</h4>
+
+                        <p th:text="${successMessage}"></p>
+                    </div>
+
+                    <button class="notification-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+
+                </div>
+
+
+                <!-- Erreur -->
+                <div
+                        th:if="${errorMessage}"
+                        class="notification error"
+                        id="errorNotification">
+
+                    <div class="notification-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+
+                    <div class="notification-content">
+
+                        <h4>Une erreur est survenue</h4>
+
+                        <p th:text="${errorMessage}"></p>
+
+                    </div>
+
+                    <button class="notification-close">
+                        <i class="fas fa-times"></i>
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+
+    <div th:replace="~{Dashboard/fragments/profil :: profil}">    </div>
+
+    <div th:replace="~{Dashboard/fragments/step :: fiche}">    </div>
+
+    <div th:replace="~{Dashboard/fragments/candidater :: candidater}">    </div>
+
+    <div th:replace="~{Dashboard/fragments/paiement :: paiement}">    </div>
+
+    <div th:replace="~{Dashboard/fragments/documents :: documents}">    </div>
+
+    <div th:replace="~{Dashboard/fragments/notifications :: notifications}">    </div>
+
+    <div th:replace="~{Dashboard/fragments/chat :: chat}">    </div>
+
+    <div th:replace="~{Dashboard/fragments/Modal/editProfilModal :: editProfilModal}">    </div>
+
+    <div th:replace="~{Dashboard/fragments/Modal/contactModal :: ContactModal}">    </div>
+
+
+    </main>
+    </div>
+
+    <script th:src="@{/js/candidat.js}"></script>
+    <script th:src="@{/js/fiche.js}"></script>
+
+</body>
+</html>

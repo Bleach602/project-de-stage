@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compte créé — IFP Perle d'Or</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/succesPage.css}">
+</head>
+<body>
+
+<div class="confirmation-wrapper">
+    <div class="confirmation-card">
+
+        <!-- Icône de succès -->
+        <div class="success-icon">
+            <div class="success-ring">
+                <i class="fas fa-check"></i>
+            </div>
+        </div>
+
+        <!-- Titre -->
+        <h1>Compte créé avec succès !</h1>
+
+        <!-- Sous-titre -->
+        <p class="subtitle">
+            Bienvenue à l'IFP Perle d'Or. Votre compte a été activé.
+        </p>
+
+        <!-- ============================================================
+        ALERTE D'INACTIVITÉ – 3 JOURS
+        ============================================================ -->
+        <div class="alert-inactivite" id="alertInactivite">
+            <div class="alert-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="alert-content">
+                <div class="alert-title">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Compte à finaliser sous 3 jours
+                </div>
+                <p>
+                    Pour des raisons de sécurité, votre compte sera <strong>automatiquement supprimé</strong>
+                    si vous ne finalisez pas votre candidature sous <strong>3 jours</strong>.
+                </p>
+                <div class="alert-countdown" id="countdownContainer">
+                    <span class="countdown-label">⏳ Il vous reste :</span>
+                    <span class="countdown-timer" id="countdownTimer">
+                        <span class="countdown-unit" id="days">03</span>
+                        <span class="countdown-separator">:</span>
+                        <span class="countdown-unit" id="hours">00</span>
+                        <span class="countdown-separator">:</span>
+                        <span class="countdown-unit" id="minutes">00</span>
+                        <span class="countdown-separator">:</span>
+                        <span class="countdown-unit" id="seconds">00</span>
+                    </span>
+                </div>
+            </div>
+            <button class="alert-close" id="alertClose" aria-label="Fermer l'alerte">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Séparateur -->
+        <div class="divider">
+            <span class="divider-line"></span>
+            <span class="divider-dot"><i class="fas fa-gem"></i></span>
+            <span class="divider-line"></span>
+        </div>
+
+        <!-- Mode opératoire -->
+        <div class="steps">
+            <h2 class="steps-title">
+                <i class="fas fa-route"></i>
+                Comment candidater ?
+            </h2>
+
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="step-text">
+                        <h3>Remplissez votre fiche d'inscription</h3>
+                        <p>Accédez à l'onglet <strong>"Ma fiche"</strong> et renseignez toutes vos informations personnelles. Une fois complétée, cliquez sur <strong>"Générer"</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-icon">
+                        <i class="fas fa-paper-plane"></i>
+                    </div>
+                    <div class="step-text">
+                        <h3>Déposez vos documents</h3>
+                        <p>Rendez-vous dans le menu <strong>"Candidater"</strong> et téléversez vos trois pièces : <strong>CNI</strong>, <strong>Diplôme</strong> et <strong>Acte de naissance</strong>. Validez votre dossier.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="step-text">
+                        <h3>Suivez l'évolution de votre dossier</h3>
+                        <p>Consultez vos <strong>notifications</strong> pour suivre l'avancement. Vous recevrez également un <strong>message WhatsApp</strong> en cas de validation ou de rejet de votre demande.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Informations supplémentaires -->
+        <div class="info-box">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Documents à fournir :</strong>
+                <span>CNI, Diplôme (Bac/BEPC), Acte de naissance</span>
+                <small>Formats acceptés : PDF, JPG, PNG — max 5 Mo</small>
+            </div>
+        </div>
+
+        <!-- Bouton -->
+        <div class="action-buttons">
+            <a th:href="@{/login}" class="btn btn-primary">
+                <i class="fas fa-sign-in-alt"></i>
+                Se connecter
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <p class="footer-note">
+            <i class="fas fa-shield-alt"></i>
+            Vous pourrez consulter vos documents dans le menu <strong>"Mes documents"</strong>.
+        </p>
+
+    </div>
+</div>
+
+<script th:src="@{/js/confirmation.js}"></script>
+</body>
+</html>

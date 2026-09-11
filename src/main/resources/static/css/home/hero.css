@@ -1,0 +1,122 @@
+
+/* ============================================================
+           AGRÉMENT MINISTÉRIEL BANNER
+           ============================================================ */
+.agrement-banner {
+    background: var(--noir-clair);
+    color: var(--blanc);
+    padding: 1.2rem 0;
+    text-align: center;
+    border-bottom: 4px solid var(--or);
+}
+
+.agrement-banner p {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.agrement-banner strong {
+    color: var(--or);
+}
+
+.agrement-banner i {
+    color: var(--or);
+}
+
+/* ============================================================
+         ABOUT SECTION
+         ============================================================ */
+.about-section {
+    padding: 5rem 0;
+    background: var(--bg-section);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.about-card {
+    background: var(--blanc);
+    border-radius: var(--radius);
+    padding: 2rem 1.8rem;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gris-clair);
+    transition: var(--transition);
+}
+
+.about-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--bleu-cyan);
+}
+
+.about-card .icon {
+    width: 70px;
+    height: 70px;
+    background: var(--bleu-cyan-transparent);
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.2rem;
+}
+
+.about-card .icon i {
+    font-size: 2rem;
+    color: var(--bleu-cyan);
+}
+
+.about-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: var(--text-color);
+}
+
+.about-card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.stat-item {
+    background: var(--bleu-cyan-gradient);
+    border-radius: var(--radius);
+    padding: 2rem;
+    text-align: center;
+    color: var(--blanc);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-item::after {
+    content: '✦';
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 2rem;
+    color: var(--or);
+    opacity: 0.2;
+}
+
+.stat-item h4 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--or);
+}
+
+.stat-item p {
+    font-weight: 500;
+    opacity: 0.9;
+}

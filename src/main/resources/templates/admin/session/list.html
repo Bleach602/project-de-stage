@@ -1,0 +1,346 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="fr"
+      th:replace="~{admin/layouts/admin_layout :: layout(~{::main})}">
+<body>
+<main>
+    <link rel="stylesheet" th:href="@{/css/adminCSS/sessionsCSS.css}">
+<!--    <div class="container">-->
+<!--        &lt;!&ndash; contenu inchangé &ndash;&gt;-->
+<!--    </div>-->
+    <div class="container">
+
+        <!-- Section En-tête -->
+        <div class="header-section">
+            <div class="header-title">
+                <h1>Gestion des sessions de candidature</h1>
+                <p>Créez, gérez et suivez les sessions de candidature.</p>
+            </div>
+            <button class="btn btn-primary" onclick="openCreateModal()">
+                <i class='bx bx-plus'></i> Nouvelle session
+            </button>
+        </div>
+
+        <!-- Notification Flash Attributes -->
+        <div th:if="${successMessage}" class="toast-alert toast-success" id="flash-alert">
+            <div class="toast-content">
+                <i class='bx bx-check-circle toast-icon'></i>
+                <span th:text="${successMessage}">Succès</span>
+            </div>
+            <button type="button" class="toast-close" onclick="closeToast()">
+                <i class='bx bx-x'></i>
+            </button>
+        </div>
+
+        <div th:if="${errorMessage}" class="toast-alert toast-danger" id="flash-alert">
+            <div class="toast-content">
+                <i class='bx bx-error-circle toast-icon'></i>
+                <span th:text="${errorMessage}">Erreur</span>
+            </div>
+            <button type="button" class="toast-close" onclick="closeToast()">
+                <i class='bx bx-x'></i>
+            </button>
+        </div>
+
+        <!-- Section Tableau -->
+        <div class="card-table">
+            <table class="session-table">
+                <thead>
+                <tr>
+                    <th>Année académique</th>
+                    <th>Ouverture</th>
+                    <th>Fermeture</th>
+                    <th>Statut</th>
+                    <th>Nombre de filières</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="sess : ${sessions}">
+                    <td th:text="${sess.anneeAcademique}">2026-2027</td>
+                    <td th:text="${#temporals.format(sess.dateOuverture, 'dd/MM/yyyy')}">01/07/2026</td>
+                    <td th:text="${#temporals.format(sess.dateFermeture, 'dd/MM/yyyy')}">30/09/2026</td>
+                    <td>
+                        <span th:if="${#strings.toString(sess.statutSession) == 'OUVERTE'}" class="badge badge-ouverte">Ouverte</span>
+                        <span th:if="${#strings.toString(sess.statutSession) == 'FERMEE'}" class="badge badge-fermee">Fermée</span>
+                    </td>
+                    <td class="text-center" th:text="${sess.filiereIds != null ? sess.filiereIds.size() : 0}">0</td>
+                    <td>
+                        <div class="actions-cell">
+                            <a th:href="@{/dashboard/sessions/modifier/{id}(id=${sess.id})}" class="btn btn-outline-warning">
+                                <i class='bx bx-edit-alt'></i> Modifier
+                            </a>
+
+                            <a th:if="${sess.statutSession != null && sess.statutSession.toString() == 'OUVERTE'}"
+                               th:href="@{/dashboard/sessions/close/{id}(id=${sess.id})}" class="btn btn-danger">
+                                <i class='bx bx-trash'></i> Fermer
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Pied de tableau : Info Pagination & Navigation -->
+            <div class="table-footer">
+                <div class="info-pagination" th:if="${sessionPage.totalElements > 0}">
+                    Affichage de
+                    <span th:text="${currentPage * sessionPage.size + 1}">1</span>
+                    à
+                    <span th:text="${(currentPage + 1) * sessionPage.size > sessionPage.totalElements ? sessionPage.totalElements : (currentPage + 1) * sessionPage.size}">5</span>
+                    sur <span th:text="${sessionPage.totalElements}">10</span> sessions
+                </div>
+                <div class="info-pagination" th:if="${sessionPage.totalElements == 0}">
+                    Aucune session trouvée.
+                </div>
+
+                <!-- Boutons de Navigation -->
+                <div class="pagination-buttons" th:if="${totalPages > 1}">
+                    <!-- Bouton Précédent -->
+                    <a th:href="@{/dashboard/sessions(page=${currentPage - 1})}"
+                       class="page-link"
+                       th:classappend="${currentPage == 0} ? 'disabled' : ''">
+                        &laquo;
+                    </a>
+
+                    <!-- Liens des Pages -->
+                    <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                       th:href="@{/dashboard/sessions(page=${i})}"
+                       th:text="${i + 1}"
+                       class="page-link"
+                       th:classappend="${i == currentPage} ? 'active' : ''">
+                        1
+                    </a>
+
+                    <!-- Bouton Suivant -->
+                    <a th:href="@{/dashboard/sessions(page=${currentPage + 1})}"
+                       class="page-link"
+                       th:classappend="${currentPage + 1 == totalPages} ? 'disabled' : ''">
+                        &raquo;
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- déplace ici le <script> qui était en bas du fichier -->
+
+    <!-- ============================================================== -->
+    <!-- 1. MODAL : CRÉATION DE SESSION                                 -->
+    <!-- ============================================================== -->
+    <div id="createModal" class="modal" th:classappend="${showCreateModal} ? 'show' : ''">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Nouvelle Session</h2>
+                <button type="button" class="close-modal-btn" onclick="closeCreateModal()">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <form th:action="@{/dashboard/sessions/creer}" th:object="${createSessionDTO}" method="POST">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="createAnnee">Année Académique <span style="color: red;">*</span></label>
+                        <input type="text" id="createAnnee" th:field="*{anneeAcademique}"
+                               placeholder="Ex: 2026-2027" required class="form-control" />
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="createOuverture">Date d'Ouverture <span style="color: red;">*</span></label>
+                            <input type="date" id="createOuverture" th:field="*{dateOuverture}" required class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="createFermeture">Date de Fermeture <span style="color: red;">*</span></label>
+                            <input type="date" id="createFermeture" th:field="*{dateFermeture}" required class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label style="font-weight: 600; margin-bottom: 8px; display: block;">Filières concernées <span style="color: red;">*</span></label>
+                        <div class="checkbox-container">
+                            <div th:each="filiere : ${toutesLesFilieres}" class="checkbox-item">
+                                <input type="checkbox"
+                                       th:id="${'create_filiere_' + filiere.id}"
+                                       th:value="${filiere.id}"
+                                       th:field="*{filiereIds}" />
+                                <label th:for="${'create_filiere_' + filiere.id}">
+                                    <span th:text="${filiere.nom}">Nom</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" onclick="closeCreateModal()">
+                        <i class='bx bx-x-circle'></i> Annuler
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class='bx bx-check-circle'></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ============================================================== -->
+    <!-- 2. MODAL : MODIFICATION DE SESSION                             -->
+    <!-- ============================================================== -->
+    <div id="editModal" class="modal" th:classappend="${showEditModal} ? 'show' : ''">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Modifier la Session</h2>
+                <button type="button" class="close-modal-btn" onclick="closeEditModal()">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <form th:action="@{/dashboard/sessions/modifier/{id}(id=${editSessionDTO.id})}" th:object="${editSessionDTO}" method="POST">
+                <div class="modal-body">
+
+                    <!-- Transmission des valeurs non modifiables au backend-->
+                    <input type="hidden" th:field="*{id}" />
+                    <input type="hidden" th:field="*{anneeAcademique}" />
+                    <input type="hidden" th:field="*{dateOuverture}" />
+
+                    <!-- Année Académique (READONLY) -->
+                    <div class="form-group">
+                        <label>Année Académique</label>
+                        <input type="text" th:field="*{anneeAcademique}" class="form-control" disabled />
+                    </div>
+
+                    <div class="form-row">
+                        <!-- Date d'Ouverture (READONLY) -->
+                        <div class="form-group">
+                            <label>Date d'Ouverture</label>
+                            <input type="date" th:field="*{dateOuverture}" class="form-control" disabled />
+                        </div>
+
+                        <!-- Date de Fermeture (MODIFIABLE) -->
+                        <div class="form-group">
+                            <label for="editFermeture">Date de Fermeture *</label>
+                            <input type="date" id="editFermeture" th:field="*{dateFermeture}" required class="form-control" />
+                        </div>
+                    </div>
+
+                    <!-- Sélection des Filières (MODIFIABLE) -->
+                    <div class="form-group">
+                        <label style="font-weight: 600; margin-bottom: 8px; display: block;">Filières concernées *</label>
+                        <div class="checkbox-container">
+                            <div th:each="filiere : ${toutesLesFilieres}" class="checkbox-item">
+                                <input type="checkbox"
+                                       th:id="${'edit_filiere_' + filiere.id}"
+                                       th:value="${filiere.id}"
+                                       th:field="*{filiereIds}" />
+                                <label th:for="${'edit_filiere_' + filiere.id}">
+                                    <span th:text="${filiere.nom}">Nom</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger" onclick="closeEditModal()">
+                        <i class='bx bx-x-circle'></i> Annuler
+                    </button>
+                    <button type="submit" class="btn btn-success">
+                        <i class='bx bx-check-circle'></i> Mettre à jour
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- Modal Création ---
+        function openCreateModal() {
+            document.getElementById('createModal').classList.add('show');
+        }
+
+        function closeCreateModal() {
+            document.getElementById('createModal').classList.remove('show');
+        }
+
+        // --- Modal Modification ---
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('show');
+            // Nettoyer l'URL si on ferme après un clic sur "Modifier"
+            if (window.location.pathname.includes('/modifier/')) {
+                window.location.href = '/dashboard/sessions';
+            }
+        }
+
+        // --- Fermeture au clic à l'extérieur des modals ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const createModal = document.getElementById('createModal');
+            const editModal = document.getElementById('editModal');
+
+            if (createModal) {
+                createModal.addEventListener('click', (e) => {
+                    if (e.target === createModal) closeCreateModal();
+                });
+            }
+            if (editModal) {
+                editModal.addEventListener('click', (e) => {
+                    if (e.target === editModal) closeEditModal();
+                });
+            }
+        });
+
+        // Auto-disparition des alertes après 5 secondes
+        document.addEventListener('DOMContentLoaded', () => {
+            const alert = document.getElementById('flash-alert');
+            if (alert) {
+                setTimeout(() => {
+                    closeToast();
+                }, 5000); // 5000ms = 5 secondes
+            }
+        });
+
+        // Fonction pour fermer la notification
+        function closeToast() {
+            const alert = document.getElementById('flash-alert');
+            if (alert) {
+                alert.classList.add('toast-hide');
+                // Supprimer complètement l'élément du DOM après l'animation
+                setTimeout(() => {
+                    alert.remove();
+                }, 500);
+            }
+        }
+    </script>
+
+</main>
+</body>
+</html>
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org" lang="fr">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Gestion des Sessions</title>-->
+<!--    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">-->
+<!--    <link rel="stylesheet" th:href="@{/css/sessionList.css}">-->
+<!--    <link rel="stylesheet" th:href="@{/css/sidebarAdmin.css}">-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="admin-layout">-->
+
+<!--    <aside th:replace="~{fragments/sidebar :: sidebar}"></aside>-->
+
+<!--    <main class="main-content">-->
+<!--        -->
+<!--    </main>-->
+<!--</div>-->
+
+
+
+<!--</body>-->
+<!--</html>-->

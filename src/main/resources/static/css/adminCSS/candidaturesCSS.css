@@ -1,0 +1,1069 @@
+/* =========================================================
+   GESTION DES CANDIDATURES — UI/UX PREMIUM
+   ========================================================= */
+
+/* =========================================================
+   1. VARIABLES
+   ========================================================= */
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --primary-soft: #dbeafe;
+    --primary-gradient: linear-gradient(135deg, #2563eb, #1d4ed8);
+
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-light: #ecfdf5;
+    --success-border: #a7f3d0;
+    --success-text: #065f46;
+
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --danger-light: #fef2f2;
+    --danger-border: #fca5a5;
+    --danger-text: #991b1b;
+
+    --warning: #f59e0b;
+    --warning-hover: #d97706;
+    --warning-light: #fffbeb;
+    --warning-border: #fde68a;
+    --warning-text: #92400e;
+
+    --info: #8b5cf6;
+    --info-light: #f5f3ff;
+    --info-border: #c4b5fd;
+    --info-text: #5b21b6;
+
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-600: #475569;
+    --gray-700: #334155;
+    --gray-800: #1e293b;
+    --gray-900: #0f172a;
+
+    --bg-main: #f8fafc;
+    --surface: #ffffff;
+    --surface-hover: #f8fafc;
+    --border: #e2e8f0;
+
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+
+    --radius-xs: 6px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 30px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 20px 50px rgba(0, 0, 0, 0.12);
+
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+
+/* =========================================================
+   2. BASE
+   ========================================================= */
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    overflow-x: hidden;
+    line-height: 1.6;
+}
+
+main {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: clamp(1rem, 3vw, 2.5rem);
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   3. EN-TÊTE
+   ========================================================= */
+
+.page-header {
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--gray-100);
+}
+
+.page-header h2 {
+    margin: 0 0 0.35rem;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--gray-900);
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+
+.page-header h2 i {
+    color: var(--primary);
+    font-size: 1.2em;
+    flex-shrink: 0;
+    padding: 8px;
+    background: var(--primary-light);
+    border-radius: var(--radius-md);
+}
+
+.page-header .subtitle {
+    color: var(--gray-500);
+    font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+    margin: 0.25rem 0 0 0;
+}
+
+
+/* =========================================================
+   4. BANNIÈRE INFORMATION
+   ========================================================= */
+
+.banner-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: clamp(0.8rem, 2vw, 1.1rem);
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #fef3c7, #fffbeb);
+    border: 1px solid #fde68a;
+    border-radius: var(--radius-md);
+    color: #92400e;
+    font-size: clamp(0.85rem, 1.2vw, 0.95rem);
+    font-weight: 500;
+    box-shadow: var(--shadow-sm);
+    animation: slideDown 0.5s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.banner-info i {
+    color: var(--warning);
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.banner-info strong {
+    color: #78350f;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   5. TOASTS
+   ========================================================= */
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.9rem 1.1rem;
+    margin-bottom: 1.25rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-md);
+    animation: slideDown 0.4s ease;
+    border-left: 4px solid transparent;
+}
+
+.toast i {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+}
+
+.toast-succes {
+    background: var(--success-light);
+    border-color: var(--success);
+    color: var(--success-text);
+}
+
+.toast-succes i {
+    color: var(--success);
+}
+
+.toast-erreur {
+    background: var(--danger-light);
+    border-color: var(--danger);
+    color: var(--danger-text);
+}
+
+.toast-erreur i {
+    color: var(--danger);
+}
+
+
+/* =========================================================
+   6. BARRE DES FILTRES
+   ========================================================= */
+
+.filters-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    padding: clamp(1rem, 2vw, 1.25rem);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.filters-bar:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.filters-bar select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.5rem 0.8rem;
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--gray-50);
+    color: var(--gray-700);
+    font-size: 0.875rem;
+    font-weight: 500;
+    outline: none;
+    transition: var(--transition);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+
+.filters-bar select:hover {
+    border-color: var(--gray-400);
+    background-color: var(--surface);
+}
+
+.filters-bar select:focus {
+    border-color: var(--primary);
+    background-color: var(--surface);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.filters-bar .btn {
+    min-height: 44px;
+    padding: 0.5rem 1.2rem;
+    background: var(--primary-gradient);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.filters-bar .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+}
+
+.filters-bar .btn i {
+    font-size: 1.1rem;
+}
+
+.filters-bar .btn:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================================================
+   7. CONTENEUR TABLEAU
+   ========================================================= */
+
+.table-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.table-wrapper:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.table-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    padding: 0 0.25rem;
+}
+
+.table-scroll::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-scroll::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: 999px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: 999px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
+}
+
+
+/* =========================================================
+   8. TABLEAU
+   ========================================================= */
+
+.table-roles {
+    width: 100%;
+    min-width: 800px;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.table-roles thead {
+    background: var(--gray-50);
+    border-bottom: 2px solid var(--gray-200);
+}
+
+.table-roles th {
+    padding: 0.9rem 1rem;
+    text-align: left;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    color: var(--gray-500);
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    background: var(--gray-50);
+    z-index: 10;
+}
+
+.table-roles th:first-child {
+    padding-left: 1.25rem;
+}
+
+.table-roles th:last-child {
+    padding-right: 1.25rem;
+}
+
+.table-roles td {
+    padding: 0.85rem 1rem;
+    color: var(--gray-700);
+    border-bottom: 1px solid var(--gray-100);
+    vertical-align: middle;
+    transition: var(--transition);
+}
+
+.table-roles td:first-child {
+    padding-left: 1.25rem;
+}
+
+.table-roles td:last-child {
+    padding-right: 1.25rem;
+}
+
+.table-roles tbody tr {
+    transition: var(--transition);
+    cursor: default;
+}
+
+.table-roles tbody tr:hover {
+    background: var(--gray-50);
+}
+
+.table-roles tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Référence */
+.table-roles td:first-child {
+    font-weight: 600;
+    color: var(--gray-800);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+}
+
+
+/* =========================================================
+   9. CELLULE CANDIDAT
+   ========================================================= */
+
+.candidat-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 150px;
+}
+
+.candidat-nom {
+    font-weight: 600;
+    color: var(--gray-800);
+    font-size: 0.875rem;
+}
+
+.candidat-email {
+    color: var(--gray-500);
+    font-size: 0.75rem;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   10. BADGES DE STATUT
+   ========================================================= */
+
+.statut-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.statut-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* EN_ATTENTE */
+.statut-en-attente {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.statut-en-attente::before {
+    background: #f59e0b;
+}
+
+/* VALIDEE / APPROUVEE */
+.statut-validee,
+.statut-approuvee {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.statut-validee::before,
+.statut-approuvee::before {
+    background: #10b981;
+}
+
+/* REJETEE / REFUSEE */
+.statut-rejetee,
+.statut-refusee {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.statut-rejetee::before,
+.statut-refusee::before {
+    background: #ef4444;
+}
+
+/* A_CORRIGER */
+.statut-a-corriger {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.statut-a-corriger::before {
+    background: #6366f1;
+}
+
+/* EN_TRAITEMENT */
+.statut-en-traitement {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.statut-en-traitement::before {
+    background: #3b82f6;
+}
+
+/* PERMISSION BADGE */
+.permission-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.3rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.65rem;
+    font-weight: 600;
+    background: #e0e7ff;
+    color: #4338ca;
+    border: 1px solid #c7d2fe;
+    white-space: nowrap;
+}
+
+.permission-badge i {
+    font-size: 0.8rem;
+}
+
+
+/* =========================================================
+   11. ACTIONS
+   ========================================================= */
+
+.actions-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: nowrap;
+}
+
+.btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--gray-500);
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.btn-action:hover {
+    color: var(--primary);
+    border-color: var(--primary);
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-action i {
+    font-size: 1.1rem;
+}
+
+
+/* =========================================================
+   12. ÉTAT VIDE
+   ========================================================= */
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 0.75rem;
+    padding: clamp(3rem, 8vw, 5rem) 1.5rem;
+    background: var(--surface);
+    border: 2px dashed var(--gray-200);
+    border-radius: var(--radius-lg);
+    color: var(--gray-400);
+}
+
+.empty-state i {
+    font-size: clamp(3rem, 7vw, 4.5rem);
+    color: var(--gray-300);
+}
+
+.empty-state span {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gray-500);
+}
+
+.empty-state .empty-sub {
+    font-size: 0.875rem;
+    color: var(--gray-400);
+    margin-top: -0.25rem;
+}
+
+
+/* =========================================================
+   13. PAGINATION
+   ========================================================= */
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1.5rem;
+    padding: 0.75rem 0;
+    flex-wrap: wrap;
+}
+
+.page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 0.75rem;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--gray-600);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.page-link:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.page-link.page-active {
+    background: var(--primary-gradient);
+    border-color: var(--primary);
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.page-link.page-active:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+}
+
+.page-link.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   14. STATS EN TÊTE
+   ========================================================= */
+
+.stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: var(--surface);
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-card .stat-number {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--gray-900);
+    line-height: 1.2;
+}
+
+.stat-card .stat-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--gray-500);
+    font-weight: 600;
+}
+
+.stat-card.stat-total .stat-number {
+    color: var(--primary);
+}
+
+.stat-card.stat-attente .stat-number {
+    color: var(--warning);
+}
+
+.stat-card.stat-valide .stat-number {
+    color: var(--success);
+}
+
+.stat-card.stat-rejete .stat-number {
+    color: var(--danger);
+}
+
+
+/* =========================================================
+   15. RESPONSIVE
+   ========================================================= */
+
+/* Tablettes */
+@media (max-width: 1024px) {
+    main {
+        padding: 1.25rem;
+    }
+
+    .stats-bar {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .table-roles {
+        min-width: 700px;
+    }
+}
+
+/* Mobiles grands */
+@media (max-width: 768px) {
+    main {
+        padding: 1rem 0.85rem;
+    }
+
+    .page-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .page-header h2 i {
+        font-size: 1rem;
+        padding: 6px;
+    }
+
+    .filters-bar {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+        padding: 0.85rem;
+    }
+
+    .filters-bar .btn {
+        width: 100%;
+    }
+
+    .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.6rem;
+    }
+
+    .stat-card .stat-number {
+        font-size: 1.2rem;
+    }
+
+    .table-wrapper {
+        border-radius: var(--radius-md);
+    }
+
+    .table-scroll {
+        padding: 0;
+    }
+
+    .table-roles {
+        min-width: 600px;
+    }
+
+    .table-roles th,
+    .table-roles td {
+        padding: 0.65rem 0.7rem;
+        font-size: 0.78rem;
+    }
+
+    .table-roles th:first-child,
+    .table-roles td:first-child {
+        padding-left: 0.85rem;
+    }
+
+    .table-roles th:last-child,
+    .table-roles td:last-child {
+        padding-right: 0.85rem;
+    }
+
+    .candidat-cell {
+        min-width: 120px;
+    }
+
+    .candidat-email {
+        max-width: 120px;
+    }
+
+    .btn-action {
+        width: 34px;
+        height: 34px;
+    }
+
+    .btn-action i {
+        font-size: 0.95rem;
+    }
+
+    .page-link {
+        min-width: 36px;
+        height: 36px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Petits mobiles */
+@media (max-width: 480px) {
+    main {
+        padding: 0.75rem 0.6rem;
+    }
+
+    .page-header {
+        margin-bottom: 1rem;
+        padding-bottom: 0.75rem;
+    }
+
+    .page-header h2 {
+        font-size: 1.1rem;
+    }
+
+    .page-header .subtitle {
+        font-size: 0.8rem;
+    }
+
+    .banner-info {
+        padding: 0.65rem;
+        font-size: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .banner-info i {
+        font-size: 1.2rem;
+    }
+
+    .toast {
+        padding: 0.7rem 0.85rem;
+        font-size: 0.82rem;
+    }
+
+    .stats-bar {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .stat-card {
+        padding: 0.6rem 0.7rem;
+    }
+
+    .stat-card .stat-number {
+        font-size: 1.1rem;
+    }
+
+    .stat-card .stat-label {
+        font-size: 0.6rem;
+    }
+
+    .table-roles {
+        min-width: 500px;
+    }
+
+    .table-roles th {
+        font-size: 0.6rem;
+        padding: 0.5rem 0.5rem;
+    }
+
+    .table-roles td {
+        padding: 0.5rem 0.5rem;
+        font-size: 0.72rem;
+    }
+
+    .table-roles th:first-child,
+    .table-roles td:first-child {
+        padding-left: 0.6rem;
+    }
+
+    .table-roles th:last-child,
+    .table-roles td:last-child {
+        padding-right: 0.6rem;
+    }
+
+    .candidat-nom {
+        font-size: 0.78rem;
+    }
+
+    .candidat-email {
+        font-size: 0.65rem;
+        max-width: 90px;
+    }
+
+    .statut-badge {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.5rem;
+    }
+
+    .statut-badge::before {
+        width: 5px;
+        height: 5px;
+    }
+
+    .permission-badge {
+        font-size: 0.55rem;
+        padding: 0.15rem 0.35rem;
+    }
+
+    .btn-action {
+        width: 30px;
+        height: 30px;
+    }
+
+    .btn-action i {
+        font-size: 0.85rem;
+    }
+
+    .page-link {
+        min-width: 32px;
+        height: 32px;
+        font-size: 0.7rem;
+        padding: 0 0.4rem;
+    }
+
+    .empty-state {
+        padding: 2rem 1rem;
+    }
+
+    .empty-state i {
+        font-size: 2.5rem;
+    }
+
+    .empty-state span {
+        font-size: 0.85rem;
+    }
+}
+
+/* Très petits écrans */
+@media (max-width: 360px) {
+    main {
+        padding: 0.6rem 0.4rem;
+    }
+
+    .page-header h2 {
+        font-size: 1rem;
+    }
+
+    .stats-bar {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.4rem;
+    }
+
+    .stat-card {
+        padding: 0.5rem 0.5rem;
+    }
+
+    .stat-card .stat-number {
+        font-size: 0.95rem;
+    }
+
+    .table-roles {
+        min-width: 420px;
+    }
+
+    .table-roles th,
+    .table-roles td {
+        padding: 0.4rem 0.4rem;
+        font-size: 0.65rem;
+    }
+
+    .candidat-cell {
+        min-width: 90px;
+    }
+
+    .candidat-email {
+        max-width: 70px;
+    }
+
+    .btn-action {
+        width: 26px;
+        height: 26px;
+    }
+
+    .btn-action i {
+        font-size: 0.75rem;
+    }
+}
+
+/* Orientation paysage sur mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .stats-bar {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .stat-card {
+        padding: 0.4rem 0.6rem;
+    }
+
+    .stat-card .stat-number {
+        font-size: 1rem;
+    }
+
+    .table-roles {
+        min-width: 600px;
+    }
+}
+
+/* Réduction de mouvement */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}

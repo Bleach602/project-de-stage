@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erreur - IFFPO</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            margin: 0;
+        }
+
+        /* ============================================================
+           CARD PRINCIPALE
+           ============================================================ */
+        .error-card {
+            max-width: 520px;
+            width: 100%;
+            background: white;
+            padding: 50px 45px 45px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .error-card:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Bande décorative en haut */
+        .error-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #dc3545, #e74c3c, #dc3545);
+            background-size: 200% 100%;
+            animation: gradientMove 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 100% 0%; }
+        }
+
+        /* Élément décoratif en arrière-plan */
+        .error-card::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            right: -80px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(220, 53, 69, 0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        /* ============================================================
+           ICÔNE
+           ============================================================ */
+        .error-icon-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .error-icon-bg {
+            width: 90px;
+            height: 90px;
+            background: #fef2f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: floatIcon 3s ease-in-out infinite;
+        }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .error-icon-bg i {
+            font-size: 40px;
+            color: #dc3545;
+        }
+
+        /* Petit badge d'alerte */
+        .error-badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 28px;
+            height: 28px;
+            background: #dc3545;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid white;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+            animation: pulseBadge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .error-badge i {
+            font-size: 12px;
+            color: white;
+        }
+
+        /* ============================================================
+           TEXTE
+           ============================================================ */
+        .error-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+        }
+
+        .error-title span {
+            color: #dc3545;
+        }
+
+        .error-subtitle {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        /* ============================================================
+           MESSAGE D'ERREUR
+           ============================================================ */
+        .error-message-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 30px;
+            border-left: 4px solid #dc3545;
+            text-align: left;
+        }
+
+        .error-message-box p {
+            color: #334155;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .error-message-box i {
+            color: #dc3545;
+            margin-right: 10px;
+        }
+
+        .error-message-box .highlight {
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        /* ============================================================
+           BOUTONS
+           ============================================================ */
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #0d6efd;
+            color: white;
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(13, 110, 253, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #1a3c6e;
+            border: 2px solid #1a3c6e;
+        }
+
+        .btn-outline:hover {
+            background: #1a3c6e;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 53, 69, 0.4);
+        }
+
+        .btn i {
+            font-size: 15px;
+        }
+
+        /* ============================================================
+           CODE D'ERREUR (optionnel)
+           ============================================================ */
+        .error-code {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 550px) {
+            .error-card {
+                padding: 35px 25px 30px;
+            }
+
+            .error-title {
+                font-size: 20px;
+            }
+
+            .error-icon-bg {
+                width: 75px;
+                height: 75px;
+            }
+
+            .error-icon-bg i {
+                font-size: 32px;
+            }
+
+            .error-badge {
+                width: 24px;
+                height: 24px;
+            }
+
+            .error-badge i {
+                font-size: 10px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 12px 20px;
+            }
+
+            .error-subtitle {
+                font-size: 14px;
+            }
+
+            .error-message-box {
+                padding: 14px 16px;
+            }
+
+            .error-message-box p {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .error-card {
+                padding: 25px 18px 22px;
+            }
+
+            .error-title {
+                font-size: 17px;
+            }
+
+            .error-icon-bg {
+                width: 65px;
+                height: 65px;
+            }
+
+            .error-icon-bg i {
+                font-size: 28px;
+            }
+
+            .error-badge {
+                width: 20px;
+                height: 20px;
+            }
+
+            .error-badge i {
+                font-size: 9px;
+            }
+        }
+
+        /* ============================================================
+           RÉDUCTION DE MOUVEMENT
+           ============================================================ */
+        @media (prefers-reduced-motion: reduce) {
+            .error-card::before {
+                animation: none;
+            }
+
+            .error-icon-bg {
+                animation: none;
+            }
+
+            .error-badge {
+                animation: none;
+            }
+
+            .error-card:hover {
+                transform: none;
+            }
+
+            .btn {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="error-card">
+
+    <!-- ============================================================
+         ICÔNE
+         ============================================================ -->
+    <div class="error-icon-wrapper">
+        <div class="error-icon-bg">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <div class="error-badge">
+            <i class="fas fa-times"></i>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         TITRE
+         ============================================================ -->
+    <h1 class="error-title">
+        Oups ! <span>Erreur</span>
+    </h1>
+
+    <p class="error-subtitle">
+        Nous avons rencontré un problème lors du traitement de votre demande.
+    </p>
+
+    <!-- ============================================================
+         MESSAGE D'ERREUR DYNAMIQUE
+         ============================================================ -->
+    <div class="error-message-box" th:if="${errorMessage}">
+        <p>
+            <i class="fas fa-info-circle"></i>
+            <span class="highlight">Détail :</span>
+            <span th:text="${errorMessage}">Une erreur inattendue s'est produite.</span>
+        </p>
+    </div>
+
+    <div class="error-message-box" th:unless="${errorMessage}">
+        <p>
+            <i class="fas fa-info-circle"></i>
+            <span class="highlight">Détail :</span>
+            Une erreur inattendue s'est produite. Notre équipe a été informée.
+        </p>
+    </div>
+
+    <!-- ============================================================
+         BOUTONS
+         ============================================================ -->
+    <div class="btn-group">
+        <a href="/dashboard" class="btn btn-primary">
+            <i class="fas fa-tachometer-alt"></i>
+            Tableau de bord
+        </a>
+        <a href="javascript:history.back()" class="btn btn-outline">
+            <i class="fas fa-arrow-left"></i>
+            Retour
+        </a>
+        <button onclick="location.reload()" class="btn btn-danger">
+            <i class="fas fa-sync-alt"></i>
+            Réessayer
+        </button>
+    </div>
+
+    <!-- ============================================================
+         CODE D'ERREUR (optionnel)
+         ============================================================ -->
+    <div class="error-code" th:if="${statusCode}">
+        <span>Erreur </span>
+        <span th:text="${statusCode}">500</span>
+    </div>
+
+</div>
+
+</body>
+</html>

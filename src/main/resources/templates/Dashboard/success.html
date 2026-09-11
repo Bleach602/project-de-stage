@@ -1,0 +1,488 @@
+
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Paiement CamPay – IFP-PERLE D'OR</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* ============================================================
+           CHARTE IFP-PO (variables)
+           ============================================================ */
+        :root {
+            --bleu-cyan: #0096dc;
+            --bleu-cyan-fonce: #0072b3;
+            --bleu-cyan-gradient: linear-gradient(135deg, #0096dc 0%, #0072b3 100%);
+            --or: #d4af37;
+            --or-fonce: #b8860b;
+            --or-gradient: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            --blanc: #ffffff;
+            --blanc-casse: #f8fafc;
+            --gris-clair: #eef2f6;
+            --gris-medium: #d1d5db;
+            --gris-fonce: #6b7280;
+            --noir-clair: #1a1a1a;
+            --text-color: #1a1a1a;
+            --text-muted: #6b7280;
+            --shadow-lg: 0 15px 40px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.18);
+            --radius: 24px;
+            --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: var(--blanc-casse);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            background: var(--blanc);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gris-clair);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--bleu-cyan-gradient);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-xl);
+            transform: translateY(-4px);
+        }
+
+        /* ============================================================
+           EN-TÊTE
+           ============================================================ */
+        .payment-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin-bottom: 1.8rem;
+        }
+
+        .payment-header .brand-icon {
+            font-size: 2.2rem;
+            color: var(--bleu-cyan);
+            background: var(--bleu-cyan-gradient);
+            padding: 0.5rem;
+            border-radius: 14px;
+            color: white;
+        }
+
+        .payment-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--noir-clair);
+            letter-spacing: -0.02em;
+        }
+
+        .payment-header h2 span {
+            color: var(--or);
+            font-style: italic;
+            font-weight: 800;
+        }
+
+        .payment-header .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+            font-weight: 400;
+        }
+
+        /* ============================================================
+           LOADER
+           ============================================================ */
+        .loader-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 1.5rem 0 1rem;
+        }
+
+        .loader {
+            width: 70px;
+            height: 70px;
+            border: 5px solid var(--gris-clair);
+            border-top: 5px solid var(--bleu-cyan);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            transition: opacity 0.3s;
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .loader-text {
+            margin-top: 0.8rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ============================================================
+           TABLEAU DES INFORMATIONS
+           ============================================================ */
+        .payment-details {
+            margin: 1.8rem 0 2rem;
+            background: var(--blanc-casse);
+            border-radius: 16px;
+            padding: 0.5rem 0;
+            border: 1px solid var(--gris-clair);
+        }
+
+        .payment-details .row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            border-bottom: 1px solid var(--gris-clair);
+        }
+
+        .payment-details .row:last-child {
+            border-bottom: none;
+        }
+
+        .payment-details .label {
+            font-weight: 500;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        .payment-details .value {
+            font-weight: 600;
+            color: var(--text-color);
+            font-size: 1rem;
+            text-align: right;
+            word-break: break-word;
+        }
+
+        .payment-details .value.amount {
+            font-size: 1.2rem;
+            color: var(--bleu-cyan-fonce);
+            font-weight: 700;
+        }
+
+        /* ============================================================
+           STATUT
+           ============================================================ */
+        .status-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            margin: 0.5rem 0 1.8rem;
+            padding: 0.6rem 1rem;
+            background: var(--blanc-casse);
+            border-radius: 50px;
+            border: 1px solid var(--gris-clair);
+        }
+
+        #status {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #f59e0b;
+            transition: color 0.3s;
+        }
+
+        #status.success {
+            color: #22c55e;
+        }
+
+        #status.failed {
+            color: #ef4444;
+        }
+
+        /* ============================================================
+           BOUTON RETOUR
+           ============================================================ */
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.9rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            background: var(--bleu-cyan-gradient);
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(0, 150, 220, 0.25);
+            margin-top: 0.5rem;
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(0, 150, 220, 0.35);
+        }
+
+        .btn-back i {
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        .btn-back:hover i {
+            transform: translateX(-4px);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 600px) {
+            body {
+                padding: 1rem;
+            }
+
+            .card {
+                padding: 1.8rem 1.2rem;
+                border-radius: 20px;
+            }
+
+            .payment-header {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+
+            .payment-header h2 {
+                font-size: 1.3rem;
+            }
+
+            .payment-header .brand-icon {
+                font-size: 1.8rem;
+                padding: 0.4rem;
+                border-radius: 12px;
+            }
+
+            .loader {
+                width: 55px;
+                height: 55px;
+                border-width: 4px;
+            }
+
+            .payment-details .row {
+                padding: 0.6rem 0.8rem;
+                flex-wrap: wrap;
+                gap: 0.2rem;
+            }
+
+            .payment-details .value {
+                font-size: 0.9rem;
+                text-align: right;
+                width: auto;
+            }
+
+            .payment-details .value.amount {
+                font-size: 1.1rem;
+            }
+
+            #status {
+                font-size: 1rem;
+            }
+
+            .btn-back {
+                font-size: 0.9rem;
+                padding: 0.8rem 1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                padding: 1.2rem 0.8rem;
+                border-radius: 16px;
+            }
+
+            .payment-header h2 {
+                font-size: 1.1rem;
+            }
+
+            .payment-details .label {
+                font-size: 0.75rem;
+            }
+
+            .payment-details .value {
+                font-size: 0.8rem;
+            }
+
+            .payment-details .value.amount {
+                font-size: 1rem;
+            }
+
+            .btn-back {
+                font-size: 0.8rem;
+                padding: 0.7rem 0.8rem;
+            }
+        }
+
+        /* ============================================================
+           ANIMATION D'ENTRÉE
+           ============================================================ */
+        .card {
+            animation: cardIn 0.5s ease;
+        }
+
+        @keyframes cardIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <!-- En-tête -->
+    <div class="payment-header">
+        <i class="fas fa-credit-card brand-icon"></i>
+        <div>
+            <h2>IFP <span>PERLE D'OR</span></h2>
+            <div class="subtitle">Paiement sécurisé</div>
+        </div>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader-wrapper">
+        <div id="loader" class="loader"></div>
+        <p class="loader-text">Veuillez confirmer le paiement sur votre téléphone</p>
+    </div>
+
+    <!-- Détails -->
+    <div class="payment-details">
+        <div class="row">
+            <span class="label"><i class="fas fa-hashtag"></i> Référence</span>
+            <span class="value" id="reference" th:text="${paymentResult.reference}">--</span>
+        </div>
+        <div class="row">
+            <span class="label"><i class="fas fa-user"></i> Nom</span>
+            <span class="value" th:text="${Candidat.nom}">--</span>
+        </div>
+        <div class="row">
+            <span class="label"><i class="fas fa-phone"></i> Téléphone</span>
+            <span class="value" th:text="${paymentResult.phoneNumber}">--</span>
+        </div>
+        <div class="row">
+            <span class="label"><i class="fas fa-money-bill-wave"></i> Montant</span>
+            <span class="value amount" th:text="${paymentResult.montant} + ' XAF'">--</span>
+        </div>
+    </div>
+
+    <!-- Statut -->
+    <div class="status-container">
+        <i class="fas fa-circle" style="font-size: 0.6rem; color: #f59e0b;" id="statusDot"></i>
+        <span id="status">EN ATTENTE...</span>
+    </div>
+
+    <!-- Bouton retour -->
+    <a th:href="@{/candidat/dashboard}" class="btn-back">
+        <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+    </a>
+
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // Référence interne
+        const reference = document.getElementById("reference").innerText.trim();
+        const statusElement = document.getElementById("status");
+        const loader = document.getElementById("loader");
+        const statusDot = document.getElementById("statusDot");
+
+        function verifierPaiement() {
+            fetch("/Paiement/status/" + reference)
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.status === "SUCCESS") {
+                        statusElement.innerHTML = "✅ PAIEMENT CONFIRMÉ";
+                        statusElement.className = "success";
+                        statusDot.style.color = "#22c55e";
+                        loader.classList.add("hidden");
+                        clearInterval(timer);
+                    } else if (data.status === "FAILED") {
+                        statusElement.innerHTML = "❌ PAIEMENT REFUSÉ";
+                        statusElement.className = "failed";
+                        statusDot.style.color = "#ef4444";
+                        loader.classList.add("hidden");
+                        clearInterval(timer);
+                    } else if (data.status === "EXPIRED") {
+                        statusElement.innerHTML = "⌛ PAIEMENT EXPIRÉ";
+                        statusElement.className = "failed";
+                        statusDot.style.color = "#ef4444";
+                        loader.classList.add("hidden");
+                        clearInterval(timer);
+                    } else {
+                        statusElement.innerHTML = "⏳ EN ATTENTE...";
+                        statusElement.className = "";
+                        statusDot.style.color = "#f59e0b";
+                        loader.classList.remove("hidden");
+                    }
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la vérification :", error);
+                });
+        }
+
+        // Appel immédiat
+        verifierPaiement();
+
+        // Puis toutes les 3 secondes
+        const timer = setInterval(verifierPaiement, 3000);
+    })();
+</script>
+
+</body>
+</html>

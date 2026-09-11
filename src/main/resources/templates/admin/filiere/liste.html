@@ -1,0 +1,453 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="fr"
+      th:replace="~{admin/layouts/admin_layout :: layout(~{::section})}">
+<body>
+<section>
+
+    <link rel="stylesheet" th:href="@{/css/adminCSS/filiereCSS.css}">
+
+    <div class="main-header">
+        <div>
+            <h1>Gestion des filières et spécialités</h1>
+            <p>Gérez vos filières et les spécialités qui leur sont associées.</p>
+        </div>
+        <a id="openModalBtn" class="btn btn-primary">
+            <i class='bx bx-plus'></i> Nouvelle filière
+        </a>
+    </div>
+
+    <div style="max-width: 1200px; margin: 0 auto 1.5rem auto;">
+        <div class="status-pill active" th:if="${successMessage}"
+             style="background-color: #ecfdf5; color: #065f46; padding: 1rem; width: 100%; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; border: 1px solid #a7f3d0; border-radius: 8px;">
+            <i class='bx bx-check-circle' style="font-size: 1.2rem;"></i>
+            <span th:text="${successMessage}"></span>
+        </div>
+        <div class="status-pill inactive" th:if="${errorMessage}"
+             style="background-color: #fef2f2; color: #991b1b; padding: 1rem; width: 100%; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; border: 1px solid #fca5a5; border-radius: 8px;">
+            <i class='bx bx-error-circle' style="font-size: 1.2rem;"></i>
+            <span th:text="${errorMessage}"></span>
+        </div>
+    </div>
+
+    <div class="dashboard-container">
+
+        <div class="panel">
+            <div class="panel-title">
+                Liste des filières <span class="count-badge" th:text="${#lists.size(filieres)}">0</span>
+            </div>
+
+            <div class="filiere-list" style="max-height: 55vh; overflow-y: auto; padding-right: 8px;">
+                <a th:each="f, iter : ${filieres}"
+                   th:href="@{/dashboard/filieres(filiereId=${f.id})}"
+                   class="filiere-card"
+                   th:classappend="${filiereSelectionnee != null && filiereSelectionnee.id == f.id} ? 'active' : ''">
+
+                    <div class="avatar-badge"
+                         th:classappend="${iter.index == 1} ? 'avatar-i' : (${iter.index == 2} ? 'avatar-s' : (${iter.index == 3} ? 'avatar-e' : ''))"
+                         th:text="${#strings.substring(f.nom,0,1).toUpperCase()}">G</div>
+
+                    <div class="card-info">
+                        <div class="name text-truncate" th:text="${f.nom}" th:title="${f.nom}">Gestion</div>
+                        <div class="sub">
+                            <span th:text="${f.sigle} + ' - ' + ${f.limitePlaces} + ' places'">GEST - 150 places</span>
+                            <span class="status-pill"
+                                  th:classappend="${f.statutFiliere.name() == 'OUVERTE'} ? 'active' : 'inactive'"
+                                  th:text="${f.statutFiliere.name() == 'OUVERTE'} ? 'Ouverte' : 'Fermée'">Actif
+                            </span>
+                        </div>
+                    </div>
+                    <i class='bx bx-chevron-right chevron-right'></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="panel">
+
+            <div th:if="${filiereSelectionnee == null}" class="empty-state">
+                <i class='bx bx-select-multiple'></i>
+                <p>Sélectionnez une filière dans la liste de gauche pour afficher ses détails et ses spécialités.</p>
+            </div>
+
+            <div th:if="${filiereSelectionnee != null}">
+
+                <div class="details-header">
+                    <div class="meta-title">
+                        <div class="avatar-badge" th:text="${#strings.substring(filiereSelectionnee.nom,0,1).toUpperCase()}">G</div>
+                        <div style="min-width: 0; flex: 1;">
+                            <div class="filiere-title-wrapper">
+                                <h2 class="filiere-title-text" th:title="${filiereSelectionnee.nom} + ' (' + ${filiereSelectionnee.sigle} + ')'">
+                                    <span th:text="${filiereSelectionnee.nom} + ' (' + ${filiereSelectionnee.sigle} + ')'">Gestion</span>
+                                </h2>
+                                <span class="status-pill"
+                                      th:classappend="${filiereSelectionnee.statutFiliere.name() == 'OUVERTE'} ? 'active' : 'inactive'"
+                                      th:text="${filiereSelectionnee.statutFiliere.name() == 'OUVERTE'} ? 'Ouverte' : 'Fermée'">Actif</span>
+                            </div>
+                            <p class="subtitle">Limite de places : <span class="count-badge" style="background:#0061ff; color:white;" th:text="${filiereSelectionnee.limitePlaces}">150</span></p>
+                        </div>
+                    </div>
+                    <div class="actions-top">
+                        <a href="#"
+                           class="btn btn-outline btn-edit-filiere"
+                           title="Modifier la filière"
+                           th:data-id="${filiereSelectionnee.id}"
+                           th:data-nom="${filiereSelectionnee.nom}"
+                           th:data-sigle="${filiereSelectionnee.sigle}"
+                           th:data-limite-places="${filiereSelectionnee.limitePlaces}">
+                            <i class='bx bx-edit-alt'></i> Modifier
+                        </a>
+                        <form th:action="@{/dashboard/filieres/{id}/changer-statut(id=${filiereSelectionnee.id})}"
+                              method="post" style="display: inline;">
+                            <button type="submit" class="btn btn-outline"
+                                    th:classappend="${#strings.toString(filiereSelectionnee.statutFiliere) == 'OUVERTE' ? 'danger' : 'success'}"
+                                    title="Changer le statut">
+                                <i class='bx bx-power-off'></i>
+                                <span th:text="${#strings.toString(filiereSelectionnee.statutFiliere) == 'OUVERTE' ? 'Désactiver' : 'Activer'}">Activer/Désactiver</span>
+                            </button>
+                        </form>
+                        <form th:action="@{/dashboard/filieres/{id}/supprimer(id=${filiereSelectionnee.id})}"
+                              method="post" style="display:inline;" onsubmit="return confirm('La suppression concernera les spécialités associées');">
+                            <button type="submit" class="btn btn-danger-outline" style="color: #dc3545; border-color: #dc3545;">
+                                <i class='bx bx-trash'></i> Supprimer
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="section-sub-title">
+                    <h3>Spécialités de cette filière <span class="count-badge" th:text="${#lists.size(specialites)}">4</span></h3>
+                    <button id="openSpecModalBtn" class="btn btn-primary" th:if="${filiereSelectionnee != null}">
+                        <i class='bx bx-plus'></i> Ajouter une spécialité
+                    </button>
+                </div>
+
+                <div style="overflow-x: auto;">
+
+                    <table>
+                        <thead>
+                        <tr>
+                            <th style="width: 50px;">#</th>
+                            <th style="width: 230px;">Nom</th>
+                            <th>Frais préinscription</th>
+                            <th>Tranche 1</th>
+                            <th>Tranche 2</th>
+                            <th>Tranche 3</th>
+                            <th style="width: 90px;">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${#lists.isEmpty(specialites)}">
+                            <td colspan="7" style="text-align:center; padding: 2rem; color: var(--color-text-secondary);">Aucune spécialité enregistrée pour le moment.</td>
+                        </tr>
+                        <tr th:each="spec, stat : ${specialites}">
+                            <td th:text="${stat.count}" style="font-weight: 600; color: var(--color-text-secondary);">1</td>
+                            <td class="cell-truncate" th:text="${spec.nom}" th:title="${spec.nom}" style="font-weight: 600;">Comptabilité</td>
+                            <td th:text="${#numbers.formatDecimal(spec.fraisPreInscription, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'">10 000 FCFA</td>
+                            <td th:text="${#numbers.formatDecimal(spec.tranche1, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'">50 000 FCFA</td>
+                            <td th:text="${#numbers.formatDecimal(spec.tranche2, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'">50 000 FCFA</td>
+                            <td th:text="${#numbers.formatDecimal(spec.tranche3, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'">50 000 FCFA</td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <a href="#" class="btn-action-square btn-edit-specialite" title="Modifier la spécialité"
+                                       th:data-id="${spec.id}"
+                                       th:data-filiere-id="${filiereSelectionnee?.id}"
+                                       th:data-nom="${spec.nom}"
+                                       th:data-description="${spec.description}"
+                                       th:data-frais="${spec.fraisPreInscription}"
+                                       th:data-tranche1="${spec.tranche1}"
+                                       th:data-tranche2="${spec.tranche2}"
+                                       th:data-tranche3="${spec.tranche3}">
+                                        <i class='bx bx-edit-alt'></i>
+                                    </a>
+                                    <form th:action="@{/dashboard/filieres/{filiereId}/specialites/{id}/supprimer(filiereId=${filiereSelectionnee.id}, id=${spec.id})}"
+                                          method="post"
+                                          onclick="return confirm('Voulez-vous vraiment supprimer cette specialité ?')"
+                                          style="display:inline;">
+                                        <button type="submit" class="btn-action-square danger" title="Supprimer">
+                                            <i class='bx bx-trash'></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- MODAL POUR LE FORMULAIRE D'AJOUT D'UNE FILIERE -->
+    <style>
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.5); backdrop-filter: blur(4px); z-index: 9999; justify-content: center; align-items: center; }
+        .modal-container { background: #ffffff; padding: 1.75rem 2rem; border-radius: 16px; width: 100%; max-width: 520px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1); animation: modalFadeIn 0.2s ease-out; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .modal-header h3 { font-size: 1.25rem; font-weight: 700; color: #0f172a; margin: 0; }
+        .btn-close-icon { background: transparent; border: none; font-size: 1.5rem; color: #64748b; cursor: pointer; line-height: 1; padding: 4px; border-radius: 6px; transition: all 0.2s; }
+        .btn-close-icon:hover { background-color: #f1f5f9; color: #0f172a; }
+        .form-group { margin-bottom: 1.25rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.875rem; font-weight: 600; color: #334155; }
+        .form-control { width: 100%; padding: 0.625rem 0.875rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.95rem; color: #0f172a; background-color: #f8fafc; transition: border-color 0.2s, box-shadow 0.2s; outline: none; }
+        .form-control:focus { border-color: #f59e0b; background-color: #ffffff; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .modal-footer { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.75rem; padding-top: 1.25rem; border-top: 1px solid #f1f5f9; }
+        .btn-secondary-modal { background-color: #f1f5f9; color: #475569; border: none; padding: 0.625rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; }
+        .btn-secondary-modal:hover { background-color: #e2e8f0; }
+        .btn-primary-modal { background-color: #f59e0b; color: #ffffff; border: none; padding: 0.625rem 1.25rem; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; }
+        .btn-primary-modal:hover { background-color: #d97706; }
+    </style>
+
+    <div id="filiereModal" class="modal-overlay">
+        <div class="modal-container">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: #0061ff; color: white; padding: 10px; border-radius: 8px; display: flex;">
+                    <i class='bx bx-grid-alt' style="font-size: 1.5rem;"></i>
+                </div>
+                <div>
+                    <h3 style="font-size: 1.4rem; margin: 0; color: #0f172a;">Ajouter une filière</h3>
+                    <p style="margin: 0; color: #64748b; font-size: 0.9rem;">Remplissez les informations pour ajouter une nouvelle filière.</p>
+                </div>
+            </div>
+
+            <form th:action="@{/dashboard/filieres/creer}" th:object="${filiereDTO}" method="POST">
+                <div class="form-group">
+                    <label>Nom de la filière <span>*</span></label>
+                    <input type="text" th:field="*{nom}" class="form-control" placeholder="Entrez le nom de la filière"/>
+                </div>
+                <div class="form-group">
+                    <label>Sigle <span>*</span></label>
+                    <input type="text" th:field="*{sigle}" class="form-control" placeholder="Entrez le sigle de la filière"/>
+                </div>
+                <div class="form-group">
+                    <label>Limite de places <span>*</span></label>
+                    <input type="number" th:field="*{limitePlaces}" class="form-control" placeholder="Entrez la limite de places" min="1" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="closeModalBtn" class="btn" style="background: #e2e8f0; color: #475569;">
+                        <i class='bx bx-arrow-back'></i> Retour
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class='bx bx-plus'></i> Ajouter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('filiereModal');
+        const openBtn = document.getElementById('openModalBtn');
+        const closeBtn = document.getElementById('closeModalBtn');
+
+        openBtn.addEventListener('click', () => { modal.style.display = 'flex'; });
+        closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+        window.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+    </script>
+
+    <div id="specialiteModal" class="modal-overlay">
+        <div class="modal-container">
+            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: #0061ff; color: white; padding: 10px; border-radius: 8px; display: flex;">
+                    <i class='bx bx-git-branch' style="font-size: 1.5rem;"></i>
+                </div>
+                <div>
+                    <h3 style="font-size: 1.4rem; margin: 0; color: #0f172a;">Ajouter une spécialité</h3>
+                    <p style="margin: 0; color: #64748b; font-size: 0.9rem;">
+                        Filière parente : <strong th:if="${filiereSelectionnee != null}" th:text="${filiereSelectionnee.nom}">Filière</strong>
+                    </p>
+                </div>
+            </div>
+
+            <form th:action="${filiereSelectionnee != null} ? @{/dashboard/filieres/{filiereId}/specialites/creer(filiereId=${filiereSelectionnee.id})} : '#'"
+                  th:object="${specialiteDTO}" method="POST">
+                <div class="form-group">
+                    <label>Nom de la spécialité <span>*</span></label>
+                    <input type="text" th:field="*{nom}" class="form-control" placeholder="Entrez le nom de la spécialité" required />
+                </div>
+                <div class="form-group">
+                    <label>Description de la spécialité <span>(facultatif)</span></label>
+                    <input type="text" th:field="*{description}" class="form-control" />
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Frais de préinscription <span>*</span></label>
+                        <input type="number" th:field="*{fraisPreInscription}" class="form-control" required min="0" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tranche 1 <span>*</span></label>
+                        <input type="number" th:field="*{tranche1}" class="form-control" placeholder="Montant Tranche 1" required min="0" />
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div class="form-group">
+                        <label>Tranche 2 <span>*</span></label>
+                        <input type="number" th:field="*{tranche2}" class="form-control" placeholder="Montant Tranche 2" required min="0" />
+                    </div>
+                    <div class="form-group">
+                        <label>Tranche 3 <span>*</span></label>
+                        <input type="number" th:field="*{tranche3}" class="form-control" placeholder="Montant Tranche 3" required min="0" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="closeSpecModalBtn" class="btn" style="background: #e2e8f0; color: #475569;">
+                        <i class='bx bx-arrow-back'></i> Retour
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class='bx bx-plus'></i> Ajouter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const specModal = document.getElementById('specialiteModal');
+        const openSpecBtn = document.getElementById('openSpecModalBtn');
+        const closeSpecBtn = document.getElementById('closeSpecModalBtn');
+
+        if (openSpecBtn) openSpecBtn.addEventListener('click', () => { specModal.style.display = 'flex'; });
+        closeSpecBtn.addEventListener('click', () => { specModal.style.display = 'none'; });
+        window.addEventListener('click', (e) => { if (e.target === specModal) specModal.style.display = 'none'; });
+    </script>
+
+    <!-- MODAL MODIFICATION FILIÈRE -->
+    <div class="modal-overlay" id="editFiliereModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Modifier la Filière</h3>
+                <button type="button" class="btn-close-icon close-modal">&times;</button>
+            </div>
+            <form id="editFiliereForm" th:action="@{/dashboard/filieres/modifier}" method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="editFiliereId" name="id" />
+                    <div class="form-group">
+                        <label for="editFiliereNom">Nom de la filière</label>
+                        <input type="text" class="form-control" id="editFiliereNom" name="nom" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editFiliereSigle">Sigle</label>
+                        <input type="text" class="form-control" id="editFiliereSigle" name="sigle" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editFiliereLimitePlaces">Limite de places</label>
+                        <input type="number" class="form-control" id="editFiliereLimitePlaces" name="limitePlaces" min="1" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary-modal close-modal">Annuler</button>
+                    <button type="submit" class="btn-primary-modal">Enregistrer les modifications</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL MODIFICATION SPÉCIALITÉ -->
+    <div class="modal-overlay" id="editSpecialiteModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Modifier la Spécialité</h3>
+                <button type="button" class="btn-close-icon close-modal">&times;</button>
+            </div>
+            <form id="editSpecialiteForm"
+                  th:action="${filiereSelectionnee != null} ? @{/dashboard/filieres/{filiereId}/specialites/modifier(filiereId=${filiereSelectionnee.id})} : '#'"
+                  method="post">
+                <div class="modal-body">
+                    <input type="hidden" id="editSpecialiteId" name="id" />
+                    <input type="hidden" id="editSpecialiteFiliereId" name="filiereId" />
+                    <div class="form-group">
+                        <label for="editSpecialiteNom">Nom de la spécialité</label>
+                        <input type="text" class="form-control" id="editSpecialiteNom" name="nom" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="editSpecialiteDescription">Description de la spécialité</label>
+                        <input type="text" class="form-control" id="editSpecialiteDescription" name="description" rows="3" />
+                    </div>
+                    <div class="form-group">
+                        <label for="editSpecialiteFrais">Frais de préinscription (FCFA)</label>
+                        <input type="number" class="form-control" id="editSpecialiteFrais" name="fraisPreInscription" />
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editSpecialiteTranche1">Tranche 1</label>
+                            <input type="number" class="form-control" id="editSpecialiteTranche1" name="tranche1" />
+                        </div>
+                        <div class="form-group">
+                            <label for="editSpecialiteTranche2">Tranche 2</label>
+                            <input type="number" class="form-control" id="editSpecialiteTranche2" name="tranche2" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="editSpecialiteTranche3">Tranche 3</label>
+                        <input type="number" class="form-control" id="editSpecialiteTranche3" name="tranche3" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary-modal close-modal">Annuler</button>
+                    <button type="submit" class="btn-primary-modal">Enregistrer les modifications</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const editFiliereModal = document.getElementById('editFiliereModal');
+            document.querySelectorAll('.btn-edit-filiere').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const idInput = document.getElementById('editFiliereId');
+                    const nomInput = document.getElementById('editFiliereNom');
+                    const sigleInput = document.getElementById('editFiliereSigle');
+                    const placesInput = document.getElementById('editFiliereLimitePlaces');
+                    if (idInput) idInput.value = this.getAttribute('data-id') || '';
+                    if (nomInput) nomInput.value = this.getAttribute('data-nom') || '';
+                    if (sigleInput) sigleInput.value = this.getAttribute('data-sigle') || '';
+                    if (placesInput) placesInput.value = this.getAttribute('data-limite-places') || '';
+                    if (editFiliereModal) editFiliereModal.style.display = 'flex';
+                });
+            });
+
+            const editSpecialiteModal = document.getElementById('editSpecialiteModal');
+            document.querySelectorAll('.btn-edit-specialite').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const specIdInput = document.getElementById('editSpecialiteId');
+                    if (specIdInput) specIdInput.value = this.getAttribute('data-id') || '';
+                    const filiereIdInput = document.getElementById('editSpecialiteFiliereId');
+                    if (filiereIdInput) filiereIdInput.value = this.getAttribute('data-filiere-id') || '';
+                    const nomInput = document.getElementById('editSpecialiteNom');
+                    const fraisInput = document.getElementById('editSpecialiteFrais');
+                    if (nomInput) nomInput.value = this.getAttribute('data-nom') || '';
+                    if (fraisInput) fraisInput.value = this.getAttribute('data-frais') || '';
+                    const descInput = document.getElementById('editSpecialiteDescription');
+                    if (descInput) descInput.value = this.getAttribute('data-description') || '';
+                    const t1 = document.getElementById('editSpecialiteTranche1');
+                    const t2 = document.getElementById('editSpecialiteTranche2');
+                    const t3 = document.getElementById('editSpecialiteTranche3');
+                    if (t1) t1.value = this.getAttribute('data-tranche1') || '';
+                    if (t2) t2.value = this.getAttribute('data-tranche2') || '';
+                    if (t3) t3.value = this.getAttribute('data-tranche3') || '';
+                    if (editSpecialiteModal) editSpecialiteModal.style.display = 'flex';
+                });
+            });
+
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    if (editFiliereModal) editFiliereModal.style.display = 'none';
+                    if (editSpecialiteModal) editSpecialiteModal.style.display = 'none';
+                });
+            });
+
+            window.addEventListener('click', function (e) {
+                if (e.target === editFiliereModal) editFiliereModal.style.display = 'none';
+                if (e.target === editSpecialiteModal) editSpecialiteModal.style.display = 'none';
+            });
+        });
+    </script>
+
+</section>
+
+</body>
+</html>

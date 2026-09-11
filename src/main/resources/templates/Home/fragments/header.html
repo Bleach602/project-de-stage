@@ -1,0 +1,57 @@
+
+
+<!-- ============================================================
+   NAVBAR
+   ============================================================ -->
+
+<div th:fragment="header">
+
+<header class="navbar-container" >
+    <nav class="navbar">
+        <a href="#accueil" class="nav-brand">
+            <div class="logo-placeholder">
+                <img th:src="@{/img/logo.jpg}" alt="Logo IFP-PO Les Perles d'Or">
+            </div>
+            <div class="brand-text">
+                <span class="brand-name">IFP-<span class="or">PERLE D'OR</span></span>
+                <span class="brand-sub">Les Perles d'Or</span>
+            </div>
+        </a>
+
+        <div class="nav-controls">
+            <button class="menu-toggle" id="mobileMenu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#accueil" class="nav-item active">Accueil</a></li>
+            <li><a href="#about" class="nav-item">À propos</a></li>
+            <li><a href="#filiere" class="nav-item">Nos formations</a></li>
+            <li><a href="#debouches" class="nav-item">Débouchés</a></li>
+            <li><a href="#equipe" class="nav-item">Équipe</a></li>
+            <li><a href="#actus" class="nav-item">Actualités</a></li>
+            <li><a th:href="@{/archive}" class="nav-item">Archives</a></li>
+            <li><a href="#contact" class="nav-item">Contact</a></li>
+            <li><a th:href="@{/login}" class="nav-item btn-inscription-nav">📝 S'inscrire</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- ============================================================
+AGRÉMENT MINISTÉRIEL
+============================================================ -->
+<div class="agrement-banner">
+    <div class="container">
+        <p>
+            <i class="fas fa-certificate"></i>
+            Agrément Ministériel : <strong>N° 00000444/MINEFOP/SG/DFOP/SDGSF/CSACD/CBAC</strong> du 19 Nov. 2021
+            &nbsp;•&nbsp; Sous la tutelle du <strong>MINEFOP</strong>
+        </p>
+    </div>
+</div>
+
+</div>
+

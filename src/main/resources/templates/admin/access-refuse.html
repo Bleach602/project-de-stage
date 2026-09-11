@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Acces refuse</title>
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/access-refuse.css}">
+</head>
+<body>
+<div class="card" style="max-width:480px; margin:80px auto; text-align:center; padding:40px;">
+    <i class='bx bx-lock-alt' style="font-size:48px; color:var(--color-danger);"></i>
+    <h2 style="margin:16px 0; color:var(--color-primary);">Acces refuse</h2>
+    <p style="color:#8A93A3; margin-bottom:24px;">
+       Vous n'avez pas la permission nécéssaire pour accéder a cette page.
+    </p>
+    <a th:href="@{/dashboard}" class="btn btn-primary">
+        <i class='bx bx-arrow-back'></i> Retour au tableau de bord
+    </a>
+</div>
+</body>
+</html>
+
+<!--
+<div class="card" style="max-width:480px; margin:80px auto; text-align:center; padding:40px;">
+    <i class='bx bx-lock-alt' style="font-size:48px; color:var(--color-danger);"></i>
+    <h2 style="margin:16px 0; color:var(--color-primary);">Acces refuse</h2>
+    <p style="color:#8A93A3; margin-bottom:24px;">
+        Vous n'avez pas la permission necessaire pour acceder a cette page.
+    </p>
+    <a th:href="@{/dashboard}" class="btn btn-primary">
+        <i class='bx bx-arrow-back'></i> Retour au tableau de bord
+    </a>
+</div>
+-->

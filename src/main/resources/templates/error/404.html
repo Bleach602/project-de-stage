@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page non trouvée - IFFPO</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        /* ============================================================
+           CONTAINER
+           ============================================================ */
+        .error-container {
+            max-width: 700px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 60px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .error-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #1a3c6e, #2d6a9f, #1a3c6e);
+            background-size: 200% 100%;
+            animation: gradientMove 3s ease-in-out infinite;
+        }
+
+        @keyframes gradientMove {
+            0%, 100% { background-position: 0% 0%; }
+            50% { background-position: 100% 0%; }
+        }
+
+        /* ============================================================
+           DECORATIVE ELEMENTS
+           ============================================================ */
+        .error-decoration {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+
+        .error-decoration-1 {
+            width: 300px;
+            height: 300px;
+            background: #1a3c6e;
+            top: -150px;
+            right: -150px;
+        }
+
+        .error-decoration-2 {
+            width: 200px;
+            height: 200px;
+            background: #2d6a9f;
+            bottom: -100px;
+            left: -100px;
+        }
+
+        /* ============================================================
+           ICON
+           ============================================================ */
+        .error-icon-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .error-icon-circle {
+            width: 120px;
+            height: 120px;
+            background: #f0f4f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .error-icon-circle i {
+            font-size: 60px;
+            color: #1a3c6e;
+        }
+
+        .error-404-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #e74c3c;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 30px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* ============================================================
+           TEXT CONTENT
+           ============================================================ */
+        .error-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a3c6e;
+            margin-bottom: 10px;
+        }
+
+        .error-subtitle {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .error-message {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-bottom: 35px;
+            border-left: 4px solid #1a3c6e;
+            text-align: left;
+        }
+
+        .error-message p {
+            color: #34495e;
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .error-message .highlight {
+            color: #1a3c6e;
+            font-weight: 600;
+        }
+
+        /* ============================================================
+           QUICK LINKS
+           ============================================================ */
+        .error-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #1a3c6e;
+            color: white;
+            box-shadow: 0 4px 15px rgba(26, 60, 110, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #2d6a9f;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 60, 110, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #1a3c6e;
+            border: 2px solid #1a3c6e;
+        }
+
+        .btn-outline:hover {
+            background: #1a3c6e;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .btn-success:hover {
+            background: #2ecc71;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        .btn i {
+            font-size: 16px;
+        }
+
+        /* ============================================================
+           HELPFUL LINKS
+           ============================================================ */
+        .helpful-links {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid #ecf0f1;
+            width: 100%;
+        }
+
+        .helpful-links-title {
+            font-size: 13px;
+            color: #95a5a6;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .helpful-links-grid {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .helpful-link {
+            color: #2d6a9f;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .helpful-link:hover {
+            color: #1a3c6e;
+            transform: translateX(3px);
+        }
+
+        .helpful-link i {
+            font-size: 14px;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 600px) {
+            .error-container {
+                padding: 40px 25px;
+            }
+
+            .error-title {
+                font-size: 22px;
+            }
+
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .error-icon-circle {
+                width: 90px;
+                height: 90px;
+            }
+
+            .error-icon-circle i {
+                font-size: 40px;
+            }
+
+            .error-404-badge {
+                font-size: 12px;
+                padding: 4px 10px;
+            }
+
+            .helpful-links-grid {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .error-message {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .error-container {
+                padding: 30px 15px;
+            }
+
+            .error-title {
+                font-size: 18px;
+            }
+        }
+
+        /* ============================================================
+           REDUCED MOTION
+           ============================================================ */
+        @media (prefers-reduced-motion: reduce) {
+            .error-container::before {
+                animation: none;
+            }
+
+            .error-icon-circle {
+                animation: none;
+            }
+
+            .error-404-badge {
+                animation: none;
+            }
+
+            .btn {
+                transition: none;
+            }
+
+            .helpful-link {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="error-container">
+
+    <!-- Decorative Elements -->
+    <div class="error-decoration error-decoration-1"></div>
+    <div class="error-decoration error-decoration-2"></div>
+
+    <!-- Icon -->
+    <div class="error-icon-wrapper">
+        <div class="error-icon-circle">
+            <i class="fas fa-map-signs"></i>
+        </div>
+        <div class="error-404-badge">404</div>
+    </div>
+
+    <!-- Title -->
+    <h1 class="error-title">Page non trouvée</h1>
+    <p class="error-subtitle">
+        Oups ! La page que vous recherchez semble avoir disparu ou n'existe pas.
+    </p>
+
+    <!-- Error Message -->
+    <div class="error-message">
+        <p>
+            <i class="fas fa-info-circle" style="color: #1a3c6e; margin-right: 10px;"></i>
+            <span class="highlight">Erreur 404</span> — La ressource demandée n'est pas disponible.
+            Vérifiez l'URL ou utilisez les liens ci-dessous pour naviguer.
+        </p>
+    </div>
+
+    <!-- Actions -->
+    <div class="error-actions">
+        <div class="btn-group">
+            <a href="/" class="btn btn-primary">
+                <i class="fas fa-home"></i>
+                Accueil
+            </a>
+            <a href="javascript:history.back()" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i>
+                Retour
+            </a>
+            <a href="/candidat/fiche" class="btn btn-success" th:if="${#authentication != null && #authentication.authenticated}">
+                <i class="fas fa-id-card"></i>
+                Ma fiche
+            </a>
+        </div>
+
+        <!-- Helpful Links -->
+        <div class="helpful-links">
+            <div class="helpful-links-title">Liens utiles</div>
+            <div class="helpful-links-grid">
+                <a href="/" class="helpful-link">
+                    <i class="fas fa-chevron-right"></i> Accueil
+                </a>
+                <a href="/contact" class="helpful-link">
+                    <i class="fas fa-chevron-right"></i> Contact
+                </a>
+                <a href="/formations" class="helpful-link">
+                    <i class="fas fa-chevron-right"></i> Formations
+                </a>
+                <a href="/faq" class="helpful-link">
+                    <i class="fas fa-chevron-right"></i> FAQ
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erreur - IFFPO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8edf5 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .error-container {
+            max-width: 650px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            padding: 50px 40px;
+            text-align: center;
+        }
+
+        .error-icon {
+            font-size: 70px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+
+        .error-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a3c6e;
+            margin-bottom: 10px;
+        }
+
+        .error-subtitle {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .error-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            color: #34495e;
+            font-size: 14px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 30px;
+            background: #1a3c6e;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(26, 60, 110, 0.3);
+        }
+
+        .btn:hover {
+            background: #2d6a9f;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(26, 60, 110, 0.4);
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .error-code {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #bdc3c7;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 500px) {
+            .error-container {
+                padding: 30px 20px;
+            }
+            .error-title {
+                font-size: 22px;
+            }
+            .error-icon {
+                font-size: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="error-container">
+    <div class="error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+    </div>
+
+    <h1 class="error-title" th:text="${errorTitle} ?: 'Une erreur est survenue'">
+        Une erreur est survenue
+    </h1>
+
+    <p class="error-subtitle" th:text="${errorMessage} ?: 'Nous rencontrons un problème technique. Veuillez réessayer plus tard.'">
+        Nous rencontrons un problème technique. Veuillez réessayer plus tard.
+    </p>
+
+    <div class="error-details" th:if="${errorDetails}">
+        <span th:text="${errorDetails}"></span>
+    </div>
+
+    <a href="/" class="btn">
+        <i class="fas fa-home"></i>
+        Retour à l'accueil
+    </a>
+
+    <div class="error-code" th:text="'Erreur ' + ${statusCode}">Erreur 500</div>
+</div>
+</body>
+</html>

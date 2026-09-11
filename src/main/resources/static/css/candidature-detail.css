@@ -1,0 +1,1848 @@
+/* =========================================================
+   GESTION D'UNE CANDIDATURE
+   UI PREMIUM — RESPONSIVE PC / TABLETTE / MOBILE
+   ========================================================= */
+
+
+/* =========================================================
+   1. VARIABLES
+   ========================================================= */
+
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-light: #eff6ff;
+    --primary-soft: #dbeafe;
+
+    --success: #10b981;
+    --success-hover: #059669;
+    --success-light: #ecfdf5;
+    --success-border: #a7f3d0;
+    --success-text: #065f46;
+
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --danger-light: #fef2f2;
+    --danger-border: #fecaca;
+    --danger-text: #991b1b;
+
+    --warning: #f59e0b;
+    --warning-hover: #d97706;
+    --warning-light: #fffbeb;
+    --warning-border: #fde68a;
+    --warning-text: #92400e;
+
+    --info-light: #f0f9ff;
+    --info-border: #bae6fd;
+    --info-text: #075985;
+
+    --bg-main: #f8fafc;
+    --surface: #ffffff;
+    --surface-soft: #f8fafc;
+
+    --border: #e2e8f0;
+    --border-light: #eef2f7;
+
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --text-muted: #94a3b8;
+
+    --radius-xs: 6px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-full: 9999px;
+
+    --shadow-xs:
+            0 1px 2px rgba(15, 23, 42, .04);
+
+    --shadow-sm:
+            0 1px 3px rgba(15, 23, 42, .06),
+            0 1px 2px rgba(15, 23, 42, .04);
+
+    --shadow-md:
+            0 4px 12px rgba(15, 23, 42, .08),
+            0 2px 4px rgba(15, 23, 42, .04);
+
+    --shadow-lg:
+            0 12px 30px rgba(15, 23, 42, .12);
+
+    --transition:
+            all .2s cubic-bezier(.4, 0, .2, 1);
+}
+
+
+/* =========================================================
+   2. RESET / BASE
+   ========================================================= */
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+
+    background: var(--bg-main);
+    color: var(--text-primary);
+
+    font-family:
+            Inter,
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Oxygen,
+            Ubuntu,
+            Cantarell,
+            sans-serif;
+
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* =========================================================
+   3. CONTENEUR PRINCIPAL
+   ========================================================= */
+
+.main-wrapper {
+    width: 100%;
+    max-width: 1440px;
+
+    margin: 0 auto;
+
+    padding:
+            clamp(1rem, 2.5vw, 2.5rem);
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   4. LIEN RETOUR
+   ========================================================= */
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+
+    gap: .5rem;
+
+    max-width: 100%;
+
+    margin-bottom: 1rem;
+
+    color: var(--text-secondary);
+    text-decoration: none;
+
+    font-size: .9rem;
+    font-weight: 500;
+
+    transition: var(--transition);
+}
+
+.back-link i {
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+
+.back-link:hover {
+    color: var(--primary);
+}
+
+.back-link:hover i {
+    transform: translateX(-3px);
+}
+
+
+/* =========================================================
+   5. TITRE
+   ========================================================= */
+
+.page-title {
+    display: flex;
+    align-items: center;
+
+    gap: .65rem;
+
+    width: 100%;
+    min-width: 0;
+
+    margin: 0 0 1.5rem;
+
+    color: var(--text-primary);
+
+    font-size: clamp(1.35rem, 2.5vw, 2rem);
+    line-height: 1.25;
+    font-weight: 750;
+
+    letter-spacing: -.025em;
+}
+
+.page-title i {
+    flex-shrink: 0;
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   6. ALERTES / TOASTS
+   ========================================================= */
+
+.toast,
+.alert-info,
+.alert-warning,
+.statut-banniere {
+    display: flex;
+    align-items: flex-start;
+
+    gap: .75rem;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-bottom: 1.25rem;
+    padding: .9rem 1rem;
+
+    border-radius: var(--radius-md);
+
+    font-size: .9rem;
+    font-weight: 500;
+
+    box-shadow: var(--shadow-xs);
+
+    overflow-wrap: anywhere;
+}
+
+.toast i,
+.alert-info i,
+.alert-warning i,
+.statut-banniere i {
+    flex-shrink: 0;
+
+    margin-top: .1rem;
+
+    font-size: 1.1rem;
+}
+
+
+/* Succès */
+
+.toast-succes {
+    background: var(--success-light);
+    border: 1px solid var(--success-border);
+    color: var(--success-text);
+}
+
+
+/* Erreur */
+
+.toast-erreur {
+    background: var(--danger-light);
+    border: 1px solid var(--danger-border);
+    color: var(--danger-text);
+}
+
+
+/* Information */
+
+.alert-info {
+    background: var(--primary-light);
+    border: 1px solid var(--primary-soft);
+    color: #1e40af;
+}
+
+
+/* Avertissement */
+
+.alert-warning {
+    background: var(--warning-light);
+    border: 1px solid var(--warning-border);
+    color: var(--warning-text);
+}
+
+
+/* Statut */
+
+.statut-banniere {
+    background: var(--danger-light);
+    border: 1px solid var(--danger-border);
+    color: var(--danger-text);
+}
+
+
+/* =========================================================
+   7. BARRE D'INFORMATIONS
+   ========================================================= */
+
+.top-info-bar {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 1rem;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-bottom: 1.5rem;
+}
+
+.info-pill {
+    display: flex;
+    align-items: center;
+
+    gap: .8rem;
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 1rem;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    box-shadow: var(--shadow-sm);
+
+    transition: var(--transition);
+
+    overflow: hidden;
+}
+
+.info-pill:hover {
+    transform: translateY(-2px);
+
+    box-shadow: var(--shadow-md);
+
+    border-color: #cbd5e1;
+}
+
+
+/* =========================================================
+   8. ICÔNE DES INFOS
+   ========================================================= */
+
+.pill-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    border-radius: var(--radius-sm);
+
+    background: var(--primary-light);
+    color: var(--primary);
+
+    font-size: 1.25rem;
+}
+
+
+/* =========================================================
+   9. CONTENU DES INFOS
+   ========================================================= */
+
+.pill-content {
+    display: flex;
+    flex-direction: column;
+
+    gap: .15rem;
+
+    width: 100%;
+    min-width: 0;
+
+    overflow: hidden;
+}
+
+.pill-label {
+    display: block;
+
+    color: var(--text-secondary);
+
+    font-size: .7rem;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: .05em;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pill-value {
+    display: block;
+
+    width: 100%;
+    min-width: 0;
+
+    color: var(--text-primary);
+
+    font-size: .9rem;
+    font-weight: 650;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pill-value strong {
+    font-weight: 700;
+}
+
+.copy-icon {
+    display: inline-block;
+
+    margin-left: .35rem;
+
+    color: var(--text-muted);
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.copy-icon:hover {
+    color: var(--primary);
+    transform: scale(1.08);
+}
+
+
+/* =========================================================
+   10. STATUT DANS TOP INFO
+   ========================================================= */
+
+.statut-pill {
+    overflow: visible;
+}
+
+.statut-pill .pill-content {
+    overflow: visible;
+}
+
+
+/* =========================================================
+   11. BADGES
+   ========================================================= */
+
+.badge-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    max-width: 100%;
+
+    padding: .3rem .7rem;
+
+    border-radius: var(--radius-full);
+
+    font-size: .7rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: .02em;
+
+    white-space: nowrap;
+}
+
+.badge-en-attente {
+    background: var(--warning-light);
+    color: var(--warning-text);
+    border: 1px solid var(--warning-border);
+}
+
+.badge-validee {
+    background: var(--success-light);
+    color: var(--success-text);
+    border: 1px solid var(--success-border);
+}
+
+.badge-rejetae,
+.badge-rejetee {
+    background: var(--danger-light);
+    color: var(--danger-text);
+    border: 1px solid var(--danger-border);
+}
+
+.badge-en-cours-de-correction {
+    background: #eef2ff;
+    color: #3730a3;
+    border: 1px solid #c7d2fe;
+}
+
+
+/* =========================================================
+   12. GRILLE PRINCIPALE
+   ========================================================= */
+
+.grid-two-columns {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 1.5rem;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-bottom: 1.5rem;
+}
+
+
+/* =========================================================
+   13. CARDS
+   ========================================================= */
+
+.card {
+    width: 100%;
+    min-width: 0;
+
+    padding: clamp(1rem, 2vw, 1.5rem);
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-sm);
+
+    transition: var(--transition);
+
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.card.full-width {
+    width: 100%;
+    min-width: 0;
+
+    margin-bottom: 1.5rem;
+}
+
+
+/* =========================================================
+   14. TITRE CARD
+   ========================================================= */
+
+.card-title {
+    display: flex;
+    align-items: center;
+
+    gap: .6rem;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-bottom: 1.25rem;
+    padding-bottom: .85rem;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.card-title h3 {
+    min-width: 0;
+
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: 1.05rem;
+    font-weight: 700;
+
+    overflow-wrap: anywhere;
+}
+
+.icon-title {
+    flex-shrink: 0;
+
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.text-red h3,
+.text-red i {
+    color: var(--danger);
+}
+
+
+/* =========================================================
+   15. GRILLES D'INFORMATIONS
+   ========================================================= */
+
+.info-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr);
+
+    gap: 1rem;
+
+    width: 100%;
+    min-width: 0;
+}
+
+.info-grid.cols-2 {
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+}
+
+.info-group {
+    width: 100%;
+    min-width: 0;
+}
+
+.info-group label {
+    display: block;
+
+    margin-bottom: .3rem;
+
+    color: var(--text-secondary);
+
+    font-size: .75rem;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: .025em;
+}
+
+.info-group p {
+    width: 100%;
+    min-width: 0;
+
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: .9rem;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   16. SOUS-SECTION
+   ========================================================= */
+
+.sub-section {
+    width: 100%;
+    min-width: 0;
+
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+
+    border-top: 1px dashed var(--border);
+}
+
+.sub-section h4 {
+    display: flex;
+    align-items: center;
+
+    gap: .45rem;
+
+    margin: 0 0 1rem;
+
+    color: var(--text-primary);
+
+    font-size: .95rem;
+    font-weight: 700;
+}
+
+.sub-section h4 i {
+    flex-shrink: 0;
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   17. PHOTO
+   ========================================================= */
+
+.photo-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-top: 1.25rem;
+    padding: .85rem 1rem;
+
+    background: var(--surface-soft);
+
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+}
+
+.photo-label {
+    min-width: 0;
+
+    color: var(--text-primary);
+
+    font-size: .85rem;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+}
+
+.card-footer-action {
+    display: flex;
+    justify-content: flex-end;
+
+    width: 100%;
+
+    margin-top: 1.5rem;
+}
+
+
+/* =========================================================
+   18. TABLEAU — CONTENEUR
+   ========================================================= */
+
+.table-container {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    background: var(--surface);
+
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: thin;
+}
+
+
+/* =========================================================
+   19. TABLEAU DOCUMENTS
+   ========================================================= */
+
+.documents-table {
+    width: 100%;
+
+    min-width: 650px;
+
+    margin: 0;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    background: var(--surface);
+}
+
+.documents-table th {
+    padding: .85rem 1rem;
+
+    background: var(--surface-soft);
+
+    color: var(--text-secondary);
+
+    border-bottom: 1px solid var(--border);
+
+    font-size: .7rem;
+    font-weight: 700;
+
+    text-align: left;
+
+    text-transform: uppercase;
+    letter-spacing: .05em;
+
+    white-space: nowrap;
+}
+
+.documents-table td {
+    padding: .9rem 1rem;
+
+    color: var(--text-primary);
+
+    border-bottom: 1px solid var(--border-light);
+
+    font-size: .85rem;
+
+    vertical-align: middle;
+
+    overflow-wrap: anywhere;
+}
+
+.documents-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.documents-table tbody tr {
+    transition: var(--transition);
+}
+
+.documents-table tbody tr:hover td {
+    background: var(--primary-light);
+}
+
+
+/* =========================================================
+   20. TYPE DOCUMENT
+   ========================================================= */
+
+.doc-type {
+    display: inline-flex;
+    align-items: center;
+
+    gap: .5rem;
+
+    max-width: 100%;
+
+    font-weight: 600;
+}
+
+.doc-type i {
+    flex-shrink: 0;
+    color: var(--primary);
+}
+
+.doc-type strong {
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   21. EMPTY
+   ========================================================= */
+
+.empty-inline {
+    width: 100%;
+
+    margin: 0;
+
+    padding: 2rem 1rem !important;
+
+    color: var(--text-muted) !important;
+
+    text-align: center;
+
+    font-size: .9rem;
+}
+
+
+/* =========================================================
+   22. BOUTONS
+   ========================================================= */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: .45rem;
+
+    min-height: 38px;
+
+    max-width: 100%;
+
+    padding: .55rem .9rem;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+
+    font-size: .85rem;
+    font-weight: 650;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+
+    transition: var(--transition);
+}
+
+.btn i {
+    flex-shrink: 0;
+}
+
+.btn:active {
+    transform: scale(.98);
+}
+
+.btn:focus-visible {
+    outline: 3px solid rgba(37, 99, 235, .2);
+    outline-offset: 2px;
+}
+
+
+/* Small */
+
+.btn-sm {
+    min-height: 32px;
+
+    padding: .4rem .65rem;
+
+    font-size: .75rem;
+}
+
+
+/* Outline */
+
+.btn-outline {
+    background: var(--surface);
+
+    border-color: var(--border);
+
+    color: var(--text-primary);
+}
+
+.btn-outline:hover {
+    background: var(--primary-light);
+
+    border-color: var(--primary);
+
+    color: var(--primary);
+}
+
+
+/* Table action */
+
+.btn-table-action {
+    background: var(--primary-light);
+
+    border-color: transparent;
+
+    color: var(--primary);
+}
+
+.btn-table-action:hover {
+    background: var(--primary);
+
+    color: white;
+
+    transform: translateY(-1px);
+}
+
+
+/* Primary */
+
+.btn-primary {
+    background: var(--primary);
+
+    color: white;
+
+    box-shadow:
+            0 2px 5px rgba(37, 99, 235, .2);
+}
+
+.btn-primary:hover {
+    background: var(--primary-hover);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+            0 4px 10px rgba(37, 99, 235, .25);
+}
+
+
+/* Danger */
+
+.btn-danger {
+    background: var(--danger);
+
+    color: white;
+}
+
+.btn-danger:hover {
+    background: var(--danger-hover);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+            0 4px 10px rgba(239, 68, 68, .2);
+}
+
+
+/* =========================================================
+   23. ACTIONS ADMIN
+   ========================================================= */
+
+.card-actions-box {
+    border-left: 4px solid var(--danger);
+
+    background:
+            linear-gradient(
+                    to right,
+                    rgba(254, 242, 242, .5),
+                    var(--surface)
+            );
+}
+
+.action-buttons-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 1rem;
+
+    width: 100%;
+    min-width: 0;
+
+    margin-bottom: 1.25rem;
+}
+
+.form-action-btn {
+    display: flex;
+    flex-direction: column;
+
+    gap: .5rem;
+
+    width: 100%;
+    min-width: 0;
+}
+
+.btn-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: .5rem;
+
+    width: 100%;
+    min-height: 44px;
+
+    padding: .7rem 1rem;
+
+    border: none;
+    border-radius: var(--radius-sm);
+
+    font-size: .85rem;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: var(--transition);
+}
+
+.btn-action:hover {
+    transform: translateY(-2px);
+}
+
+.btn-valider {
+    background: var(--success);
+    color: white;
+
+    box-shadow:
+            0 2px 5px rgba(16, 185, 129, .2);
+}
+
+.btn-valider:hover {
+    background: var(--success-hover);
+}
+
+.btn-corriger {
+    background: var(--warning);
+    color: white;
+
+    box-shadow:
+            0 2px 5px rgba(245, 158, 11, .2);
+}
+
+.btn-corriger:hover {
+    background: var(--warning-hover);
+}
+
+.btn-rejeter {
+    background: var(--danger);
+    color: white;
+
+    box-shadow:
+            0 2px 5px rgba(239, 68, 68, .2);
+}
+
+.btn-rejeter:hover {
+    background: var(--danger-hover);
+}
+
+.action-subtext {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: .72rem;
+
+    text-align: center;
+
+    line-height: 1.4;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   24. MODALES
+   ========================================================= */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 1rem;
+
+    background: rgba(15, 23, 42, .58);
+
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+            opacity .25s ease,
+            visibility .25s ease;
+}
+
+.modal-overlay.modal-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-box {
+    width: min(100%, 520px);
+
+    max-width: 520px;
+
+    max-height: calc(100vh - 2rem);
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    box-shadow: var(--shadow-lg);
+
+    transform: translateY(15px) scale(.98);
+
+    transition:
+            transform .25s cubic-bezier(.16, 1, .3, 1);
+}
+
+.modal-overlay.modal-visible .modal-box {
+    transform: translateY(0) scale(1);
+}
+
+
+/* =========================================================
+   25. TITRE MODALE
+   ========================================================= */
+
+.modal-box h3 {
+    display: flex;
+    align-items: center;
+
+    gap: .55rem;
+
+    margin: 0 0 1.25rem;
+
+    padding-bottom: .9rem;
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--text-primary);
+
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.modal-box h3 i {
+    flex-shrink: 0;
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   26. FORMULAIRE
+   ========================================================= */
+
+.form-group {
+    width: 100%;
+    min-width: 0;
+
+    margin-bottom: 1.15rem;
+}
+
+.form-group label {
+    display: block;
+
+    margin-bottom: .45rem;
+
+    color: var(--text-primary);
+
+    font-size: .82rem;
+    font-weight: 650;
+}
+
+.form-group textarea {
+    display: block;
+
+    width: 100%;
+    max-width: 100%;
+
+    min-height: 120px;
+
+    padding: .75rem .85rem;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+
+    color: var(--text-primary);
+
+    font-family: inherit;
+    font-size: .9rem;
+
+    line-height: 1.5;
+
+    resize: vertical;
+
+    outline: none;
+
+    transition: var(--transition);
+}
+
+.form-group textarea:hover {
+    border-color: #cbd5e1;
+}
+
+.form-group textarea:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+            0 0 0 3px rgba(37, 99, 235, .12);
+}
+
+
+/* =========================================================
+   27. ACTIONS MODALE
+   ========================================================= */
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: .75rem;
+
+    width: 100%;
+
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+
+    border-top: 1px solid var(--border);
+}
+
+
+/* =========================================================
+   28. PC / GRAND ÉCRAN
+   ========================================================= */
+
+@media (min-width: 1200px) {
+
+    .main-wrapper {
+        padding-left: 2.5rem;
+        padding-right: 2.5rem;
+    }
+
+}
+
+
+/* =========================================================
+   29. TABLETTE LARGE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .top-info-bar {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-two-columns {
+        grid-template-columns: 1fr;
+    }
+
+    .action-buttons-grid {
+        grid-template-columns:
+            repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   30. TABLETTE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    html {
+        font-size: 15px;
+    }
+
+    .main-wrapper {
+        width: 100%;
+        padding: 1rem;
+    }
+
+
+    /* Titre */
+
+    .page-title {
+        font-size: 1.4rem;
+        line-height: 1.3;
+
+        margin-bottom: 1.25rem;
+    }
+
+
+    /* Infos */
+
+    .top-info-bar {
+        grid-template-columns: 1fr;
+
+        gap: .75rem;
+    }
+
+    .info-pill {
+        padding: .85rem;
+    }
+
+
+    /* Cards */
+
+    .grid-two-columns {
+        grid-template-columns: 1fr;
+
+        gap: 1rem;
+    }
+
+    .card {
+        padding: 1rem;
+
+        border-radius: var(--radius-md);
+    }
+
+
+    /* Informations */
+
+    .info-grid.cols-2 {
+        grid-template-columns: 1fr;
+    }
+
+
+    /* Actions */
+
+    .action-buttons-grid {
+        grid-template-columns: 1fr;
+
+        gap: .85rem;
+    }
+
+    .btn-action {
+        min-height: 46px;
+    }
+
+
+    /* Photo */
+
+    .photo-container {
+        align-items: stretch;
+
+        flex-direction: column;
+
+        gap: .75rem;
+    }
+
+    .photo-container .btn {
+        width: 100%;
+    }
+
+
+    /* Footer card */
+
+    .card-footer-action {
+        justify-content: stretch;
+    }
+
+    .card-footer-action .btn {
+        width: 100%;
+    }
+
+
+    /* TABLEAU */
+
+    .table-container {
+        width: 100%;
+
+        margin-top: .5rem;
+    }
+
+    .documents-table {
+        min-width: 650px;
+    }
+
+
+    /* Modal */
+
+    .modal-overlay {
+        align-items: flex-start;
+
+        padding: .75rem;
+
+        overflow-y: auto;
+    }
+
+    .modal-box {
+        width: 100%;
+        max-width: 100%;
+
+        max-height: calc(100vh - 1.5rem);
+
+        margin: auto;
+
+        border-radius: var(--radius-md);
+    }
+
+
+    /* Formulaire */
+
+    .form-actions {
+        flex-direction: column-reverse;
+
+        align-items: stretch;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   31. MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    html {
+        font-size: 14px;
+    }
+
+    body {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .main-wrapper {
+        width: 100%;
+        max-width: 100%;
+
+        padding:
+                .75rem;
+    }
+
+
+    /* Retour */
+
+    .back-link {
+        display: flex;
+
+        width: 100%;
+
+        margin-bottom: .85rem;
+
+        font-size: .82rem;
+
+        line-height: 1.4;
+    }
+
+
+    /* Titre */
+
+    .page-title {
+        align-items: flex-start;
+
+        gap: .5rem;
+
+        font-size: 1.2rem;
+
+        line-height: 1.35;
+    }
+
+
+    /* Alertes */
+
+    .toast,
+    .alert-info,
+    .alert-warning,
+    .statut-banniere {
+        padding: .75rem;
+
+        font-size: .8rem;
+
+        line-height: 1.45;
+    }
+
+
+    /* Info pills */
+
+    .info-pill {
+        gap: .65rem;
+
+        padding: .75rem;
+    }
+
+    .pill-icon {
+        width: 36px;
+        height: 36px;
+
+        flex-basis: 36px;
+
+        font-size: 1rem;
+    }
+
+    .pill-label {
+        font-size: .63rem;
+    }
+
+    .pill-value {
+        font-size: .82rem;
+    }
+
+
+    /* Badge */
+
+    .badge-status {
+        max-width: 100%;
+
+        padding: .25rem .55rem;
+
+        font-size: .62rem;
+    }
+
+
+    /* Cards */
+
+    .card {
+        padding: .85rem;
+
+        border-radius: var(--radius-md);
+    }
+
+    .card-title {
+        gap: .5rem;
+
+        margin-bottom: 1rem;
+        padding-bottom: .7rem;
+    }
+
+    .card-title h3 {
+        font-size: .95rem;
+
+        line-height: 1.35;
+    }
+
+    .icon-title {
+        font-size: 1.05rem;
+    }
+
+
+    /* Infos */
+
+    .info-grid {
+        gap: .85rem;
+    }
+
+    .info-group label {
+        font-size: .66rem;
+    }
+
+    .info-group p {
+        font-size: .82rem;
+    }
+
+
+    /* Sous-section */
+
+    .sub-section {
+        margin-top: 1.2rem;
+        padding-top: 1rem;
+    }
+
+    .sub-section h4 {
+        font-size: .88rem;
+    }
+
+
+    /* Photo */
+
+    .photo-container {
+        padding: .75rem;
+    }
+
+    .photo-label {
+        font-size: .8rem;
+    }
+
+
+    /* Tableau */
+
+    .table-container {
+        width: 100%;
+        max-width: 100%;
+
+        border-radius: 10px;
+    }
+
+    .documents-table {
+        min-width: 600px;
+    }
+
+    .documents-table th,
+    .documents-table td {
+        padding: .7rem .65rem;
+
+        font-size: .72rem;
+    }
+
+
+    /* Boutons */
+
+    .btn {
+        min-height: 36px;
+
+        padding: .5rem .7rem;
+
+        font-size: .76rem;
+    }
+
+    .btn-sm {
+        min-height: 30px;
+
+        padding: .35rem .55rem;
+
+        font-size: .68rem;
+    }
+
+
+    /* Actions */
+
+    .btn-action {
+        min-height: 44px;
+
+        padding: .65rem .75rem;
+
+        font-size: .78rem;
+    }
+
+    .action-subtext {
+        font-size: .68rem;
+    }
+
+
+    /* Modal */
+
+    .modal-overlay {
+        padding: .5rem;
+    }
+
+    .modal-box {
+        width: 100%;
+
+        padding: 1rem;
+
+        border-radius: 12px;
+    }
+
+    .modal-box h3 {
+        font-size: 1rem;
+
+        line-height: 1.35;
+    }
+
+    .form-group textarea {
+        min-height: 105px;
+
+        font-size: .82rem;
+    }
+
+}
+
+
+/* =========================================================
+   32. TRÈS PETIT MOBILE
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    html {
+        font-size: 13px;
+    }
+
+    .main-wrapper {
+        padding: .6rem;
+    }
+
+
+    .back-link {
+        font-size: .76rem;
+    }
+
+
+    .page-title {
+        font-size: 1.08rem;
+    }
+
+
+    .info-pill {
+        padding: .65rem;
+    }
+
+    .pill-icon {
+        width: 32px;
+        height: 32px;
+
+        flex-basis: 32px;
+
+        font-size: .9rem;
+    }
+
+    .pill-label {
+        font-size: .58rem;
+    }
+
+    .pill-value {
+        font-size: .76rem;
+    }
+
+
+    .card {
+        padding: .7rem;
+    }
+
+
+    .card-title h3 {
+        font-size: .88rem;
+    }
+
+
+    .info-group label {
+        font-size: .61rem;
+    }
+
+    .info-group p {
+        font-size: .76rem;
+    }
+
+
+    .documents-table {
+        min-width: 560px;
+    }
+
+
+    .documents-table th,
+    .documents-table td {
+        padding: .6rem .55rem;
+
+        font-size: .68rem;
+    }
+
+
+    .modal-overlay {
+        padding: .4rem;
+    }
+
+    .modal-box {
+        padding: .85rem;
+    }
+
+}
+
+
+/* =========================================================
+   33. ACCESSIBILITÉ
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+
+        transition-duration: .01ms !important;
+
+        animation-duration: .01ms !important;
+
+        animation-iteration-count: 1 !important;
+    }
+
+}

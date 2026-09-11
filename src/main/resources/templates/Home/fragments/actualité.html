@@ -1,0 +1,160 @@
+
+<!-- ============================================================
+    ACTUALITÉS — DESIGN PREMIUM
+    ============================================================ -->
+<section class="actus-section" id="actus" th:fragment="actu">
+    <div class="container">
+        <!-- ============================================================
+        EN-TÊTE DE SECTION
+        ============================================================ -->
+        <div class="section-header" data-aos="fade-up">
+            <span class="sub-title">
+                <i class="fas fa-bullhorn"></i> Actualités
+            </span>
+            <h2>Dernières <span>nouvelles</span></h2>
+            <p>Restez informé des dernières actualités de l'institut.</p>
+        </div>
+
+        <!-- ============================================================
+        GRILLE DES CARTES
+        ============================================================ -->
+        <div class="actus-grid" th:if="${actualites != null and !actualites.empty}">
+            <!-- ============================================================
+            CARTE INDIVIDUELLE (th:each)
+            ============================================================ -->
+            <div class="actus-card"
+                 data-aos="fade-up"
+                 data-aos-delay="100"
+                 th:each="actualite, iter : ${actualites}">
+
+                <!-- ============================================================
+                BADGE "NOUVEAU" OU "ÉVÉNEMENT" (avec gestion null)
+                ============================================================ -->
+                <span class="actus-badge"
+                      th:if="${actualite.dateEvenement != null}"
+                      th:classappend="'event'">
+                    <i class="fas fa-calendar-check"></i> Événement
+                </span>
+                <span class="actus-badge"
+                      th:if="${actualite.dateEvenement == null and actualite.nouveau != null and actualite.nouveau == true}">
+                    <i class="fas fa-bolt"></i> Nouveau
+                </span>
+
+                <!-- ============================================================
+                IMAGE
+                ============================================================ -->
+                <div class="actus-img">
+                    <!-- Image principale avec gestion null -->
+                    <img th:if="${actualite.photoUrl != null and !actualite.photoUrl.isEmpty()}"
+                         th:src="${actualite.photoUrl}"
+                         th:alt="${actualite.titre != null ? actualite.titre : 'Actualité'}"
+                         loading="lazy"
+                         onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">
+
+                    <!-- Placeholder si pas d'image -->
+                    <div class="image-placeholder"
+                         th:unless="${actualite.photoUrl != null and !actualite.photoUrl.isEmpty()}"
+                         th:style="
+                            ${iter.index % 4 == 0} ? 'background: linear-gradient(135deg, #0096dc, #0c0c1a); color: #f5a623;' :
+                            (${iter.index % 4 == 1} ? 'background: linear-gradient(135deg, #f5a623, #0c0c1a); color: #ffffff;' :
+                            (${iter.index % 4 == 2} ? 'background: linear-gradient(135deg, #8b5cf6, #0c0c1a); color: #f5a623;' :
+                            'background: linear-gradient(135deg, #22c55e, #0c0c1a); color: #ffffff;'))">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                </div>
+
+                <!-- ============================================================
+                CONTENU
+                ============================================================ -->
+                <div class="actus-content">
+                    <!-- Tag -->
+                    <span class="actus-tag">
+                        <i class="fas fa-graduation-cap"></i> IFP-PERLE D'OR
+                    </span>
+
+                    <!-- Titre avec gestion null -->
+                    <h4 th:text="${actualite.titre != null ? actualite.titre : 'Titre non disponible'}">
+                        Rentrée académique 2026
+                    </h4>
+
+                    <!-- Description avec gestion null -->
+                    <p th:text="${actualite.description != null ? actualite.description : 'Aucune description disponible.'}">
+                        La rentrée académique est fixée au 09 Septembre 2026.
+                    </p>
+
+                    <!-- Métadonnées / Dates -->
+                    <div class="actus-dates">
+                        <!-- Date de publication avec gestion null -->
+                        <div class="actus-date" th:if="${actualite.datePublication != null}">
+                            <i class="fas fa-calendar-day"></i>
+                            Publié le :
+                            <span th:text="${#temporals.format(actualite.datePublication, 'dd MMMM yyyy')}">Date</span>
+                        </div>
+
+                        <!-- Date de l'événement -->
+                        <div class="actus-date" th:if="${actualite.dateEvenement != null}">
+                            <i class="fas fa-calendar-check"></i>
+                            Événement le :
+                            <span th:text="${#temporals.format(actualite.dateEvenement, 'dd MMMM yyyy à HH:mm')}">Date</span>
+                        </div>
+
+                        <!-- Date d'expiration -->
+                        <div class="actus-date" th:if="${actualite.dateEXpiration != null}">
+                            <i class="fas fa-clock"></i>
+                            Se termine le :
+                            <span th:text="${#temporals.format(actualite.dateEXpiration, 'dd MMMM yyyy')}">Date</span>
+                        </div>
+                    </div>
+
+                    <!-- Bouton "Lire la suite" - CORRECTION ICI -->
+                    <!-- Utilisation de 'titre' ou 'id' comme condition, pas 'lien' -->
+                    <a href="#" class="actus-read-more" th:if="${actualite.titre != null and !actualite.titre.isEmpty()}">
+                        Lire la suite
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+
+                    <!-- Alternative : si vous avez un champ 'url' ou 'lien' différent -->
+                    <!-- <a th:if="${actualite.url != null}"
+                           th:href="${actualite.url}"
+                           class="actus-read-more">
+                        Lire la suite <i class="fas fa-arrow-right"></i>
+                    </a> -->
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        ÉTAT VIDE (si aucune actualité)
+        ============================================================ -->
+        <div class="actus-empty" th:if="${actualites == null or actualites.empty}">
+            <div class="empty-icon">
+                <i class="fas fa-newspaper"></i>
+            </div>
+            <h3>Aucune actualité disponible</h3>
+            <p>Revenez plus tard pour découvrir les dernières nouvelles de l'institut.</p>
+        </div>
+    </div>
+
+    <script >
+        // Animation AOS simplifiée
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('aos-animate');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            document.querySelectorAll('[data-aos]').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</section>
+
+
+

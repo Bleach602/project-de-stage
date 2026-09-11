@@ -1,0 +1,167 @@
+<!-- ============================================================
+     ONGLET DOCUMENTS (fragment : fragments/documents) – VERSION PREMIUM
+     ============================================================ -->
+<div id="documentsTab" class="tab-content" th:fragment="documents">
+    <div class="card documents-card">
+
+        <!-- En-tête -->
+        <div class="documents-header">
+            <div class="documents-header-icon">
+                <i class="fas fa-folder-open"></i>
+            </div>
+            <div>
+                <h4>Mes documents téléversés</h4>
+                <span class="documents-subtitle">Consultez et gérez vos documents</span>
+            </div>
+            <span class="documents-count" th:text="${#lists.size(documents)} + ' document(s)'">3 documents</span>
+        </div>
+
+        <!-- ============================================================
+        TABLEAU DES DOCUMENTS
+        ============================================================ -->
+        <div class="table-responsive documents-table" style="overflow: scroll; scrollbar-width: none">
+            <table style="overflow: scroll; scrollbar-width: none">
+                <thead>
+                <tr>
+                    <th><i class="fas fa-tag"></i> Type de document</th>
+                    <th><i class="fas fa-file"></i> Nom du fichier</th>
+                    <th><i class="fas fa-clock"></i> Dernière modification</th>
+                    <th><i class="fas fa-cog"></i> Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="document : ${documents}">
+                    <!-- Type de document avec icône -->
+                    <td>
+                            <span class="doc-type-badge" th:classappend="${document.typeDocument}">
+                                <i class="fas" th:classappend="${document.typeDocument == 'CNI' ? 'fa-id-card' : 
+                                                                   document.typeDocument == 'Diplôme' ? 'fa-certificate' : 
+                                                                   document.typeDocument == 'Acte de naissance' ? 'fa-file-alt' : 
+                                                                   'fa-file'}"></i>
+                                <span th:text="${document.typeDocument}">CNI</span>
+                            </span>
+                    </td>
+
+                    <!-- Nom du fichier -->
+                    <td>
+                            <span class="doc-file-name">
+                                <i class="fas fa-file-pdf" th:if="${document.nomFichier.endsWith('.pdf')}"></i>
+                                <i class="fas fa-file-image" th:if="${document.nomFichier.endsWith('.jpg') or document.nomFichier.endsWith('.png')}"></i>
+                                <span th:text="${document.nomFichier}">document.pdf</span>
+                            </span>
+                    </td>
+
+                    <!-- Date de modification -->
+                    <td>
+                            <span class="doc-date">
+                                <i class="far fa-calendar-alt"></i>
+                                <span th:text="${#temporals.format(document.dateModification, 'dd/MM/yyyy HH:mm')}">15/06/2026 14:30</span>
+                            </span>
+                    </td>
+
+                    <!-- Actions -->
+                    <td>
+                        <div class="doc-actions">
+                            <a th:href="@{/candidat/document/{id}/voir(id=${document.id})}"
+                               target="_blank"
+                               class="btn btn-info btn-sm">
+                                <i class="fas fa-eye"></i> Voir
+                            </a>
+                            <button type="button"
+                                    class="btn btn-warning btn-sm btnModifier"
+                                    th:data-id="${document.id}"
+                                    th:data-type="${document.typeDocument}"
+                                    th:data-nom="${document.nomFichier}">
+                                <i class="fas fa-edit"></i> Modifier
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Si aucun document -->
+                <tr th:if="${#lists.isEmpty(documents)}">
+                    <td colspan="4" class="documents-empty">
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open"></i>
+                            <p>Aucun document téléversé pour le moment.</p>
+                            <span class="empty-hint">Vos documents apparaîtront ici après validation de votre dossier.</span>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ============================================================
+        FOOTER DE LA CARTE (bouton d'ajout)
+        ============================================================ -->
+        <div class="documents-footer">
+<!--            <button type="button" class="btn btn-outline btn-add-document" id="addDocumentBtn">-->
+<!--                <i class="fas fa-plus"></i> Ajouter un document-->
+<!--            </button>-->
+            <span class="documents-info">
+                <i class="fas fa-info-circle"></i> Formats acceptés : PDF, JPG, PNG (max 5 Mo)
+            </span>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+    POPUP : Modification d'un document (PREMIUM)
+    ============================================================= -->
+    <div id="documentPopup" class="popup-overlay">
+        <div class="popup popup-document">
+            <span class="close-popup" id="closeDocumentPopup">&times;</span>
+
+            <div class="popup-header">
+                <div class="popup-icon">
+                    <i class="fas fa-edit"></i>
+                </div>
+                <div>
+                    <h3>Modifier le document</h3>
+                    <p id="documentPopupInfo">Remplacez le fichier actuel par une nouvelle version</p>
+                </div>
+            </div>
+
+            <form th:action="@{/candidat/document/remplacer}" method="post" enctype="multipart/form-data">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
+
+                <input type="hidden" id="documentId" name="documentId">
+
+                <!-- Document actuel -->
+                <div class="popup-current-file">
+                    <span class="current-label">Document actuel :</span>
+                    <span class="current-name" id="currentDocName">document.pdf</span>
+                </div>
+
+                <!-- Nouveau fichier -->
+                <div class="form-group file-upload-group">
+                    <label>
+                        <i class="fas fa-upload"></i> Nouveau fichier *
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="file-dropzone" id="popupDropzone">
+                        <div class="dropzone-content">
+                            <i class="fas fa-cloud-upload-alt drop-icon"></i>
+                            <p class="drop-text">Glissez-déposez votre fichier ici</p>
+                            <p class="drop-hint">ou cliquez pour parcourir</p>
+                        </div>
+                        <input accept=".jpg,.png,.pdf" type="file" name="fichier" required>
+                    </div>
+                    <div class="file-list" id="popupFileList">Formats acceptés : JPG, PNG, PDF (max 5 Mo)</div>
+                </div>
+
+                <div class="popup-actions">
+                    <button type="button" class="btn btn-outline" id="cancelDocumentPopup">Annuler</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-save"></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

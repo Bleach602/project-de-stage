@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>Détail candidature</title>
+
+    <link rel="stylesheet" th:href="@{/css/candidature-detail.css}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<div class="main-wrapper">
+
+
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+    <a th:href="@{/dashboard/candidatures}" class="back-link">
+        <i class="bx bx-arrow-back"></i>
+        <span>Retour à la liste des candidatures</span>
+    </a>
+
+
+    <!-- =====================================================
+         TITRE
+         ===================================================== -->
+    <h1 class="page-title">
+        <i class="bx bx-file"></i>
+        <span>Détails de la candidature</span>
+    </h1>
+
+
+    <!-- =====================================================
+         NOTIFICATIONS
+         ===================================================== -->
+    <div id="toast-succes"
+         class="toast toast-succes"
+         th:if="${succes}">
+
+        <i class="bx bx-check-circle"></i>
+
+        <span th:text="${succes}">
+        Opération effectuée avec succès.
+    </span>
+
+    </div>
+
+
+    <div id="toast-erreur"
+         class="toast toast-erreur"
+         th:if="${erreur}">
+
+        <i class="bx bx-error-circle"></i>
+
+        <span th:text="${erreur}">
+        Une erreur est survenue.
+    </span>
+
+    </div>
+
+
+    <!-- =====================================================
+         INFORMATIONS PRINCIPALES
+         ===================================================== -->
+    <div class="top-info-bar">
+
+        <!-- Référence -->
+        <div class="info-pill">
+
+            <div class="pill-icon">
+                <i class="bx bx-purchase-tag-alt"></i>
+            </div>
+
+            <div class="pill-content">
+
+            <span class="pill-label">
+                Référence
+            </span>
+
+                <span class="pill-value reference-value">
+
+                <strong th:text="${candidature.reference}">
+                    CND2026-0002
+                </strong>
+
+                <i class="bx bx-copy copy-icon"
+                   title="Copier la référence"></i>
+
+            </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Session -->
+        <div class="info-pill">
+
+            <div class="pill-icon">
+                <i class="bx bx-calendar"></i>
+            </div>
+
+            <div class="pill-content">
+
+            <span class="pill-label">
+                Session
+            </span>
+
+                <span class="pill-value"
+                      th:text="${candidature.sessionCandidature.anneeAcademique}">
+                2025 - 2026
+            </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Filière -->
+        <div class="info-pill">
+
+            <div class="pill-icon">
+                <i class="bx bx-graduation"></i>
+            </div>
+
+            <div class="pill-content">
+
+            <span class="pill-label">
+                Filière
+            </span>
+
+                <span class="pill-value"
+                      th:text="${candidature.specialite.filiere.nom}">
+                MECANIQUE
+            </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Spécialité -->
+        <div class="info-pill">
+
+            <div class="pill-icon">
+                <i class="bx bx-star"></i>
+            </div>
+
+            <div class="pill-content">
+
+            <span class="pill-label">
+                Spécialité
+            </span>
+
+                <span class="pill-value"
+                      th:text="${candidature.specialite.nom}">
+                Robotique
+            </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Date de soumission -->
+        <div class="info-pill">
+
+            <div class="pill-icon">
+                <i class="bx bx-time-five"></i>
+            </div>
+
+            <div class="pill-content">
+
+            <span class="pill-label">
+                Date de soumission
+            </span>
+
+                <span class="pill-value"
+                      th:text="${#temporals.format(candidature.dateCandidature, 'dd/MM/yyyy')}">
+                28/07/2026
+            </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Statut -->
+        <div class="info-pill statut-pill">
+
+            <div class="pill-icon">
+                <i class="bx bx-info-circle"></i>
+            </div>
+
+            <div class="pill-content">
+
+            <span class="pill-label">
+                Statut actuel
+            </span>
+
+                <span class="badge-status"
+                      th:classappend="${'badge-' + #strings.replace(#strings.toLowerCase(candidature.statutCandidature.name()), '_', '-')}"
+                      th:text="${candidature.statutCandidature}">
+                EN ATTENTE
+            </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         MESSAGE DE STATUT
+         ===================================================== -->
+    <div class="statut-banniere"
+         th:if="${candidature.statutCandidature.name() == 'REJETEE'
+          or candidature.statutCandidature.name() == 'EN_COURS_DE_CORRECTION'}">
+
+        <i class="bx bx-info-circle"></i>
+
+        <div class="statut-message">
+
+            <!-- Rejet -->
+            <span th:if="${candidature.statutCandidature.name() == 'REJETEE'}">
+
+            Motif du rejet :
+
+            <strong th:text="${candidature.motifRejet}">
+                Motif du rejet
+            </strong>
+
+        </span>
+
+
+            <!-- Correction -->
+            <span th:if="${candidature.statutCandidature.name() == 'EN_COURS_DE_CORRECTION'}">
+
+            Message envoyé :
+
+            <strong th:text="${candidature.messageCorrection}">
+                Message de correction
+            </strong>
+
+            <span class="tentative">
+
+                (Tentative
+
+                <strong th:text="${candidature.nombreTentativesCorrection}">
+                    1
+                </strong>
+
+                /2)
+
+            </span>
+
+        </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         INFORMATIONS CANDIDAT + FICHE
+         ===================================================== -->
+    <div class="grid-two-columns">
+
+
+        <!-- =================================================
+             CARD : CANDIDAT
+             ================================================= -->
+        <div class="card candidate-card">
+
+            <div class="card-title">
+
+                <i class="bx bx-user-circle icon-title"></i>
+
+                <h3>
+                    Informations du candidat
+                </h3>
+
+            </div>
+
+
+            <div class="info-grid">
+
+                <div class="info-group">
+
+                    <label>
+                        Nom complet
+                    </label>
+
+                    <p th:text="${candidature.utilisateur.nom + ' ' + candidature.utilisateur.prenom}">
+                        Nom Prénom
+                    </p>
+
+                </div>
+
+
+                <div class="info-group">
+
+                    <label>
+                        Email
+                    </label>
+
+                    <p th:text="${candidature.utilisateur.email}">
+                        email@example.com
+                    </p>
+
+                </div>
+
+
+                <div class="info-group">
+
+                    <label>
+                        Téléphone
+                    </label>
+
+                    <p th:text="${candidature.utilisateur.telephone}">
+                        +237 6 00 00 00 00
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             CARD : FICHE INSCRIPTION
+             ================================================= -->
+        <div class="card fiche-card">
+
+            <div class="card-title">
+
+                <i class="bx bx-id-card icon-title"></i>
+
+                <h3>
+                    Fiche d'inscription
+                </h3>
+
+            </div>
+
+
+            <div class="info-grid cols-2">
+
+                <!-- Date naissance -->
+                <div class="info-group">
+
+                    <label>
+                        Date de naissance
+                    </label>
+
+                    <p th:text="${#temporals.format(candidature.ficheInscription.dateNaissance, 'dd/MM/yyyy')}">
+                        15/04/2005
+                    </p>
+
+                </div>
+
+
+                <!-- Lieu -->
+                <div class="info-group">
+
+                    <label>
+                        Lieu de naissance
+                    </label>
+
+                    <p th:text="${candidature.ficheInscription.lieuNaissance}">
+                        Yaoundé
+                    </p>
+
+                </div>
+
+
+                <!-- Sexe -->
+                <div class="info-group">
+
+                    <label>
+                        Sexe
+                    </label>
+
+                    <p th:text="${candidature.ficheInscription.sexe}">
+                        Masculin
+                    </p>
+
+                </div>
+
+
+                <!-- Adresse -->
+                <div class="info-group">
+
+                    <label>
+                        Adresse
+                    </label>
+
+                    <p th:text="${candidature.ficheInscription.adresse}">
+                        Adresse
+                    </p>
+
+                </div>
+
+
+                <!-- Diplôme -->
+                <div class="info-group">
+
+                    <label>
+                        Diplôme le plus élevé
+                    </label>
+
+                    <p th:text="${candidature.ficheInscription.diplomePlusEleve}">
+                        Baccalauréat
+                    </p>
+
+                </div>
+
+
+                <!-- Année -->
+                <div class="info-group">
+
+                    <label>
+                        Année d'obtention
+                    </label>
+
+                    <p th:text="${candidature.ficheInscription.anneeObtention}">
+                        2022
+                    </p>
+
+                </div>
+
+
+                <!-- Handicap -->
+                <div class="info-group">
+
+                    <label>
+                        Situation de handicap
+                    </label>
+
+                    <p th:if="${candidature.ficheInscription.handicap != null
+                          and candidature.ficheInscription.handicap.name() == 'OUI'}"
+                       th:text="${'Oui - ' + candidature.ficheInscription.precisionHandicap}">
+
+                        Oui
+
+                    </p>
+
+                    <p th:unless="${candidature.ficheInscription.handicap != null
+                              and candidature.ficheInscription.handicap.name() == 'OUI'}">
+
+                        Non
+
+                    </p>
+
+                </div>
+
+
+                <!-- Maladie -->
+                <div class="info-group">
+
+                    <label>
+                        Situation médicale
+                    </label>
+
+                    <p th:if="${candidature.ficheInscription.maladie != null
+                          and candidature.ficheInscription.maladie.name() == 'OUI'}"
+                       th:text="${'Oui - ' + candidature.ficheInscription.precisionMaladie}">
+
+                        Oui
+
+                    </p>
+
+                    <p th:unless="${candidature.ficheInscription.maladie != null
+                              and candidature.ficheInscription.maladie.name() == 'OUI'}">
+
+                        Non
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 RESPONSABLE
+                 ============================================= -->
+            <div class="sub-section">
+
+                <h4>
+
+                    <i class="bx bx-shield-alt-2"></i>
+
+                    <span>
+                    Personne responsable
+                </span>
+
+                </h4>
+
+
+                <div class="info-grid cols-2">
+
+                    <div class="info-group">
+
+                        <label>
+                            Nom & Prénom
+                        </label>
+
+                        <p th:text="${candidature.ficheInscription.nomResponsable + ' ' + candidature.ficheInscription.prenomResponsable}">
+                            Nom Responsable
+                        </p>
+
+                    </div>
+
+
+                    <div class="info-group">
+
+                        <label>
+                            Téléphone
+                        </label>
+
+                        <p th:text="${candidature.ficheInscription.telephoneResponsable}">
+                            Téléphone
+                        </p>
+
+                    </div>
+
+
+                    <div class="info-group">
+
+                        <label>
+                            Adresse
+                        </label>
+
+                        <p th:text="${candidature.ficheInscription.adresseResponsable}">
+                            Adresse
+                        </p>
+
+                    </div>
+
+
+                    <div class="info-group">
+
+                        <label>
+                            Statut
+                        </label>
+
+                        <p th:text="${candidature.ficheInscription.statutResponsable}">
+                            Parent
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 PHOTO
+                 ============================================= -->
+            <div class="photo-container"
+                 th:if="${candidature.ficheInscription.photoIdentite != null}">
+
+                <div class="photo-info">
+
+                    <i class="bx bx-image"></i>
+
+                    <span class="photo-label">
+                    Photo d'identité
+                </span>
+
+                </div>
+
+
+                <a th:href="@{/dashboard/documents/{id}/voir(id=${candidature.ficheInscription.photoIdentite.id})}"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   class="btn btn-outline btn-sm">
+
+                    <i class="bx bx-show"></i>
+
+                    <span>
+                    Voir la photo
+                </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- =============================================
+                 PDF
+                 ============================================= -->
+            <div class="card-footer-action">
+
+                <a th:href="@{/dashboard/candidatures/{id}/fiche/pdf(id=${candidature.id})}"
+                   class="btn btn-outline">
+
+                    <i class="bx bx-download"></i>
+
+                    <span>
+                    Télécharger la fiche PDF
+                </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         DOCUMENTS JOINTS
+         ===================================================== -->
+    <div class="card full-width documents-card">
+
+        <div class="card-title">
+
+            <i class="bx bx-folder-open icon-title"></i>
+
+            <h3>
+                Documents joints
+            </h3>
+
+        </div>
+
+
+        <div class="alert-info">
+
+            <i class="bx bx-info-circle"></i>
+
+            <span>
+            Cliquez sur « Voir » pour consulter les documents joints.
+        </span>
+
+        </div>
+
+
+        <!-- TABLEAU -->
+        <div class="table-container"
+             th:if="${not #lists.isEmpty(candidature.documents)}">
+
+            <table class="documents-table">
+
+                <thead>
+
+                <tr>
+
+                    <th class="col-number">
+                        #
+                    </th>
+
+                    <th>
+                        Type de document
+                    </th>
+
+                    <th>
+                        Nom du fichier
+                    </th>
+
+                    <th class="col-action">
+                        Action
+                    </th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                <tr th:each="doc, iter : ${candidature.documents}">
+
+                    <td class="document-number"
+                        th:text="${iter.count}">
+                        1
+                    </td>
+
+
+                    <td>
+
+                    <span class="doc-type">
+
+                        <i class="bx bx-file-blank"></i>
+
+                        <strong th:text="${doc.typeDocument}">
+                            CNI
+                        </strong>
+
+                    </span>
+
+                    </td>
+
+
+                    <td class="document-name"
+                        th:text="${doc.nomFichier}">
+
+                        document.pdf
+
+                    </td>
+
+
+                    <td class="document-action">
+
+                        <a th:href="@{/dashboard/documents/{id}/voir(id=${doc.id})}"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="btn btn-table-action btn-sm">
+
+                            <i class="bx bx-show"></i>
+
+                            <span>
+                            Voir
+                        </span>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <!-- Aucun document -->
+        <div class="empty-inline"
+             th:if="${#lists.isEmpty(candidature.documents)}">
+
+            <i class="bx bx-folder-open"></i>
+
+            <span>
+            Aucun document déposé pour cette candidature.
+        </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         ACTIONS ADMIN
+         ===================================================== -->
+    <div class="card card-actions-box"
+         th:if="${candidature.statutCandidature.name() == 'EN_ATTENTE'}">
+
+        <div class="card-title text-red">
+
+            <i class="bx bx-cog icon-title"></i>
+
+            <h3>
+                Actions sur la candidature
+            </h3>
+
+        </div>
+
+
+        <div class="action-buttons-grid">
+
+
+            <!-- =============================================
+                 VALIDER
+                 ============================================= -->
+            <form th:action="@{/dashboard/candidatures/{id}/valider(id=${candidature.id})}"
+                  method="post"
+                  class="form-action-btn">
+
+                <button type="submit"
+                        class="btn-action btn-valider"
+                        onclick="return confirm('Confirmer la validation de cette candidature ?')">
+
+                    <i class="bx bx-check"></i>
+
+                    <span>
+                    Valider la candidature
+                </span>
+
+                </button>
+
+                <span class="action-subtext">
+                Accepter cette candidature et la valider.
+            </span>
+
+            </form>
+
+
+            <!-- =============================================
+                 CORRECTION
+                 ============================================= -->
+            <div class="form-action-btn">
+
+                <button type="button"
+                        class="btn-action btn-corriger"
+                        onclick="ouvrirModal('modalCorrection')">
+
+                    <i class="bx bx-edit-alt"></i>
+
+                    <span>
+                    Demander une correction
+                </span>
+
+                </button>
+
+                <span class="action-subtext">
+                Demander des corrections au candidat.
+            </span>
+
+            </div>
+
+
+            <!-- =============================================
+                 REJET
+                 ============================================= -->
+            <div class="form-action-btn">
+
+                <button type="button"
+                        class="btn-action btn-rejeter"
+                        onclick="ouvrirModal('modalRejet')">
+
+                    <i class="bx bx-x"></i>
+
+                    <span>
+                    Rejeter la candidature
+                </span>
+
+                </button>
+
+                <span class="action-subtext">
+                Rejeter définitivement cette candidature.
+            </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="alert-warning">
+
+            <i class="bx bx-error-circle"></i>
+
+            <span>
+            Veuillez vérifier attentivement toutes les informations
+            et les documents avant de prendre une décision.
+        </span>
+
+        </div>
+
+    </div>
+    ```
+
+</div>
+
+<!-- =========================================================
+     MODALE : REJET
+     ========================================================= -->
+
+<div id="modalRejet"
+     class="modal-overlay"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="modalRejetTitle">
+
+    ```
+    <div class="modal-box">
+
+        <h3 id="modalRejetTitle">
+
+            <i class="bx bx-x-circle"></i>
+
+            <span>
+            Rejeter la candidature
+        </span>
+
+        </h3>
+
+
+        <form th:action="@{/dashboard/candidatures/{id}/rejeter(id=${candidature.id})}"
+              method="post">
+
+            <div class="form-group">
+
+                <label for="motifRejet">
+                    Motif du rejet <span aria-hidden="true">*</span>
+                </label>
+
+                <textarea id="motifRejet"
+                          name="motifRejet"
+                          rows="5"
+                          required
+                          placeholder="Indiquez clairement le motif du rejet..."></textarea>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    <i class="bx bx-check"></i>
+
+                    <span>
+                    Confirmer le rejet
+                </span>
+
+                </button>
+
+
+                <button type="button"
+                        class="btn btn-outline"
+                        onclick="fermerModal('modalRejet')">
+
+                    <i class="bx bx-x"></i>
+
+                    <span>
+                    Annuler
+                </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+    ```
+
+</div>
+
+<!-- =========================================================
+     MODALE : CORRECTION
+     ========================================================= -->
+
+<div id="modalCorrection"
+     class="modal-overlay"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="modalCorrectionTitle">
+
+    ```
+    <div class="modal-box">
+
+        <h3 id="modalCorrectionTitle">
+
+            <i class="bx bx-edit-alt"></i>
+
+            <span>
+            Demander une correction
+        </span>
+
+        </h3>
+
+
+        <form th:action="@{/dashboard/candidatures/{id}/demander-correction(id=${candidature.id})}"
+              method="post">
+
+            <div class="form-group">
+
+                <label for="messageCorrection">
+                    Message pour le candidat
+                    <span aria-hidden="true">*</span>
+                </label>
+
+                <textarea id="messageCorrection"
+                          name="messageCorrection"
+                          rows="5"
+                          required
+                          placeholder="Ex : Votre acte de naissance est illisible, merci de le redéposer."></textarea>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    <i class="bx bx-send"></i>
+
+                    <span>
+                    Envoyer la demande
+                </span>
+
+                </button>
+
+
+                <button type="button"
+                        class="btn btn-outline"
+                        onclick="fermerModal('modalCorrection')">
+
+                    <i class="bx bx-x"></i>
+
+                    <span>
+                    Annuler
+                </span>
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+    ```
+
+</div>
+
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+    function ouvrirModal(id) {
+
+        const modal = document.getElementById(id);
+
+        if (!modal) {
+            return;
+        }
+
+        modal.classList.add('modal-visible');
+
+        document.body.classList.add('modal-open');
+
+    }
+
+
+    function fermerModal(id) {
+
+        const modal = document.getElementById(id);
+
+        if (!modal) {
+            return;
+        }
+
+        modal.classList.remove('modal-visible');
+
+        document.body.classList.remove('modal-open');
+
+    }
+
+
+    /* Fermer en cliquant sur le fond */
+    document.querySelectorAll('.modal-overlay').forEach(function (modal) {
+
+        modal.addEventListener('click', function (event) {
+
+            if (event.target === modal) {
+
+                fermerModal(modal.id);
+
+            }
+
+        });
+
+    });
+
+
+    /* Fermer avec ESC */
+    document.addEventListener('keydown', function (event) {
+
+        if (event.key === 'Escape') {
+
+            document.querySelectorAll('.modal-overlay.modal-visible')
+                .forEach(function (modal) {
+
+                    fermerModal(modal.id);
+
+                });
+
+        }
+
+    });
+
+
+    /* Empêcher le scroll de la page lorsqu'une modale est ouverte */
+    document.addEventListener('DOMContentLoaded', function () {
+
+        document.querySelectorAll('.modal-overlay').forEach(function (modal) {
+
+            modal.addEventListener('transitionend', function () {
+
+                if (modal.classList.contains('modal-visible')) {
+
+                    document.body.classList.add('modal-open');
+
+                }
+
+            });
+
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

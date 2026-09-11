@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layouts/admin_layout :: layout(~{::main})}">
+<body>
+<main>
+
+    <link rel="stylesheet" th:href="@{/css/adminCSS/rolesCSS.css}">
+
+    <!-- ============================================================
+    TOAST NOTIFICATIONS
+    ============================================================ -->
+    <div th:if="${succes}" class="toast toast-success">
+        <div class="toast-icon"><i class='bx bx-check-circle'></i></div>
+        <div class="toast-content">
+            <span class="toast-title">Succès</span>
+            <span class="toast-message" th:text="${succes}">Opération réussie</span>
+        </div>
+        <button type="button" class="toast-close" onclick="this.parentElement.remove()">
+            <i class='bx bx-x'></i>
+        </button>
+    </div>
+
+    <div th:if="${erreur}" class="toast toast-error">
+        <div class="toast-icon"><i class='bx bx-error-circle'></i></div>
+        <div class="toast-content">
+            <span class="toast-title">Erreur</span>
+            <span class="toast-message" th:text="${erreur}">Une erreur est survenue</span>
+        </div>
+        <button type="button" class="toast-close" onclick="this.parentElement.remove()">
+            <i class='bx bx-x'></i>
+        </button>
+    </div>
+
+    <!-- ============================================================
+    EN-TÊTE DE PAGE
+    ============================================================ -->
+    <div class="page-header">
+        <div class="page-header-left">
+            <div class="header-icon-wrapper">
+                <i class='bx bxs-shield-quarter'></i>
+            </div>
+            <div>
+                <h1 class="page-title">Gestion des rôles</h1>
+                <p class="page-subtitle">Gérez les rôles et leurs permissions</p>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg" onclick="openModal('modalCreateRole')">
+            <i class='bx bx-plus'></i>
+            <span>Nouveau rôle</span>
+        </button>
+    </div>
+
+    <!-- ============================================================
+    STATISTIQUES DES RÔLES
+    ============================================================ -->
+    <div class="stats-roles">
+        <div class="stat-role-card">
+            <span class="stat-role-number" th:text="${#lists.size(roles)}">0</span>
+            <span class="stat-role-label">Rôles total</span>
+        </div>
+        <div class="stat-role-card">
+            <span class="stat-role-number" th:text="${totalPermissions}">0</span>
+            <span class="stat-role-label">Permissions totales</span>
+        </div>
+        <div class="stat-role-card">
+            <span class="stat-role-number">🔒</span>
+            <span class="stat-role-label">Sécurisé</span>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    TABLEAU DES RÔLES
+    ============================================================ -->
+    <div class="card-table">
+        <div class="table-wrap">
+            <table class="roles-table" th:if="${not #lists.isEmpty(roles)}">
+                <thead>
+                <tr>
+                    <th class="col-role">Rôle</th>
+                    <th class="col-permissions">Permissions</th>
+                    <th class="col-actions text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="role : ${roles}">
+                    <td class="col-role">
+                        <div class="role-info">
+                            <div class="role-icon-wrapper">
+                                <i class='bx bxs-shield-quarter'></i>
+                            </div>
+                            <span class="role-name" th:text="${role.intitule}">ROLE_ADMIN</span>
+                        </div>
+                    </td>
+                    <td class="col-permissions">
+                        <div class="permissions-group">
+                                <span class="permission-badge" th:each="perm : ${role.permissions}">
+                                    <i class='bx bx-key'></i>
+                                    <span th:text="${perm.nom}">PERM_VIEW</span>
+                                </span>
+                            <span class="permission-empty" th:if="${#lists.isEmpty(role.permissions)}">
+                                    <i class='bx bx-info-circle'></i> Aucune permission
+                                </span>
+                        </div>
+                    </td>
+                    <td class="col-actions text-center">
+                        <div class="action-group">
+                            <button type="button" class="btn-action action-edit"
+                                    th:data-id="${role.id}"
+                                    th:data-intitule="${role.intitule}"
+                                    th:data-permissions="${#strings.arrayJoin(role.permissions.![id], ',')}"
+                                    onclick="openUpdateRoleModal(this)"
+                                    title="Modifier">
+                                <i class='bx bx-edit-alt'></i>
+                            </button>
+                            <form th:action="@{/dashboard/roles/{id}/supprimer(id=${role.id})}" method="post" style="display:inline;">
+                                <button type="submit" class="btn-action action-delete"
+                                        onclick="return confirm('Confirmer la suppression du rôle ?')"
+                                        title="Supprimer">
+                                    <i class='bx bx-trash'></i>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ===== ÉTAT VIDE ===== -->
+        <div class="empty-state" th:if="${#lists.isEmpty(roles)}">
+            <div class="empty-icon"><i class='bx bxs-shield-quarter'></i></div>
+            <h3>Aucun rôle</h3>
+            <p>Commencez par créer un rôle pour structurer les accès.</p>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODALE CRÉATION RÔLE – DESIGN PREMIUM
+    ============================================================ -->
+    <div id="modalCreateRole" class="modal-overlay">
+        <div class="modal-box modal-create">
+            <div class="modal-head">
+                <div class="modal-icon primary">
+                    <i class='bx bx-plus'></i>
+                </div>
+                <div class="modal-head-text">
+                    <h3 class="modal-title">Nouveau rôle</h3>
+                    <p class="modal-sub">Créez un rôle avec des permissions spécifiques</p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeModal('modalCreateRole')">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <form th:action="@{/dashboard/roles/nouveau}" th:object="${roleDTO}" method="post">
+                <div class="modal-body">
+                    <!-- Intitulé du rôle -->
+                    <div class="form-group full-width">
+                        <label>Intitulé du rôle <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class='bx bx-shield-quarter'></i>
+                            <input type="text" th:field="*{intitule}" class="form-control" placeholder="Ex: ROLE_GESTIONNAIRE" required />
+                        </div>
+                        <span class="form-hint"><i class='bx bx-info-circle'></i> Utilisez des majuscules et underscores</span>
+                    </div>
+
+                    <!-- Permissions -->
+                    <div class="permissions-section">
+                        <label class="section-label">
+                            <i class='bx bx-lock-alt'></i>
+                            Permissions attribuées
+                        </label>
+                        <div class="permissions-grid">
+                            <div class="permission-option" th:each="perm : ${AllsPermissions}">
+                                <input type="checkbox" th:field="*{permissionIds}" th:value="${perm.id}" th:id="${'perm-create-' + perm.id}" />
+                                <label th:for="${'perm-create-' + perm.id}" th:text="${perm.nom}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-foot">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalCreateRole')">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class='bx bx-check'></i> Créer le rôle
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    MODALE MODIFICATION RÔLE – DESIGN PREMIUM
+    ============================================================ -->
+    <div id="modalUpdateRole" class="modal-overlay">
+        <div class="modal-box modal-update">
+            <div class="modal-head">
+                <div class="modal-icon gold">
+                    <i class='bx bx-edit-alt'></i>
+                </div>
+                <div class="modal-head-text">
+                    <h3 class="modal-title">Modifier le rôle</h3>
+                    <p class="modal-sub">Mettez à jour les informations et permissions</p>
+                </div>
+                <button type="button" class="modal-close" onclick="closeModal('modalUpdateRole')">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <form id="formUpdateRole" method="post" th:object="${roleDTO}">
+                <input type="hidden" id="update-role-id" th:field="*{id}" />
+                <div class="modal-body">
+                    <!-- Intitulé du rôle -->
+                    <div class="form-group full-width">
+                        <label>Intitulé du rôle <span class="required">*</span></label>
+                        <div class="input-icon">
+                            <i class='bx bx-shield-quarter'></i>
+                            <input type="text" id="update-role-intitule" th:field="*{intitule}" class="form-control" required />
+                        </div>
+                    </div>
+
+                    <!-- Permissions -->
+                    <div class="permissions-section">
+                        <label class="section-label">
+                            <i class='bx bx-lock-alt'></i>
+                            Permissions attribuées
+                        </label>
+                        <div class="permissions-grid">
+                            <div class="permission-option" th:each="perm : ${AllsPermissions}">
+                                <input type="checkbox" name="permissionIds" th:value="${perm.id}" class="update-perm-checkbox" th:id="${'perm-update-' + perm.id}" />
+                                <label th:for="${'perm-update-' + perm.id}" th:text="${perm.nom}"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-foot">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal('modalUpdateRole')">Annuler</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class='bx bx-save'></i> Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    SCRIPTS
+    ============================================================ -->
+    <script>
+        // ============================================================
+        // 1. GESTION DES MODALES
+        // ============================================================
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Fermeture au clic extérieur
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.modal-overlay').forEach(function(modal) {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+        });
+
+        // Fermeture avec Échap
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(function(modal) {
+                    closeModal(modal.id);
+                });
+            }
+        });
+
+        // ============================================================
+        // 2. OUVERTURE MODALE DE MODIFICATION
+        // ============================================================
+        function openUpdateRoleModal(btn) {
+            const id = btn.getAttribute('data-id');
+            const intitule = btn.getAttribute('data-intitule');
+            const perms = btn.getAttribute('data-permissions').split(',');
+
+            document.getElementById('update-role-id').value = id;
+            document.getElementById('update-role-intitule').value = intitule;
+
+            // Pré-cocher les cases de permissions
+            const checkboxes = document.querySelectorAll('.update-perm-checkbox');
+            checkboxes.forEach(function(cb) {
+                cb.checked = perms.includes(cb.value);
+            });
+
+            document.getElementById('formUpdateRole').action = '/dashboard/roles/' + id + '/modifier';
+            openModal('modalUpdateRole');
+        }
+
+        // ============================================================
+        // 3. TOAST AUTO-DISPARITION
+        // ============================================================
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.toast').forEach(function(toast) {
+                setTimeout(function() {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(30px)';
+                    toast.style.transition = 'all 0.5s ease';
+                    setTimeout(function() { toast.remove(); }, 500);
+                }, 5000);
+            });
+        });
+    </script>
+
+</main>
+</body>
+</html>

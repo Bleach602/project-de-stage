@@ -1,0 +1,806 @@
+
+<!-- ============================================================
+     ONGLET : MA FICHE
+     Fragment : fragments/fiche
+     ============================================================ -->
+
+<div th:fragment="fiche">
+
+    <div id="ficheTab" class="tab-content">
+
+        <div class="fiche-container">
+
+            <!-- =====================================================
+                 EN-TÊTE
+                 ===================================================== -->
+            <div class="fiche-header">
+
+                <div class="fiche-header-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+
+                <div>
+                    <h2>Ma fiche d'inscription</h2>
+                    <p>
+                        Complétez vos informations personnelles afin de finaliser
+                        votre dossier de pré-inscription.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 INDICATEUR D'ÉTAPES
+                 ===================================================== -->
+            <div class="fiche-stepper" id="ficheStepIndicator">
+
+                <div class="fiche-step active" data-step="1">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>Formation</strong>
+                        <small>Filière & spécialité</small>
+                    </div>
+                </div>
+
+                <div class="step-line"></div>
+
+                <div class="fiche-step" data-step="2">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>Informations</strong>
+                        <small>Informations personnelles</small>
+                    </div>
+                </div>
+
+                <div class="step-line"></div>
+
+                <div class="fiche-step" data-step="3">
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>Responsable</strong>
+                        <small>Personne à contacter</small>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 FORMULAIRE
+                 ===================================================== -->
+            <form id="ficheForm"
+                  th:action="@{/candidat/fiche/save}"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
+
+                <!-- =================================================
+                     ÉTAPE 1 : FORMATION
+                     ================================================= -->
+                <section id="ficheStep1"
+                         class="fiche-section active-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-heading-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+
+                        <div>
+                            <h3>Choisissez votre formation</h3>
+                            <p>
+                                Sélectionnez d'abord une filière, puis la
+                                spécialité souhaitée.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <!-- FILIÈRES -->
+                    <div class="filiere-grid" id="filiereGrid">
+
+                        <div th:each="filiere : ${Filiere}"
+                             class="filiere-card"
+                             th:data-filiere-id="${filiere.id}">
+
+                            <div class="filiere-card-top">
+
+                                <div class="filiere-icon">
+                                    <i class="fas fa-layer-group"></i>
+                                </div>
+
+                                <span class="filiere-arrow">
+                                    <i class="fas fa-chevron-right"></i>
+                                </span>
+
+                            </div>
+
+                            <div class="filiere-name"
+                                 th:text="${filiere.nom}">
+                                Nom de la filière
+                            </div>
+
+                            <div class="filiere-desc"
+                                 th:text="${filiere.sigle}">
+                                SIGLE
+                            </div>
+
+                            <button type="button"
+                                    class="voir-specialites"
+                                    th:data-filiere-id="${filiere.id}"
+                                    th:data-filiere-nom="${filiere.nom}">
+
+                                <span>Voir les spécialités</span>
+                                <i class="fas fa-arrow-right"></i>
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SÉLECTION -->
+                    <div class="selection-summary">
+
+                        <div class="selection-summary-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+
+                        <div>
+                            <span class="selection-label">
+                                Votre sélection
+                            </span>
+
+                            <span id="selectedFiliereDisplay"
+                                  class="selection-value">
+                                Aucune filière sélectionnée
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+                    <div class="fiche-actions fiche-actions-end">
+
+                        <button type="button"
+                                class="btn btn-primary"
+                                id="ficheNextStep2"
+                                disabled>
+
+                            Continuer
+                            <i class="fas fa-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     SPECIALITE ID
+                                            name="specialite.id"
+                     ================================================= -->
+                <input type="hidden"
+                       id="selectedSpecialiteId"
+                      name="specialiteId"
+                >
+
+
+                <!-- =================================================
+                     ÉTAPE 2 : INFORMATIONS PERSONNELLES
+                     ================================================= -->
+                <section id="ficheStep2"
+                         class="fiche-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-heading-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+
+                        <div>
+                            <h3>Informations personnelles</h3>
+                            <p>
+                                Renseignez vos informations personnelles
+                                avec précision.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <!-- DATE NAISSANCE -->
+                        <div class="form-group">
+
+                            <label for="dateNaissance">
+                                <i class="fas fa-calendar-alt"></i>
+                                Date de naissance
+                                <span>*</span>
+                            </label>
+
+                            <input type="date"
+                                   id="dateNaissance"
+                                   name="dateNaissance"
+                                   required
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- LIEU NAISSANCE -->
+                        <div class="form-group">
+
+                            <label for="lieuNaissance">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Lieu de naissance
+                                <span>*</span>
+                            </label>
+
+                            <input type="text"
+                                   id="lieuNaissance"
+                                   name="lieuNaissance"
+                                   placeholder="Ex. Bafoussam"
+                                   maxlength="100"
+                                   required
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- SEXE -->
+                        <div class="form-group">
+
+                            <label for="sexe">
+                                <i class="fas fa-venus-mars"></i>
+                                Sexe
+                                <span>*</span>
+                            </label>
+
+                            <select id="sexe"
+                                    name="sexe"
+                                    required
+                                    th:disabled="${ficheExiste}">
+
+                                <option value="">
+                                    Sélectionnez
+                                </option>
+
+                                <option value="Masculin">
+                                    Masculin
+                                </option>
+
+                                <option value="Feminin">
+                                    Féminin
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- ADRESSE -->
+                        <div class="form-group">
+
+                            <label for="adresse">
+                                <i class="fas fa-home"></i>
+                                Adresse
+                                <span>*</span>
+                            </label>
+
+                            <input type="text"
+                                   id="adresse"
+                                   name="adresse"
+                                   placeholder="Votre adresse complète"
+                                   maxlength="200"
+                                   required
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- DIPLÔME -->
+                        <div class="form-group">
+
+                            <label for="diplomePlusEleve">
+                                <i class="fas fa-graduation-cap"></i>
+                                Diplôme le plus élevé
+                                <span>*</span>
+                            </label>
+
+                            <input type="text"
+                                   id="diplomePlusEleve"
+                                   name="diplomePlusEleve"
+                                   placeholder="Ex. Baccalauréat"
+                                   maxlength="100"
+                                   required
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- ANNÉE -->
+                        <div class="form-group">
+
+                            <label for="anneeObtention">
+                                <i class="fas fa-calendar-check"></i>
+                                Année d'obtention
+                                <span>*</span>
+                            </label>
+
+                            <input type="number"
+                                   id="anneeObtention"
+                                   name="anneeObtention"
+                                   placeholder="Ex. 2025"
+                                   min="1950"
+                                   max="2100"
+                                   required
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- HANDICAP -->
+                        <div class="form-group">
+
+                            <label for="handicaps">
+                                <i class="fas fa-universal-access"></i>
+                                Handicap ?
+                                <span>*</span>
+                            </label>
+
+                            <select name="handicap"
+                                    id="handicaps"
+                                    required
+                                    th:disabled="${ficheExiste}">
+
+                                <option value="">
+                                    Sélectionnez
+                                </option>
+
+                                <option value="OUI">
+                                    Oui
+                                </option>
+
+                                <option value="NON">
+                                    Non
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PRÉCISION HANDICAP -->
+                        <div class="form-group">
+
+                            <label for="motifHandicap">
+                                <i class="fas fa-info-circle"></i>
+                                Précision handicap
+                            </label>
+
+                            <input type="text"
+                                   id="motifHandicap"
+                                   name="precisionHandicap"
+                                   placeholder="Si oui, précisez"
+                                   maxlength="200"
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- MALADIE -->
+                        <div class="form-group">
+
+                            <label for="maladies">
+                                <i class="fas fa-heartbeat"></i>
+                                Maladie chronique ?
+                                <span>*</span>
+                            </label>
+
+                            <select name="maladie"
+                                    id="maladies"
+                                    required
+                                    th:disabled="${ficheExiste}">
+
+                                <option value="">
+                                    Sélectionnez
+                                </option>
+
+                                <option value="OUI">
+                                    Oui
+                                </option>
+
+                                <option value="NON">
+                                    Non
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- PRÉCISION MALADIE -->
+                        <div class="form-group">
+
+                            <label for="Precision">
+                                <i class="fas fa-notes-medical"></i>
+                                Précision maladie
+                            </label>
+
+                            <input type="text"
+                                   id="Precision"
+                                   name="precisionMaladie"
+                                   placeholder="Si oui, précisez"
+                                   maxlength="200"
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- PHOTO -->
+                        <div class="form-group form-group-full">
+
+                            <label for="photo">
+                                <i class="fas fa-camera"></i>
+                                Photo d'identité
+                            </label>
+
+                            <div class="file-upload">
+
+                                <input type="file"
+                                       id="photo"
+                                       name="photo"
+                                       accept=".jpg,.jpeg,.png"
+                                       th:disabled="${ficheExiste}">
+
+                                <div class="file-upload-content">
+
+                                    <div class="file-upload-icon">
+                                        <i class="fas fa-cloud-upload-alt"></i>
+                                    </div>
+
+                                    <div>
+                                        <strong>
+                                            Sélectionner une photo
+                                        </strong>
+
+                                        <span>
+                                            JPG ou PNG · 25 Mo maximum
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+                    <div class="fiche-actions">
+
+                        <button type="button"
+                                class="btn btn-outline"
+                                id="ficheBackStep1">
+
+                            <i class="fas fa-arrow-left"></i>
+                            Retour
+
+                        </button>
+
+                        <button type="button"
+                                class="btn btn-primary"
+                                id="ficheNextStep3">
+
+                            Continuer
+                            <i class="fas fa-arrow-right"></i>
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- =================================================
+                     ÉTAPE 3 : RESPONSABLE
+                     ================================================= -->
+                <section id="ficheStep3"
+                         class="fiche-section">
+
+                    <div class="section-heading">
+
+                        <div class="section-heading-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+
+                        <div>
+                            <h3>Personne responsable</h3>
+                            <p>
+                                Indiquez les coordonnées d'un parent,
+                                tuteur ou responsable.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+
+                        <!-- NOM -->
+                        <div class="form-group">
+
+                            <label for="nomResponsable">
+                                <i class="fas fa-user"></i>
+                                Nom
+                                <span>*</span>
+                            </label>
+
+                            <input type="text"
+                                   id="nomResponsable"
+                                   name="nomResponsable"
+                                   placeholder="Nom du responsable"
+                                   maxlength="100"
+                                   required
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- PRÉNOM -->
+                        <div class="form-group">
+
+                            <label for="prenomResponsable">
+                                <i class="fas fa-user"></i>
+                                Prénom
+                                <span>*</span>
+                            </label>
+
+                            <input type="text"
+                                   id="prenomResponsable"
+                                   name="prenomResponsable"
+                                   placeholder="Prénom du responsable"
+                                   maxlength="100"
+                                   required
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- TÉLÉPHONE -->
+                        <div class="form-group">
+
+                            <label for="telephoneResponsable">
+                                <i class="fas fa-phone"></i>
+                                Téléphone
+                                <span>*</span>
+                            </label>
+
+                            <input type="tel"
+                                   id="telephoneResponsable"
+                                   name="telephoneResponsable"
+                                   placeholder="+237 6XX XXX XXX"
+                                   maxlength="20"
+                                   pattern="^\+?[0-9 ]{8,20}$"
+                                   required
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- ADRESSE -->
+                        <div class="form-group">
+
+                            <label for="adresseResponsable">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Adresse
+                                <span>*</span>
+                            </label>
+
+                            <input type="text"
+                                   id="adresseResponsable"
+                                   name="adresseResponsable"
+                                   placeholder="Adresse du responsable"
+                                   maxlength="200"
+                                   required
+                                   th:readonly="${ficheExiste}">
+
+                        </div>
+
+
+                        <!-- STATUT -->
+                        <div class="form-group form-group-full">
+
+                            <label for="statutResponsable">
+                                <i class="fas fa-user-tag"></i>
+                                Relation avec le candidat
+                                <span>*</span>
+                            </label>
+
+                            <select id="statutResponsable"
+                                    name="statutResponsable"
+                                    required
+                                    th:disabled="${ficheExiste}">
+
+                                <option value="">
+                                    Sélectionnez
+                                </option>
+
+                                <option value="PARENT">
+                                    Parent
+                                </option>
+
+                                <option value="TUTEUR">
+                                    Tuteur
+                                </option>
+
+                                <option value="AUTRE">
+                                    Autre
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+                    <div class="fiche-actions">
+
+                        <button type="button"
+                                class="btn btn-outline"
+                                id="ficheBackStep2">
+
+                            <i class="fas fa-arrow-left"></i>
+                            Retour
+
+                        </button>
+
+
+                        <button type="submit"
+                                class="btn btn-primary"
+                                th:disabled="${ficheExiste}">
+
+                            <i class="fas fa-check"></i>
+                            Enregistrer la fiche
+
+                        </button>
+
+
+                        <a th:href="@{/candidat/attestation/maFiche}"
+                           class="btn btn-success"
+                           th:classappend="${!ficheExiste} ? ' disabled' : ''">
+
+                            <i class="fas fa-download"></i>
+                            Télécharger ma fiche
+
+                        </a>
+
+                    </div>
+
+                </section>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================
+         MODALE : SPÉCIALITÉS
+         ============================================================ -->
+
+    <div class="modal-overlay"
+         id="specialiteModal"
+         aria-hidden="true">
+
+        <div class="modal-content"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="modalFiliereName">
+
+
+            <button type="button"
+                    class="close-modal"
+                    id="closeSpecialiteModal"
+                    aria-label="Fermer">
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+
+            <div class="modal-header">
+
+                <div class="modal-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+
+                <div>
+
+                    <h3>Choisir une spécialité</h3>
+
+                    <p>
+                        Filière :
+                        <strong id="modalFiliereName"></strong>
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="specialite-list"
+                 id="specialiteList">
+
+                <div th:each="spec : ${specialites}"
+                     class="specialite-item"
+                     th:attr="data-filiere=${spec.filiere.id}">
+
+                    <input type="radio"
+                           name="specialiteChoisie"
+                           th:value="${spec.id}"
+                           th:id="'spec-'+${spec.id}">
+
+                    <label th:for="'spec-'+${spec.id}">
+
+                        <span class="specialite-radio">
+                            <i class="fas fa-check"></i>
+                        </span>
+
+                        <span th:text="${spec.nom}">
+                            Spécialité
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div class="modal-actions">
+
+                <button type="button"
+                        class="btn btn-outline"
+                        id="cancelSpecialiteModal">
+
+                    Annuler
+
+                </button>
+
+                <button type="button"
+                        class="btn btn-primary"
+                        id="validateSpecialiteModal">
+
+                    <i class="fas fa-check"></i>
+                    Confirmer
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,695 @@
+
+<!-- admin/layouts/admin_layout.html -->
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="layout(content)">
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Important pour le responsive mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Administration</title>
+
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/adminCSS/fragments/admin_sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/adminCSS/fragments/admin_navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/adminCSS/admin_layout.css}">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+
+<body>
+
+<!-- ============================================================
+     SIDEBAR
+     ============================================================ -->
+
+<div th:replace="~{admin/fragments/admin_sidebar :: sidebar}"></div>
+
+
+<!-- ============================================================
+     OVERLAY MOBILE
+     ============================================================ -->
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+<!-- ============================================================
+     MAIN WRAPPER
+     ============================================================ -->
+
+<div class="main-wrapper" id="mainWrapper">
+
+    <!-- NAVBAR -->
+    <div th:replace="~{admin/fragments/admin_navbar :: navbar}"></div>
+
+    <!-- CONTENU -->
+    <main class="main-content">
+        <div th:replace="${content}"></div>
+    </main>
+
+</div>
+
+
+<!-- ============================================================
+     MODALE DE CONFIRMATION DE DÉCONNEXION
+     ============================================================ -->
+
+<div id="logoutModal"
+     class="logout-modal-overlay"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="logoutModalTitle">
+
+    <div class="logout-modal-content">
+
+        <div class="logout-modal-icon">
+            <i class="bx bx-log-out"></i>
+        </div>
+
+        <h3 id="logoutModalTitle">
+            Confirmer la déconnexion
+        </h3>
+
+        <p>
+            Voulez-vous vraiment vous déconnecter de votre session administrateur ?
+        </p>
+
+        <div class="logout-modal-actions">
+
+            <button
+                    type="button"
+                    class="btn btn-outline"
+                    onclick="fermerModalDeconnexion()">
+                Annuler
+            </button>
+
+            <form th:action="@{/logout}" method="post">
+
+                <button type="submit" class="btn btn-danger">
+                    <i class="bx bx-log-out"></i>
+                    <span>Se déconnecter</span>
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+
+<script>
+    (function () {
+        'use strict';
+
+        /* ============================================================
+           RÉFÉRENCES
+        ============================================================ */
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebarOverlay');
+        const toggleBtn = document.getElementById('toggle-sidebar');
+        const mainWrapper = document.getElementById('mainWrapper');
+
+        const MOBILE_BREAKPOINT = 992;
+
+
+        /* ============================================================
+           UTILITAIRE : SAVOIR SI ON EST SUR MOBILE / TABLETTE
+        ============================================================ */
+        function isMobileView() {
+            return window.innerWidth <= MOBILE_BREAKPOINT;
+        }
+
+
+        /* ============================================================
+           OUVRIR SIDEBAR
+        ============================================================ */
+        function openSidebar() {
+
+            if (!sidebar) return;
+
+            sidebar.classList.add('open');
+
+            if (overlay) {
+                overlay.classList.add('active');
+            }
+
+            document.body.classList.add('sidebar-open');
+        }
+
+
+        /* ============================================================
+           FERMER SIDEBAR
+        ============================================================ */
+        function closeSidebar() {
+
+            if (!sidebar) return;
+
+            sidebar.classList.remove('open');
+
+            if (overlay) {
+                overlay.classList.remove('active');
+            }
+
+            document.body.classList.remove('sidebar-open');
+        }
+
+
+        /* ============================================================
+           TOGGLE SIDEBAR
+        ============================================================ */
+        function toggleSidebar() {
+
+            if (!sidebar) return;
+
+            /*
+             * Sur mobile/tablette :
+             * sidebar = panneau overlay
+             */
+            if (isMobileView()) {
+
+                if (sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+
+                return;
+            }
+
+            /*
+             * Desktop :
+             * la sidebar reste toujours visible.
+             *
+             * On ne la cache donc pas ici.
+             */
+        }
+
+
+        /* ============================================================
+           EXPOSER LES FONCTIONS
+        ============================================================ */
+        window.toggleSidebar = toggleSidebar;
+        window.openSidebar = openSidebar;
+        window.closeSidebar = closeSidebar;
+
+
+        /* ============================================================
+           BOUTON HAMBURGER
+        ============================================================ */
+        if (toggleBtn) {
+
+            toggleBtn.addEventListener('click', function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                toggleSidebar();
+            });
+        }
+
+
+        /* ============================================================
+           OVERLAY
+        ============================================================ */
+        if (overlay) {
+
+            overlay.addEventListener('click', function () {
+
+                closeSidebar();
+            });
+        }
+
+
+        /* ============================================================
+           LIENS SIDEBAR
+           Fermeture automatique sur mobile
+        ============================================================ */
+        if (sidebar) {
+
+            sidebar.querySelectorAll('a').forEach(function (link) {
+
+                link.addEventListener('click', function () {
+
+                    if (isMobileView()) {
+                        closeSidebar();
+                    }
+                });
+            });
+        }
+
+
+        /* ============================================================
+           TOUCHE ESC
+        ============================================================ */
+        document.addEventListener('keydown', function (event) {
+
+            if (
+                event.key === 'Escape' &&
+                sidebar &&
+                sidebar.classList.contains('open')
+            ) {
+
+                closeSidebar();
+            }
+        });
+
+
+        /* ============================================================
+           REDIMENSIONNEMENT
+        ============================================================ */
+        let resizeTimer;
+
+        window.addEventListener('resize', function () {
+
+            clearTimeout(resizeTimer);
+
+            resizeTimer = setTimeout(function () {
+
+                /*
+                 * Si on passe de mobile → desktop,
+                 * on ferme l'overlay.
+                 */
+                if (!isMobileView()) {
+
+                    closeSidebar();
+                }
+
+            }, 150);
+        });
+
+
+        /* ============================================================
+           MENU UTILISATEUR
+           IDs correspondant au HTML :
+           userMenuToggle
+           userMenu
+        ============================================================ */
+        const userMenuToggle = document.getElementById('userMenuToggle');
+        const userMenu = document.getElementById('userMenu');
+
+        if (userMenuToggle && userMenu) {
+
+            userMenuToggle.addEventListener('click', function (event) {
+
+                event.preventDefault();
+                event.stopPropagation();
+
+                userMenu.classList.toggle('open');
+
+                this.classList.toggle('open');
+            });
+
+
+            /*
+             * Clic extérieur
+             */
+            document.addEventListener('click', function (event) {
+
+                if (
+                    !userMenu.contains(event.target) &&
+                    !userMenuToggle.contains(event.target)
+                ) {
+
+                    userMenu.classList.remove('open');
+                    userMenuToggle.classList.remove('open');
+                }
+            });
+        }
+
+
+        /* ============================================================
+           MODALE DÉCONNEXION
+        ============================================================ */
+        window.ouvrirModalDeconnexion = function (event) {
+
+            if (event) {
+                event.preventDefault();
+            }
+
+            const modal = document.getElementById('logoutModal');
+
+            if (modal) {
+                modal.classList.add('active');
+            }
+        };
+
+
+        window.fermerModalDeconnexion = function () {
+
+            const modal = document.getElementById('logoutModal');
+
+            if (modal) {
+                modal.classList.remove('active');
+            }
+        };
+
+
+        /*
+         * Fermer la modal en cliquant sur l'arrière-plan
+         */
+        document.addEventListener('click', function (event) {
+
+            const modal = document.getElementById('logoutModal');
+
+            if (modal && event.target === modal) {
+
+                modal.classList.remove('active');
+            }
+        });
+
+
+        /*
+         * Fermer avec ESC
+         */
+        document.addEventListener('keydown', function (event) {
+
+            if (event.key === 'Escape') {
+
+                const modal = document.getElementById('logoutModal');
+
+                if (modal && modal.classList.contains('active')) {
+
+                    modal.classList.remove('active');
+                }
+            }
+        });
+
+
+        /* ============================================================
+           HORLOGE
+        ============================================================ */
+        const clockEl = document.getElementById('systemTime');
+
+        if (clockEl) {
+
+            function updateClock() {
+
+                const now = new Date();
+
+                clockEl.textContent = now.toLocaleTimeString('fr-FR', {
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+            }
+
+            updateClock();
+
+            setInterval(updateClock, 30000);
+        }
+
+
+        /* ============================================================
+           INITIALISATION
+        ============================================================ */
+
+        /*
+         * Sur desktop :
+         * sidebar visible.
+         *
+         * Sur mobile :
+         * sidebar fermée.
+         */
+        if (sidebar) {
+
+            if (isMobileView()) {
+
+                closeSidebar();
+
+            } else {
+
+                sidebar.classList.remove('open');
+                document.body.classList.remove('sidebar-open');
+            }
+        }
+
+
+        console.log('✓ Layout admin responsive initialisé');
+
+    })();
+</script>
+
+<!-- ============================================================
+     STYLES DE LA MODALE
+     ============================================================ -->
+
+<style>
+
+    .logout-modal-overlay {
+
+        display: none;
+
+        position: fixed;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        padding: 20px;
+
+        background: rgba(6, 30, 61, 0.55);
+
+        align-items: center;
+        justify-content: center;
+
+        z-index: 2000;
+
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+
+    }
+
+
+    .logout-modal-overlay.active {
+        display: flex;
+    }
+
+
+    .logout-modal-content {
+
+        width: min(100%, 380px);
+
+        max-height: calc(100vh - 40px);
+
+        overflow-y: auto;
+
+        background: #ffffff;
+
+        border-radius: 14px;
+
+        padding: 28px 26px;
+
+        text-align: center;
+
+        box-shadow:
+                0 20px 40px rgba(0, 0, 0, 0.25);
+
+        animation:
+                logoutModalIn 0.18s ease-out;
+
+    }
+
+
+    @keyframes logoutModalIn {
+
+        from {
+            opacity: 0;
+            transform: scale(0.95);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+    }
+
+
+    .logout-modal-icon {
+
+        width: 56px;
+        height: 56px;
+
+        margin: 0 auto 14px;
+
+        border-radius: 50%;
+
+        background: #fef2f2;
+
+        color: #dc2626;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        font-size: 1.6rem;
+
+    }
+
+
+    .logout-modal-content h3 {
+
+        font-size: 1.1rem;
+
+        margin: 0 0 8px;
+
+        color: #1B2A4A;
+
+    }
+
+
+    .logout-modal-content p {
+
+        font-size: 0.88rem;
+
+        line-height: 1.55;
+
+        color: #64748b;
+
+        margin: 0 0 22px;
+
+    }
+
+
+    .logout-modal-actions {
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        gap: 10px;
+
+        flex-wrap: wrap;
+
+    }
+
+
+    .logout-modal-actions form {
+        margin: 0;
+    }
+
+
+    .logout-modal-actions .btn {
+
+        min-height: 40px;
+
+        padding: 9px 18px;
+
+        border-radius: 8px;
+
+        font-size: 0.85rem;
+
+        font-weight: 600;
+
+        cursor: pointer;
+
+        border: 1px solid transparent;
+
+        font-family: 'Inter', sans-serif;
+
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 6px;
+
+        white-space: nowrap;
+
+        transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                transform 0.2s ease;
+
+    }
+
+
+    .logout-modal-actions .btn:hover {
+        transform: translateY(-1px);
+    }
+
+
+    .logout-modal-actions .btn-outline {
+
+        background: #ffffff;
+
+        border-color: #e2e8f0;
+
+        color: #1B2A4A;
+
+    }
+
+
+    .logout-modal-actions .btn-outline:hover {
+        background: #f8fafc;
+    }
+
+
+    .logout-modal-actions .btn-danger {
+
+        background: #dc2626;
+
+        color: #ffffff;
+
+    }
+
+
+    .logout-modal-actions .btn-danger:hover {
+        background: #b91c1c;
+    }
+
+
+    /* =========================================================
+       MODALE MOBILE
+       ========================================================= */
+
+    @media (max-width: 480px) {
+
+        .logout-modal-overlay {
+            padding: 14px;
+        }
+
+        .logout-modal-content {
+
+            width: 100%;
+
+            padding: 24px 18px;
+
+            border-radius: 12px;
+
+        }
+
+        .logout-modal-actions {
+
+            flex-direction: column;
+
+            width: 100%;
+
+        }
+
+        .logout-modal-actions .btn,
+        .logout-modal-actions form {
+
+            width: 100%;
+
+        }
+
+        .logout-modal-actions form .btn {
+            width: 100%;
+        }
+
+    }
+
+</style>
+
+</body>
+</html>
+

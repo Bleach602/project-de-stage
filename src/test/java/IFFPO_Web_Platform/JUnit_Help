@@ -1,0 +1,31 @@
+@Mock
+   ↓
+Je crée un faux objet
+
+
+@InjectMocks
+   ↓
+Je mets les faux objets
+dans la classe que je teste
+
+
+when(...)
+   ↓
+Je dis au faux objet
+quoi répondre
+
+
+service.maMethode()
+   ↓
+J'exécute mon vrai code
+
+
+assert...
+   ↓
+Je vérifie le résultat
+
+
+verify(...)
+   ↓
+Je vérifie qu'une action
+a bien été effectuée

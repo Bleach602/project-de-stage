@@ -1,0 +1,365 @@
+/* ============================================
+   ADMIN-LAYOUT-IFP.CSS
+   Styles du layout principal IFP-PO
+   Version Corrigée - Compatible Dashboard
+   ============================================ */
+
+/* ============================================
+   1. RESET & BASE
+   ============================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0f4f9;
+    color: #0f172a;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+}
+
+/* ============================================
+   2. MAIN WRAPPER - CORRIGÉ
+   ============================================ */
+.main-wrapper {
+    flex: 1;
+    margin-left: 280px; /* Largeur fixe de la sidebar */
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mode collapsed - quand la sidebar est réduite */
+.main-wrapper.full-width {
+    margin-left: 72px; /* Largeur de la sidebar collapsed */
+}
+
+/* ============================================
+   3. MAIN CONTENT - CORRIGÉ
+   ============================================ */
+.main-content {
+    flex: 1;
+    padding: 12px 24px 20px;
+    overflow-y: auto;
+    background: #f0f4f9;
+    min-height: calc(100vh - 72px - 56px);
+}
+
+/* ============================================
+   4. FOOTER ADMIN
+   ============================================ */
+.admin-footer {
+    flex-shrink: 0;
+    padding: 12px 24px;
+    background: #ffffff;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: #94a3b8;
+}
+
+.footer-copy {
+    font-weight: 500;
+}
+
+.footer-version {
+    background: rgba(0, 130, 200, 0.08);
+    color: #0082c8;
+    padding: 2px 12px;
+    border-radius: 20px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   5. MODAL - CORRIGÉ
+   ============================================ */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+    animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-content {
+    background: #ffffff;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 420px;
+    padding: 32px 28px;
+    text-align: center;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+    position: relative;
+}
+
+.modal-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.modal-icon-danger {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.modal-icon-success {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.modal-icon-warning {
+    background: #fffbeb;
+    color: #d97706;
+}
+
+.modal-content h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+.modal-content p {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin-bottom: 24px;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ============================================
+   6. BOUTONS RÉUTILISABLES
+   ============================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    font-family: inherit;
+    line-height: 1.4;
+}
+
+.btn i {
+    font-size: 1.1rem;
+}
+
+.btn-outline {
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    color: #1e293b;
+}
+
+.btn-outline:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(220, 38, 38, 0.3);
+}
+
+.btn-primary {
+    background: #0082c8;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: #006699;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(0, 130, 200, 0.3);
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, #d4af37, #b8962e);
+    color: #0b132b;
+}
+
+.btn-gold:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+}
+
+/* ============================================
+   7. RESPONSIVE - CORRIGÉ
+   ============================================ */
+
+/* --- Tablette --- */
+@media (max-width: 1024px) {
+    .main-wrapper {
+        margin-left: 0 !important;
+    }
+
+    .main-content {
+        padding: 16px 16px 16px;
+        min-height: calc(100vh - 64px - 48px);
+    }
+
+    .admin-footer {
+        padding: 10px 16px;
+    }
+}
+
+/* --- Mobile --- */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 12px 12px 12px;
+    }
+
+    .admin-footer {
+        padding: 8px 12px;
+    }
+
+    .footer-content {
+        font-size: 0.65rem;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .modal-content {
+        padding: 24px 20px;
+        max-width: 360px;
+    }
+
+    .modal-actions .btn {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+}
+
+/* --- Petit mobile --- */
+@media (max-width: 480px) {
+    .main-content {
+        padding: 8px 8px 12px;
+    }
+
+    .modal-content {
+        padding: 20px 16px;
+        border-radius: 12px;
+    }
+
+    .modal-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.4rem;
+    }
+
+    .modal-content h3 {
+        font-size: 0.95rem;
+    }
+
+    .modal-content p {
+        font-size: 0.8rem;
+    }
+
+    .modal-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .modal-actions .btn {
+        justify-content: center;
+        padding: 10px 16px;
+        width: 100%;
+    }
+}
+
+/* ============================================
+   8. ACCESSIBILITÉ
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================
+   9. PRINT
+   ============================================ */
+@media print {
+    .sidebar,
+    .sidebar-overlay,
+    .sidebar-toggle,
+    .admin-footer,
+    .modal-overlay {
+        display: none !important;
+    }
+
+    .main-wrapper {
+        margin-left: 0 !important;
+    }
+
+    .main-content {
+        padding: 20px !important;
+    }
+}

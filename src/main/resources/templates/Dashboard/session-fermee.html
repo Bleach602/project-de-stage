@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscriptions fermées - IFP Perle d'Or</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* ============================================================
+           CHARTE IFP-PO (variables & reset)
+           ============================================================ */
+        :root {
+            --bleu-cyan: #0096dc;
+            --bleu-cyan-clair: #4bb8f0;
+            --bleu-cyan-fonce: #0072b3;
+            --bleu-cyan-transparent: rgba(0, 150, 220, 0.06);
+            --bleu-cyan-gradient: linear-gradient(135deg, #0096dc 0%, #0072b3 100%);
+
+            --or: #d4af37;
+            --or-clair: #e8c84a;
+            --or-fonce: #b8860b;
+            --or-gradient: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            --or-transparent: rgba(212, 175, 55, 0.10);
+
+            --noir-clair: #1a1a1a;
+            --blanc: #ffffff;
+            --blanc-casse: #f8fafc;
+            --gris-clair: #eef2f6;
+            --gris-medium: #d1d5db;
+            --gris-fonce: #6b7280;
+            --bg-body: #f8fafc;
+            --text-color: #1a1a1a;
+            --text-muted: #6b7280;
+
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 24px rgba(0, 150, 220, 0.08);
+            --shadow-lg: 0 12px 48px rgba(0, 150, 220, 0.10);
+            --shadow-xl: 0 20px 60px rgba(0, 150, 220, 0.12);
+
+            --radius: 24px;
+            --radius-sm: 12px;
+            --radius-full: 100px;
+            --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            -webkit-font-smoothing: antialiased;
+            background-image:
+                    radial-gradient(circle at 10% 20%, rgba(0, 150, 220, 0.04) 0%, transparent 60%),
+                    radial-gradient(circle at 90% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 60%),
+                    radial-gradient(circle at 50% 50%, rgba(0, 150, 220, 0.02) 0%, transparent 80%);
+            position: relative;
+        }
+
+        /* ============================================================
+           CARTE PRINCIPALE – PREMIUM
+           ============================================================ */
+        .card {
+            max-width: 580px;
+            width: 100%;
+            padding: 3rem 2.8rem;
+            background: var(--blanc);
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gris-clair);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            animation: cardIn 0.6s ease;
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--bleu-cyan-gradient);
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(0, 150, 220, 0.02) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* ============================================================
+           BADGE DE STATUT
+           ============================================================ */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 18px;
+            border-radius: 40px;
+            background: rgba(220, 53, 69, 0.08);
+            color: #dc3545;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border: 1px solid rgba(220, 53, 69, 0.12);
+            margin-bottom: 1.2rem;
+        }
+
+        .status-badge i {
+            font-size: 0.8rem;
+        }
+
+        /* ============================================================
+           ICÔNE
+           ============================================================ */
+        .icon-wrapper {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(220, 53, 69, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            font-size: 3.2rem;
+            color: #dc3545;
+            border: 2px solid rgba(220, 53, 69, 0.10);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .icon-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 1px dashed rgba(220, 53, 69, 0.15);
+            animation: spin 30s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .icon-wrapper i {
+            font-size: 3.5rem;
+        }
+
+        .icon-wrapper .lock-shield {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--bleu-cyan-gradient);
+            color: var(--blanc);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            border: 2px solid var(--blanc);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ============================================================
+           TITRE
+           ============================================================ */
+        .card h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .card h1 .highlight-red {
+            color: #dc3545;
+        }
+
+        /* ============================================================
+           SOUS-TITRE
+           ============================================================ */
+        .card .subtitle {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: var(--text-color);
+            margin-bottom: 0.5rem;
+        }
+
+        /* ============================================================
+           MESSAGE
+           ============================================================ */
+        .card .message {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .message strong {
+            color: var(--bleu-cyan);
+            font-weight: 600;
+        }
+
+        /* ============================================================
+           PROCHAINE SESSION – DATE DE RENTRÉE
+           ============================================================ */
+        .next-session {
+            background: var(--bleu-cyan-transparent);
+            border-radius: var(--radius-sm);
+            padding: 1.2rem 1.5rem;
+            margin: 1.2rem 0 1.8rem;
+            border: 1px solid rgba(0, 150, 220, 0.08);
+            transition: var(--transition);
+        }
+
+        .next-session:hover {
+            border-color: var(--bleu-cyan);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .next-session .next-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .next-session .next-label i {
+            color: var(--gold);
+        }
+
+        .next-session .next-date {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--bleu-cyan);
+            margin: 4px 0 2px;
+            background: var(--bleu-cyan-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .next-session .next-date i {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 0.9rem;
+            -webkit-text-fill-color: var(--text-muted);
+        }
+
+        .next-session .next-countdown {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .next-session .next-countdown .countdown-number {
+            font-weight: 700;
+            color: var(--or-fonce);
+            font-size: 1rem;
+        }
+
+        .next-session .next-countdown i {
+            color: var(--or);
+        }
+
+        /* ============================================================
+           DIVIDER
+           ============================================================ */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0.8rem 0 1.2rem;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gris-clair), transparent);
+        }
+
+        .divider-dot {
+            color: var(--gris-medium);
+            font-size: 0.6rem;
+        }
+
+        /* ============================================================
+           BOUTON
+           ============================================================ */
+        .card .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.85rem 1.8rem;
+            border: none;
+            border-radius: 40px;
+            background: var(--bleu-cyan-gradient);
+            color: var(--blanc);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 14px rgba(0, 150, 220, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card .btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+        }
+
+        .card .btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .card .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 28px rgba(0, 150, 220, 0.35);
+        }
+
+        .card .btn i {
+            font-size: 1.1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .card .btn:hover i {
+            transform: translateX(-4px);
+        }
+
+        .card .btn a {
+            color: inherit;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .card .footer-note {
+            margin-top: 1.2rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .card .footer-note i {
+            color: var(--or);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 600px) {
+            .card {
+                padding: 2rem 1.5rem;
+                border-radius: var(--radius-sm);
+            }
+
+            .icon-wrapper {
+                width: 80px;
+                height: 80px;
+                font-size: 2.5rem;
+            }
+
+            .icon-wrapper i {
+                font-size: 2.8rem;
+            }
+
+            .icon-wrapper .lock-shield {
+                width: 26px;
+                height: 26px;
+                font-size: 0.65rem;
+            }
+
+            .card h1 {
+                font-size: 1.4rem;
+            }
+
+            .card .subtitle {
+                font-size: 0.95rem;
+            }
+
+            .card .message {
+                font-size: 0.9rem;
+            }
+
+            .next-session .next-date {
+                font-size: 1.3rem;
+            }
+
+            .next-session {
+                padding: 1rem 1.2rem;
+            }
+
+            .card .btn {
+                padding: 0.7rem 1.4rem;
+                font-size: 0.9rem;
+            }
+
+            .status-badge {
+                font-size: 0.65rem;
+                padding: 4px 14px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .card {
+                padding: 1.5rem 1rem;
+            }
+
+            .icon-wrapper {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            .icon-wrapper i {
+                font-size: 2.2rem;
+            }
+
+            .card h1 {
+                font-size: 1.2rem;
+            }
+
+            .card .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .card .message {
+                font-size: 0.85rem;
+            }
+
+            .next-session .next-date {
+                font-size: 1.1rem;
+            }
+
+            .next-session .next-countdown {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <!-- BADGE DE STATUT -->
+    <div class="status-badge">
+        <i class="fas fa-circle" style="color: #dc3545; font-size: 0.5rem;"></i>
+        Session clôturée
+    </div>
+
+    <!-- ICÔNE -->
+    <div class="icon-wrapper">
+        <i class="fas fa-lock"></i>
+        <div class="lock-shield">
+            <i class="fas fa-shield-alt"></i>
+        </div>
+    </div>
+
+    <!-- TITRE -->
+    <h1>
+        <span class="highlight-red">Inscriptions</span> fermées
+    </h1>
+
+    <!-- SOUS-TITRE -->
+    <p class="subtitle">La session de candidature est actuellement clôturée.</p>
+
+    <!-- MESSAGE -->
+    <p class="message">
+        Aucune session de candidature n'est ouverte actuellement.
+    </p>
+
+    <!-- ============================================================
+    PROCHAINE SESSION
+    ============================================================ -->
+    <div class="next-session" id="nextSession">
+        <div class="next-label">
+            <i class="fas fa-calendar-alt"></i>
+            Prochaine rentrée
+        </div>
+        <div class="next-date" id="nextRentreeDate">
+            08 septembre 2026
+            <i class="fas fa-arrow-right"></i>
+        </div>
+        <div class="next-countdown">
+            <i class="fas fa-clock"></i>
+            Dans <span class="countdown-number" id="daysRemaining">--</span> jours
+        </div>
+    </div>
+
+    <!-- DIVIDER -->
+    <div class="divider">
+        <span class="divider-line"></span>
+        <span class="divider-dot"><i class="fas fa-circle"></i></span>
+        <span class="divider-line"></span>
+    </div>
+
+    <!-- BOUTON -->
+    <button class="btn" th:href="@{/}">
+        <a th:href="@{/}">
+            <i class="fas fa-arrow-left"></i> Retour à l'accueil
+        </a>
+    </button>
+
+    <!-- FOOTER -->
+    <p class="footer-note">
+        <i class="fas fa-shield-alt"></i>
+        Restez connecté pour connaître les prochaines dates d'inscription
+    </p>
+
+</div>
+
+<!-- ============================================================
+JAVASCRIPT – Calcul du 2ème lundi de septembre
+============================================================ -->
+<script>
+    (function() {
+        'use strict';
+
+        /**
+         * Calcule le 2ème lundi du mois de septembre pour une année donnée
+         */
+        function getSecondMondayOfSeptember(year) {
+            const firstSeptember = new Date(year, 8, 1); // Septembre = mois 8
+            const dayOfWeek = firstSeptember.getDay(); // 0 = Dimanche, 1 = Lundi, ...
+
+            // Calcul du premier lundi de septembre
+            let firstMondayOffset = (dayOfWeek === 1) ? 0 : (8 - dayOfWeek) % 7;
+            const firstMonday = new Date(year, 8, 1 + firstMondayOffset);
+
+            // Deuxième lundi = premier lundi + 7 jours
+            const secondMonday = new Date(firstMonday);
+            secondMonday.setDate(firstMonday.getDate() + 7);
+
+            return secondMonday;
+        }
+
+        /**
+         * Formate une date en "dd mmm yyyy"
+         */
+        function formatDate(date) {
+            const options = { day: '2-digit', month: 'short', year: 'numeric' };
+            return date.toLocaleDateString('fr-FR', options);
+        }
+
+        /**
+         * Calcule le nombre de jours entre aujourd'hui et une date cible
+         */
+        function getDaysRemaining(targetDate) {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const target = new Date(targetDate);
+            target.setHours(0, 0, 0, 0);
+            const diffTime = target.getTime() - today.getTime();
+            return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        /**
+         * Met à jour l'affichage de la prochaine rentrée
+         */
+        function updateNextRentree() {
+            const currentYear = new Date().getFullYear();
+            const rentreeDate = getSecondMondayOfSeptember(currentYear);
+
+            // Si la date est passée, on prend l'année suivante
+            let targetDate = rentreeDate;
+            if (getDaysRemaining(targetDate) < 0) {
+                targetDate = getSecondMondayOfSeptember(currentYear + 1);
+            }
+
+            // Mise à jour du titre
+            const dateElement = document.getElementById('nextRentreeDate');
+            if (dateElement) {
+                const formatted = formatDate(targetDate);
+                dateElement.innerHTML = formatted + ' <i class="fas fa-arrow-right"></i>';
+            }
+
+            // Mise à jour du compteur de jours
+            const daysElement = document.getElementById('daysRemaining');
+            if (daysElement) {
+                const days = getDaysRemaining(targetDate);
+                if (days > 0) {
+                    daysElement.textContent = days;
+                } else if (days === 0) {
+                    daysElement.textContent = 'Aujourd\'hui !';
+                }
+            }
+        }
+
+        // Exécuter au chargement
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', updateNextRentree);
+        } else {
+            updateNextRentree();
+        }
+
+        // Mettre à jour toutes les 24h
+        setInterval(updateNextRentree, 24 * 60 * 60 * 1000);
+
+        console.log('📅 Prochaine rentrée : 2ème lundi de septembre');
+    })();
+</script>
+
+</body>
+</html>

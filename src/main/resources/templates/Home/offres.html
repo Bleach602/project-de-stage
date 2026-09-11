@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Toutes nos formations – IFP-PERLE D'OR</title>
+    <meta name="description" content="Découvrez toutes nos filières de formation professionnelle à Foumban, Cameroun. Secrétariat, Informatique, Santé, Agropastoral, BTP, Hôtellerie.">
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* ============================================================
+           CHARTE IFP-PO (variables)
+           ============================================================ */
+        :root {
+            --bleu-cyan: #0096dc;
+            --bleu-cyan-clair: #4bb8f0;
+            --bleu-cyan-fonce: #0072b3;
+            --bleu-cyan-gradient: linear-gradient(135deg, #0096dc 0%, #0072b3 100%);
+            --bleu-cyan-transparent: rgba(0, 150, 220, 0.08);
+
+            --or: #d4af37;
+            --or-clair: #e8c84a;
+            --or-fonce: #b8860b;
+            --or-gradient: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            --or-transparent: rgba(212, 175, 55, 0.12);
+
+            --noir: #000000;
+            --noir-clair: #1a1a1a;
+            --blanc: #ffffff;
+            --blanc-casse: #f8fafc;
+            --gris-clair: #eef2f6;
+            --gris-medium: #d1d5db;
+            --gris-fonce: #6b7280;
+
+            --bg-body: #f8fafc;
+            --text-color: #1a1a1a;
+            --text-muted: #6b7280;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 24px rgba(0, 150, 220, 0.08);
+            --shadow-lg: 0 12px 48px rgba(0, 150, 220, 0.10);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --radius-full: 100px;
+            --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* Espacements */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 2.5rem;
+        }
+
+        /* Reset & Base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-body);
+            color: var(--text-color);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+
+        /* ============================================================
+           HEADER
+           ============================================================ */
+        .site-header {
+            background: var(--noir-clair);
+            color: var(--blanc);
+            padding: var(--space-md) 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--or);
+            box-shadow: var(--shadow-md);
+        }
+
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: var(--space-md);
+        }
+
+        .site-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 800;
+            font-size: 1.3rem;
+        }
+
+        .site-logo i {
+            font-size: 1.8rem;
+            color: var(--or);
+            background: var(--bleu-cyan-gradient);
+            padding: 0.4rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .site-logo h1 {
+            font-size: 1.4rem;
+            color: var(--blanc);
+            letter-spacing: -0.5px;
+        }
+
+        .site-logo h1 span {
+            color: var(--or);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .site-nav {
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+        }
+
+        .site-nav a {
+            color: #cbd5e1;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            padding: 0.3rem 0;
+            border-bottom: 2px solid transparent;
+        }
+
+        .site-nav a:hover,
+        .site-nav a.active {
+            color: var(--blanc);
+            border-bottom-color: var(--or);
+        }
+
+        .site-nav .btn-inscription {
+            background: var(--or-gradient);
+            color: var(--noir-clair);
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 600;
+            border-bottom: none;
+        }
+
+        .site-nav .btn-inscription:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+            border-bottom: none;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            color: var(--blanc);
+            cursor: pointer;
+            padding: 0.3rem;
+        }
+
+        /* ============================================================
+           SECTION HERO
+           ============================================================ */
+        .hero-offres {
+            background: var(--bleu-cyan-gradient);
+            color: var(--blanc);
+            padding: var(--space-2xl) 0;
+            text-align: center;
+            margin-bottom: var(--space-xl);
+        }
+
+        .hero-offres h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-offres h2 span {
+            color: var(--or);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .hero-offres p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ============================================================
+           SECTION FILIÈRES (page offres)
+           ============================================================ */
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+        }
+
+        .section-header .sub-title {
+            display: inline-block;
+            background: var(--bleu-cyan-transparent);
+            color: var(--bleu-cyan-fonce);
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--noir-clair);
+        }
+
+        .section-header h2 span {
+            color: var(--or);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            max-width: 650px;
+            margin: 0.5rem auto 0;
+        }
+
+        /* Grille des filières */
+        .filiere-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: var(--space-xl);
+            margin: var(--space-xl) 0;
+        }
+
+        /* Carte */
+        .filiere-card {
+            background: var(--blanc);
+            border-radius: var(--radius);
+            padding: var(--space-xl);
+            border: 1px solid var(--gris-clair);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filiere-card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-6px);
+            border-color: var(--bleu-cyan);
+        }
+
+        .category-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: var(--bleu-cyan-transparent);
+            color: var(--bleu-cyan-fonce);
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            align-self: flex-start;
+            margin-bottom: var(--space-sm);
+        }
+
+        .category-tag i {
+            color: var(--or);
+        }
+
+        .filiere-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            color: var(--noir-clair);
+        }
+
+        .filiere-desc {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: var(--space-md);
+            flex: 1;
+        }
+
+        /* Tarifs */
+        .tarif-details {
+            background: var(--blanc-casse);
+            border-radius: var(--radius-sm);
+            padding: var(--space-md);
+            margin: var(--space-sm) 0 var(--space-md);
+            border: 1px solid var(--gris-clair);
+        }
+
+        .tarif-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.2rem 0;
+            font-size: 0.85rem;
+        }
+
+        .tarif-row .label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .tarif-row .value {
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .tarif-row.total {
+            border-top: 1px solid var(--gris-medium);
+            margin-top: 0.3rem;
+            padding-top: 0.3rem;
+        }
+
+        .tarif-row.total .label,
+        .tarif-row.total .value {
+            font-weight: 700;
+            color: var(--bleu-cyan-fonce);
+            font-size: 0.95rem;
+        }
+
+        /* Bouton inscription */
+        .btn-filiere {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: var(--bleu-cyan-gradient);
+            color: var(--blanc);
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            text-align: center;
+            margin-top: auto;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-filiere:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(0, 150, 220, 0.3);
+        }
+
+        /* Bouton "Voir toutes les offres" (sur la page d'accueil) */
+        .btn-outline-offres {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.7rem 2rem;
+            border: 2px solid var(--bleu-cyan);
+            color: var(--bleu-cyan);
+            border-radius: 40px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .btn-outline-offres:hover {
+            background: var(--bleu-cyan);
+            color: var(--blanc);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(0, 150, 220, 0.25);
+        }
+
+        /* Bonus box (gardé pour l'accueil) */
+        .bonus-box {
+            background: var(--or-transparent);
+            border-radius: var(--radius);
+            padding: var(--space-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--space-lg);
+            border: 1px solid var(--or);
+            margin-top: var(--space-xl);
+            flex-wrap: wrap;
+        }
+
+        .bonus-box i {
+            font-size: 2.5rem;
+            color: var(--or-fonce);
+        }
+
+        .bonus-box h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--noir-clair);
+        }
+
+        .bonus-box p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ============================================================
+           FOOTER
+           ============================================================ */
+        .site-footer {
+            background: var(--noir-clair);
+            color: #cbd5e1;
+            padding: var(--space-2xl) 0 var(--space-lg);
+            margin-top: var(--space-2xl);
+            border-top: 3px solid var(--or);
+        }
+
+        .site-footer .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-xl);
+        }
+
+        .footer-col h4 {
+            color: var(--blanc);
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--space-md);
+            position: relative;
+        }
+
+        .footer-col h4::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: var(--or);
+            margin-top: 0.3rem;
+            border-radius: 10px;
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .footer-col ul li a {
+            color: #cbd5e1;
+            transition: var(--transition);
+            font-size: 0.9rem;
+        }
+
+        .footer-col ul li a:hover {
+            color: var(--or);
+            padding-left: 0.3rem;
+        }
+
+        .footer-col p {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-col p i {
+            color: var(--or);
+            width: 1.2rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.05);
+            margin-top: var(--space-xl);
+            padding-top: var(--space-md);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            grid-column: 1 / -1;
+        }
+
+        .footer-bottom a {
+            color: var(--or);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 992px) {
+            .filiere-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-toggle {
+                display: block;
+            }
+
+            .site-nav {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                padding-top: var(--space-md);
+                border-top: 1px solid rgba(255,255,255,0.1);
+            }
+
+            .site-nav.open {
+                display: flex;
+            }
+
+            .site-nav a {
+                padding: 0.5rem 0;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+
+            .site-nav .btn-inscription {
+                align-self: center;
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero-offres h2 {
+                font-size: 1.8rem;
+            }
+
+            .hero-offres p {
+                font-size: 1rem;
+            }
+
+            .filiere-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: var(--space-md);
+            }
+
+            .filiere-card {
+                padding: var(--space-lg);
+            }
+
+            .section-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .site-footer .container {
+                grid-template-columns: 1fr;
+                gap: var(--space-lg);
+            }
+
+            .bonus-box {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .filiere-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-offres h2 {
+                font-size: 1.5rem;
+            }
+
+            .site-logo h1 {
+                font-size: 1.1rem;
+            }
+
+            .container {
+                padding: 0 var(--space-md);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+   HEADER
+   ============================================================ -->
+<header class="site-header">
+    <div class="container">
+        <div class="site-logo">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>IFP-PERLE <span>D'OR</span></h1>
+        </div>
+
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <nav class="site-nav" id="siteNav">
+            <a th:href="@{/}" class="active">Accueil</a>
+            <a th:href="@{/offres}" class="active">Nos formations</a>
+            <a th:href="@{/contact}">Contact</a>
+            <a th:href="@{/login}" class="btn-inscription">S'inscrire</a>
+        </nav>
+    </div>
+</header>
+
+<!-- ============================================================
+   HERO
+   ============================================================ -->
+<section class="hero-offres">
+    <div class="container">
+        <h2>Toutes nos <span>formations</span></h2>
+        <p>Découvrez l'ensemble de nos filières professionnelles, conçues pour vous rendre opérationnel(le) dès la sortie.</p>
+    </div>
+</section>
+
+<!-- ============================================================
+   SECTION FILIÈRES & SPÉCIALITÉS (PAGE OFFRES)
+   ============================================================ -->
+<section class="filiere-section" id="filiere">
+    <div class="container">
+        <div class="section-header">
+            <span class="sub-title">Nos formations</span>
+            <h2>Toutes nos <span>spécialités par filière</span></h2>
+            <p>Retrouvez l'ensemble des spécialités proposées ainsi que le détail de leurs frais de scolarité.</p>
+
+            <!-- Bouton pour réinitialiser le filtre s'il y a un filtre actif -->
+            <div th:if="${filiereFiltreeId != null}" style="margin-top: 15px;">
+                <a th:href="@{/offres}" class="btn-outline-offres" style="font-size: 0.85rem; padding: 0.4rem 1rem;">
+                    <i class="fas fa-list"></i> Afficher toutes les filières
+                </a>
+            </div>
+        </div>
+
+        <!-- Boucle sur chaque filière -->
+        <div th:each="filiere : ${filieres}" style="margin-bottom: 3rem;">
+
+            <div style="border-bottom: 2px solid var(--or); padding-bottom: 0.5rem; margin-bottom: 1.5rem;">
+                <h2 style="font-size: 1.8rem; color: var(--bleu-cyan-fonce);">
+                    <span th:text="${filiere.nom}">Nom de la filière</span>
+                    <span style="font-size: 1.1rem; color: var(--or);" th:text="'(' + ${filiere.sigle} + ')'"></span>
+                </h2>
+            </div>
+
+            <!-- Grille des spécialités de la filière -->
+            <div class="filiere-grid">
+
+                <!-- Boucle sur toutes les spécialités rattachées à cette filière -->
+                <div class="filiere-card" th:each="spec : ${filiere.specialites}">
+
+                    <span class="category-tag">
+                        <i class="fas fa-graduation-cap"></i> Spécialité
+                    </span>
+
+                    <h3 th:text="${spec.nom}">Nom Spécialité</h3>
+
+                    <p class="filiere-desc" th:text="${spec.description != null ? spec.description : 'Aucune description disponible.'}">
+                        Description de la spécialité
+                    </p>
+
+                    <!-- Détails des tarifs de la spécialité -->
+                    <div class="tarif-details">
+                        <div class="tarif-row">
+                            <span class="label">Inscription</span>
+                            <span class="value" th:text="${#numbers.formatDecimal(spec.fraisPreInscription, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'"></span>
+                        </div>
+                        <div class="tarif-row">
+                            <span class="label">1ère Tranche</span>
+                            <span class="value" th:text="${#numbers.formatDecimal(spec.tranche1, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'"></span>
+                        </div>
+                        <div class="tarif-row">
+                            <span class="label">2ème Tranche</span>
+                            <span class="value" th:text="${#numbers.formatDecimal(spec.tranche2, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'"></span>
+                        </div>
+                        <div class="tarif-row">
+                            <span class="label">3ème Tranche</span>
+                            <span class="value" th:text="${#numbers.formatDecimal(spec.tranche3, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'"></span>
+                        </div>
+                        <div class="tarif-row total">
+                            <span class="label total">Total Scolarité</span>
+                            <span class="value total" th:text="${#numbers.formatDecimal(spec.totalScolarite, 0, 'WHITESPACE', 0, 'POINT')} + ' FCFA'"></span>
+                        </div>
+                    </div>
+
+                    <!-- Bouton Inscription spécifique à la spécialité -->
+                    <a th:href="@{/login(filiereId=${filiere.id}, specialiteId=${spec.id})}" class="btn-filiere">
+                        S'inscrire à cette spécialité <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <!-- Message si la filière ne contient aucune spécialité -->
+                <div th:if="${#lists.isEmpty(filiere.specialites)}" style="grid-column: 1 / -1; text-align: center; padding: 20px; background: #fff; border-radius: 12px;">
+                    <p style="color: #777;">Aucune spécialité n'est encore enregistrée pour cette filière.</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============================================================
+   FOOTER
+   ============================================================ -->
+<footer class="site-footer">
+    <div class="container">
+        <div class="footer-col">
+            <h4>IFP-PERLE D'OR</h4>
+            <p><i class="fas fa-map-marker-alt"></i> Foumban, Cameroun</p>
+            <p><i class="fas fa-phone"></i> +237 658 626 681</p>
+            <p><i class="fas fa-envelope"></i> contact@ifp-perledor.com</p>
+        </div>
+
+        <div class="footer-col">
+            <h4>Liens rapides</h4>
+            <ul>
+                <li><a th:href="@{/}">Accueil</a></li>
+                <li><a th:href="@{/offres}">Nos formations</a></li>
+                <li><a th:href="@{/}">Contact</a></li>
+                <li><a th:href="@{/login}">Espace candidat</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h4>Suivez-nous</h4>
+            <ul>
+                <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+                <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+                <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                <li><a href="#"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-bottom">
+            &copy; 2026 IFP-PERLE D'OR – Tous droits réservés. <a th:href="@{/mentions-legales}">Mentions légales</a>
+        </div>
+    </div>
+</footer>
+
+<!-- ============================================================
+   JAVASCRIPT (toggle mobile)
+   ============================================================ -->
+<script>
+    (function() {
+        const toggle = document.getElementById('mobileToggle');
+        const nav = document.getElementById('siteNav');
+
+        toggle.addEventListener('click', function() {
+            nav.classList.toggle('open');
+        });
+
+        // Fermer le menu au clic sur un lien (optionnel)
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    nav.classList.remove('open');
+                }
+            });
+        });
+    })();
+</script>
+
+</body>
+</html>

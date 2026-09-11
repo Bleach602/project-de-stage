@@ -1,0 +1,105 @@
+<div id="notificationsTab"
+     class="tab-content"
+     th:fragment="notifications">
+
+
+    <div class="card notification-card">
+
+
+        <div class="notification-header">
+
+            <h4>
+                <i class="fas fa-bell"></i>
+
+                Notifications
+            </h4>
+
+
+            <span class="notification-counter"
+
+                  th:if="${nombreNotifications > 0}"
+
+                  th:text="${nombreNotifications}">
+
+            </span>
+
+
+        </div>
+
+
+
+        <div class="timeline">
+
+
+            <div class="timeline-item"
+
+                 th:each="notification : ${notifications}">
+
+
+                <div class="timeline-point"
+
+                     th:classappend="${notification.type.name().toLowerCase()}">
+
+
+                    <i class="fas"
+
+                       th:classappend="' '+${notification.icon}">
+
+                    </i>
+
+
+                </div>
+
+
+
+                <div class="notification-box"
+
+                     th:classappend="${notification.nouvelle} ? 'new' : ''">
+
+
+                    <div class="notification-title">
+
+
+                        <span th:text="${notification.titre}"></span>
+
+
+                        <span class="new-badge"
+
+                              th:if="${notification.nouvelle}">
+
+                            Nouveau
+
+                        </span>
+
+
+                    </div>
+
+
+
+                    <p th:text="${notification.message}"></p>
+
+
+
+                    <div class="notification-date">
+
+                        <i class="far fa-calendar-alt"></i>
+                            Date
+                        <span th:text="${#temporals.format(notification.date,'dd/MM/yyyy')}">
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>

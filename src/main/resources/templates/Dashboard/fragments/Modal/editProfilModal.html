@@ -1,0 +1,40 @@
+
+<!-- ============================================================
+MODALE : ÉDITION PROFIL
+============================================================ -->
+<div class="modal-overlay" id="editProfilModal" th:fragment="editProfilModal">
+    <div class="modal-content">
+        <button class="close-modal" id="closeEditProfilModal">&times;</button>
+        <h4><i class="fas fa-user-edit"></i> Modifier mon profil</h4>
+        <form id="editProfilForm" th:action="@{/candidat/profile/update}" method="post">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"
+            >
+
+
+            <div class="form-group">
+                <label><i class="fas fa-user"></i> Nom *</label>
+                <input type="text" name="nom" id="editNom" value="Jean" required>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-user"></i> Prénom *</label>
+                <input type="text" name="prenom" id="editPrenom" value="admin" required>
+            </div>
+            <div class="form-group">
+                <label><i class="fas fa-phone"></i> Téléphone</label>
+                <input type="tel" name="telephone" id="editTelephone" value="+237 6XX XXX XXX">
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-envelope"></i> Email</label>
+                <input type="email" name="email" id="editEmail" value="Arafat@example.com" disabled style="background: var(--gris-clair); opacity: 0.7;">
+            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-outline" id="cancelEditProfil">Annuler</button>
+                <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Mettre à jour</button>
+            </div>
+        </form>
+    </div>
+</div>

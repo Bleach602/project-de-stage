@@ -1,0 +1,90 @@
+<!-- ============================================================
+   admin/fragments/admin_navbar.html
+   Navbar Premium – Header Administration
+   ============================================================ -->
+
+<div th:fragment="navbar" class="navbar" role="banner">
+    <div class="navbar-left">
+        <!-- Bouton Hamburger pour mobile -->
+        <button id="toggle-sidebar" class="hamburger-btn" aria-label="Ouvrir le menu de navigation">
+            <i class='bx bx-menu'></i>
+        </button>
+
+        <!-- Breadcrumb / Titre de page dynamique -->
+        <div class="navbar-breadcrumb">
+            <span class="breadcrumb-home">
+                <i class='bx bx-home-alt'></i>
+            </span>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current" th:text="${pageTitle != null ? pageTitle : 'Tableau de bord'}">
+                Tableau de bord
+            </span>
+        </div>
+    </div>
+
+    <div class="navbar-right">
+
+        <!-- Lien vers le site vitrine -->
+        <a th:href="@{/}" class="icon-btn" title="Retourner au site vitrine">
+            <i class='bx bx-globe'></i>
+            <span class="icon-label">Site</span>
+        </a>
+
+        <!-- Notifications -->
+        <div class="notification-badge">
+            <button class="icon-btn" id="notifBtn" aria-label="Notifications">
+                <i class='bx bx-bell'></i>
+                <span class="notif-ring"></span>
+            </button>
+            <span class="badge" th:text="${notificationsCount != null ? notificationsCount : '3'}">3</span>
+        </div>
+
+        <!-- Profil utilisateur -->
+        <div class="user-profile" id="userProfile">
+            <div class="user-avatar-wrapper">
+                <div class="avatar">
+                    <span class="avatar-initials"
+                          th:text="${currentUser != null ? #strings.substring(currentUser.prenom, 0, 1) + #strings.substring(currentUser.nom, 0, 1) : 'AD'}">
+                        AD
+                    </span>
+                </div>
+                <span class="avatar-status"></span>
+            </div>
+
+            <div class="user-info">
+                <span class="user-name"
+                      th:text="${currentUser != null ? currentUser.prenom + ' ' + currentUser.nom : 'Administrateur'}">
+                    Fadil Admin
+                </span>
+                <span class="user-role"
+                      th:text="${currentUser != null and currentUser.role != null ? currentUser.role.intitule : 'Super Admin'}">
+                    Administrateur
+                </span>
+            </div>
+
+            <button class="user-dropdown-btn" id="userDropdownBtn" aria-label="Menu utilisateur">
+                <i class='bx bx-chevron-down'></i>
+            </button>
+
+            <!-- Dropdown menu -->
+            <div class="user-dropdown-menu" id="userDropdownMenu">
+                <a th:href="@{/dashboard/profil}" class="dropdown-item">
+                    <i class='bx bx-user'></i>
+                    <span>Mon profil</span>
+                </a>
+                <a th:href="@{/dashboard/parametres}" class="dropdown-item">
+                    <i class='bx bx-cog'></i>
+                    <span>Paramètres</span>
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item danger" onclick="ouvrirModalDeconnexion(event)">
+                    <i class='bx bx-log-out'></i>
+                    <span>Se déconnecter</span>
+                    <span class="dropdown-shortcut">⌘Q</span>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div>
+

@@ -1,0 +1,1238 @@
+<!--
+============================================================
+    FICHIER : archive.html
+    FONCTION : Galerie des événements passés avec modale
+============================================================
+-->
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Galerie Archives | IFP-PO</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ============================================================
+           CHARTE GRAPHIQUE IFP-PO - GALERIE ARCHIVE
+           ============================================================ */
+        :root {
+            --bleu-cyan: #0096dc;
+            --bleu-cyan-clair: #e8f4fd;
+            --bleu-cyan-fonce: #0072b3;
+            --bleu-cyan-gradient: linear-gradient(135deg, #0096dc 0%, #0072b3 100%);
+            --bleu-cyan-transparent: rgba(0, 150, 220, 0.08);
+
+            --or: #d4af37;
+            --or-clair: #f0d080;
+            --or-fonce: #b8860b;
+            --or-gradient: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            --or-transparent: rgba(212, 175, 55, 0.12);
+
+            --noir: #0a1628;
+            --noir-clair: #1a2a4a;
+            --noir-doux: #1e293b;
+
+            --blanc: #ffffff;
+            --blanc-casse: #f8fafc;
+            --gris-50: #f8fafc;
+            --gris-100: #f1f5f9;
+            --gris-200: #e2e8f0;
+            --gris-300: #cbd5e1;
+            --gris-400: #94a3b8;
+            --gris-500: #64748b;
+            --gris-600: #475569;
+            --gris-700: #334155;
+
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.12);
+
+            --radius: 20px;
+            --radius-sm: 12px;
+            --radius-full: 100px;
+
+            --transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================================================
+           RESET & BASE
+           ============================================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gris-50);
+            color: var(--noir);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* ============================================================
+           MINI HEADER - RETOUR ACCUEIL
+           ============================================================ */
+        .mini-header {
+            max-width: 1400px;
+            margin: 0 auto 1.5rem auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--blanc);
+            border-radius: var(--radius-full);
+            border: 1px solid var(--gris-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mini-header .back-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--gris-600);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .mini-header .back-link:hover {
+            color: var(--bleu-cyan);
+        }
+
+        .mini-header .back-link i {
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .mini-header .back-link:hover i {
+            transform: translateX(-4px);
+        }
+
+        .mini-header .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .mini-header .header-actions .btn-inscription {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            background: var(--bleu-cyan-gradient);
+            color: var(--blanc);
+            border: none;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 16px rgba(0, 150, 220, 0.2);
+        }
+
+        .mini-header .header-actions .btn-inscription:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 150, 220, 0.3);
+        }
+
+        .mini-header .header-actions .btn-inscription i {
+            font-size: 0.9rem;
+        }
+
+        /* ============================================================
+           CONTENEUR PRINCIPAL
+           ============================================================ */
+        .archive-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ============================================================
+           EN-TÊTE DE LA PAGE
+           ============================================================ */
+        .archive-header {
+            background: var(--noir);
+            border-radius: var(--radius);
+            padding: 2.5rem 3rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .archive-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .archive-header .header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .archive-header .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .archive-header .header-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--or-gradient);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: var(--noir);
+            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.25);
+        }
+
+        .archive-header .header-text h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--blanc);
+            letter-spacing: -0.5px;
+        }
+
+        .archive-header .header-text h1 span {
+            color: var(--or);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+        }
+
+        .archive-header .header-text p {
+            color: var(--gris-400);
+            font-size: 0.95rem;
+            margin-top: 0.2rem;
+        }
+
+        .archive-header .header-count {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-full);
+            color: var(--blanc);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .archive-header .header-count i {
+            color: var(--or);
+        }
+
+        .archive-header .header-count span {
+            font-weight: 800;
+            font-size: 1.1rem;
+        }
+
+        /* Décoration */
+        .header-deco {
+            position: absolute;
+            right: 60px;
+            bottom: -40px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            pointer-events: none;
+        }
+
+        .header-deco::before {
+            content: '';
+            position: absolute;
+            right: 40px;
+            top: 40px;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+
+        /* ============================================================
+           BARRE D'OUTILS - FILTRES & RECHERCHE
+           ============================================================ */
+        .archive-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .archive-toolbar .search-wrapper {
+            flex: 1;
+            min-width: 260px;
+            position: relative;
+        }
+
+        .archive-toolbar .search-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gris-400);
+            font-size: 0.9rem;
+        }
+
+        .archive-toolbar .search-wrapper input {
+            width: 100%;
+            padding: 0.7rem 1rem 0.7rem 2.8rem;
+            border: 2px solid var(--gris-200);
+            border-radius: var(--radius-full);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            background: var(--blanc);
+            color: var(--noir);
+            transition: var(--transition);
+            outline: none;
+        }
+
+        .archive-toolbar .search-wrapper input:focus {
+            border-color: var(--bleu-cyan);
+            box-shadow: 0 0 0 4px var(--bleu-cyan-transparent);
+        }
+
+        .archive-toolbar .search-wrapper input::placeholder {
+            color: var(--gris-400);
+        }
+
+        .archive-toolbar .filters-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .archive-toolbar .filters-group .filter-btn {
+            padding: 0.4rem 1.2rem;
+            border: 2px solid var(--gris-200);
+            border-radius: var(--radius-full);
+            background: transparent;
+            font-weight: 600;
+            font-size: 0.78rem;
+            color: var(--gris-500);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .archive-toolbar .filters-group .filter-btn:hover {
+            border-color: var(--bleu-cyan);
+            color: var(--bleu-cyan);
+        }
+
+        .archive-toolbar .filters-group .filter-btn.active {
+            background: var(--bleu-cyan-gradient);
+            color: var(--blanc);
+            border-color: var(--bleu-cyan);
+            box-shadow: 0 4px 16px rgba(0, 150, 220, 0.25);
+        }
+
+        .archive-toolbar .filters-group .filter-btn .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .archive-toolbar .filters-group .filter-btn .dot.all { background: var(--bleu-cyan); }
+        .archive-toolbar .filters-group .filter-btn .dot.campus { background: #10b981; }
+        .archive-toolbar .filters-group .filter-btn .dot.event { background: #f59e0b; }
+        .archive-toolbar .filters-group .filter-btn .dot.conference { background: #8b5cf6; }
+        .archive-toolbar .filters-group .filter-btn .dot.sport { background: #ef4444; }
+        .archive-toolbar .filters-group .filter-btn .dot.culture { background: #ec4899; }
+
+        /* ============================================================
+            PAGINATION
+          ============================================================ */
+        .archive-pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+
+        .archive-pagination .filter-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 38px;
+            height: 38px;
+            padding: 0 12px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            color: #4b5563;
+            border: 1px solid #e5e7eb;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .archive-pagination .filter-btn:hover {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+
+        .archive-pagination .filter-btn.active {
+            background-color: #1e293b;
+            color: #ffffff;
+            border-color: #1e293b;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .archive-pagination .filter-btn.active:hover {
+            background-color: #0f172a;
+        }
+
+        /* ============================================================
+           GRILLE DES ÉVÉNEMENTS
+           ============================================================ */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        /* ============================================================
+           CARTE ÉVÉNEMENT
+           ============================================================ */
+        .event-card {
+            background: var(--blanc);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--gris-200);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .event-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--or);
+        }
+
+        .event-card .card-image {
+            position: relative;
+            height: 220px;
+            overflow: hidden;
+            background: var(--gris-200);
+        }
+
+        .event-card .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .event-card:hover .card-image img {
+            transform: scale(1.05);
+        }
+
+        .event-card .card-image .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5) 0%, transparent 60%);
+            opacity: 0;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .event-card:hover .card-image .image-overlay {
+            opacity: 1;
+        }
+
+        .event-card .card-image .image-overlay .btn-view {
+            padding: 0.5rem 2rem;
+            border: 2px solid var(--blanc);
+            border-radius: var(--radius-full);
+            background: transparent;
+            color: var(--blanc);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            transform: translateY(10px);
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .event-card:hover .card-image .image-overlay .btn-view {
+            transform: translateY(0);
+        }
+
+        .event-card .card-image .btn-view:hover {
+            background: var(--blanc);
+            color: var(--noir);
+        }
+
+        .event-card .card-image .event-date-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: var(--noir);
+            color: var(--blanc);
+            padding: 0.4rem 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .event-card .card-image .event-date-badge i {
+            color: var(--or);
+            font-size: 0.8rem;
+        }
+
+        .event-card .card-image .category-tag {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            padding: 0.3rem 0.9rem;
+            border-radius: var(--radius-full);
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            background: var(--or);
+            color: var(--noir);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .event-card .card-image .category-tag.campus { background: #10b981; color: var(--blanc); }
+        .event-card .card-image .category-tag.event { background: #f59e0b; color: var(--noir); }
+        .event-card .card-image .category-tag.conference { background: #8b5cf6; color: var(--blanc); }
+        .event-card .card-image .category-tag.sport { background: #ef4444; color: var(--blanc); }
+        .event-card .card-image .category-tag.culture { background: #ec4899; color: var(--blanc); }
+
+        /* Placeholder d'image */
+        .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            transition: var(--transition);
+        }
+
+        .image-placeholder i {
+            opacity: 0.8;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-card:hover .image-placeholder {
+            transform: scale(1.02);
+        }
+
+        .event-card .card-body {
+            padding: 1.5rem 1.8rem;
+        }
+
+        .event-card .card-body .event-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--noir);
+            margin-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        .event-card .card-body .event-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .event-card .card-body .event-title a:hover {
+            color: var(--bleu-cyan);
+        }
+
+        .event-card .card-body .event-description {
+            font-size: 0.9rem;
+            color: var(--gris-500);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .event-card .card-body .event-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--gris-200);
+        }
+
+        .event-card .card-body .event-meta .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.78rem;
+            color: var(--gris-500);
+        }
+
+        .event-card .card-body .event-meta .meta-item i {
+            color: var(--or);
+            font-size: 0.8rem;
+        }
+
+        .event-card .card-body .event-meta .meta-item .date {
+            font-weight: 600;
+            color: var(--gris-700);
+        }
+
+        .event-card .card-body .event-meta .btn-detail {
+            padding: 0.3rem 1.2rem;
+            border: 1.5px solid var(--bleu-cyan);
+            border-radius: var(--radius-full);
+            background: transparent;
+            color: var(--bleu-cyan);
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .event-card .card-body .event-meta .btn-detail:hover {
+            background: var(--bleu-cyan-gradient);
+            color: var(--blanc);
+            box-shadow: 0 4px 16px rgba(0, 150, 220, 0.25);
+        }
+
+        /* ============================================================
+           MODALE PREMIUM
+           ============================================================ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 22, 40, 0.7);
+            backdrop-filter: blur(12px);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--blanc);
+            border-radius: var(--radius);
+            max-width: 720px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            animation: modalIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-content .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gris-100);
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: var(--gris-500);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .modal-content .modal-close:hover {
+            background: var(--gris-200);
+            color: var(--noir);
+            transform: rotate(90deg);
+        }
+
+        /* Wrapper de l'image dans la modale */
+        .modal-image-wrapper {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            background: var(--gris-200);
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-image-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a2a4a, #0a1628);
+            color: var(--or);
+            font-size: 4rem;
+        }
+
+        .modal-image-placeholder i {
+            opacity: 0.5;
+        }
+
+        .modal-content .modal-body {
+            padding: 2rem 2.5rem;
+        }
+
+        .modal-content .modal-body .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--noir);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-content .modal-body .modal-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 1.2rem;
+            font-size: 0.85rem;
+            color: var(--gris-500);
+        }
+
+        .modal-content .modal-body .modal-meta i {
+            color: var(--or);
+            margin-right: 0.4rem;
+        }
+
+        .modal-content .modal-body .modal-description {
+            font-size: 0.95rem;
+            color: var(--gris-600);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-content .modal-body .modal-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gris-200);
+        }
+
+        .modal-content .modal-body .modal-actions .btn-modal {
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-content .modal-body .modal-actions .btn-modal.primary {
+            background: var(--bleu-cyan-gradient);
+            color: var(--blanc);
+            border: none;
+            box-shadow: 0 4px 16px rgba(0, 150, 220, 0.2);
+        }
+
+        .modal-content .modal-body .modal-actions .btn-modal.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 150, 220, 0.3);
+        }
+
+        .modal-content .modal-body .modal-actions .btn-modal.secondary {
+            background: transparent;
+            color: var(--gris-500);
+            border: 1.5px solid var(--gris-200);
+        }
+
+        .modal-content .modal-body .modal-actions .btn-modal.secondary:hover {
+            border-color: var(--bleu-cyan);
+            color: var(--bleu-cyan);
+        }
+
+        /* ============================================================
+           MESSAGE VIDE
+           ============================================================ */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gris-400);
+        }
+
+        .empty-state i {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            font-size: 1.3rem;
+            color: var(--gris-600);
+            margin-bottom: 0.3rem;
+        }
+
+        .empty-state p {
+            font-size: 0.95rem;
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 1024px) {
+            .events-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 820px) {
+            body { padding: 1rem; }
+
+            .mini-header {
+                padding: 0.5rem 1rem;
+                border-radius: var(--radius-sm);
+            }
+
+            .mini-header .header-actions .btn-inscription {
+                font-size: 0.75rem;
+                padding: 0.4rem 1rem;
+            }
+
+            .archive-header { padding: 1.5rem 2rem; }
+            .archive-header .header-content { flex-direction: column; align-items: stretch; gap: 1rem; }
+            .archive-header .header-left { flex-direction: column; align-items: flex-start; }
+            .archive-header .header-icon { width: 48px; height: 48px; font-size: 1.3rem; }
+            .archive-header .header-text h1 { font-size: 1.5rem; }
+
+            .archive-toolbar { flex-direction: column; align-items: stretch; }
+            .archive-toolbar .search-wrapper { min-width: unset; }
+            .archive-toolbar .filters-group { justify-content: center; }
+
+            .events-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.2rem; }
+            .event-card .card-image { height: 180px; }
+            .event-card .card-body { padding: 1.2rem 1.5rem; }
+            .event-card .card-body .event-title { font-size: 1rem; }
+
+            .modal-image-wrapper { height: 200px; }
+            .modal-content .modal-body { padding: 1.5rem; }
+            .modal-content .modal-body .modal-title { font-size: 1.3rem; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 0.8rem; }
+
+            .mini-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .mini-header .header-actions { justify-content: center; }
+
+            .archive-header {
+                padding: 1rem 1.2rem;
+                border-radius: var(--radius-sm);
+            }
+
+            .archive-header .header-text h1 { font-size: 1.2rem; }
+            .archive-header .header-text p { font-size: 0.85rem; }
+            .archive-header .header-count { font-size: 0.8rem; padding: 0.3rem 1rem; }
+
+            .events-grid { grid-template-columns: 1fr; gap: 1rem; }
+            .event-card .card-image { height: 200px; }
+
+            .event-card .card-body .event-meta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .event-card .card-body .event-meta .btn-detail {
+                text-align: center;
+                justify-content: center;
+            }
+
+            .archive-toolbar .filters-group .filter-btn {
+                font-size: 0.65rem !important;
+                padding: 0.25rem 0.8rem !important;
+            }
+
+            .modal-image-wrapper { height: 160px; }
+            .modal-image-placeholder { font-size: 3rem; }
+            .modal-content .modal-body { padding: 1.2rem; }
+            .modal-content .modal-body .modal-title { font-size: 1.1rem; }
+            .modal-content .modal-body .modal-meta { gap: 0.8rem; font-size: 0.8rem; }
+            .modal-content .modal-body .modal-description { font-size: 0.9rem; }
+            .modal-content .modal-body .modal-actions { flex-direction: column; }
+            .modal-content .modal-body .modal-actions .btn-modal { width: 100%; justify-content: center; }
+        }
+
+        @media (max-width: 380px) {
+            .archive-header .header-icon { width: 40px; height: 40px; font-size: 1rem; }
+            .archive-header .header-text h1 { font-size: 1rem; }
+            .event-card .card-image .event-date-badge { font-size: 0.6rem; padding: 0.2rem 0.7rem; }
+            .event-card .card-image .category-tag { font-size: 0.5rem; padding: 0.2rem 0.6rem; top: 12px; right: 12px; }
+            .archive-toolbar .filters-group .filter-btn { font-size: 0.55rem !important; padding: 0.2rem 0.6rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+        MINI HEADER - RETOUR ACCUEIL
+============================================================ -->
+<div class="mini-header">
+    <a th:href="@{/}" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        Retour à l'accueil
+    </a>
+    <div class="header-actions">
+        <a th:href="@{/login}" class="btn-inscription">
+            <i class="fas fa-user-plus"></i>
+            S'inscrire
+        </a>
+    </div>
+</div>
+
+<!-- ============================================================
+CONTENEUR PRINCIPAL
+============================================================ -->
+<div class="archive-container">
+
+    <!-- EN-TÊTE -->
+    <header class="archive-header">
+        <div class="header-deco"></div>
+        <div class="header-content">
+            <div class="header-left">
+                <div class="header-icon">
+                    <i class="fas fa-archive"></i>
+                </div>
+                <div class="header-text">
+                    <h1>Galerie <span>Archives</span></h1>
+                    <p>Découvrez les moments forts de notre institut à travers le temps</p>
+                </div>
+            </div>
+            <div class="header-count">
+                <i class="fas fa-images"></i>
+                <span th:text="${archives.totalElements}">0</span> événements
+            </div>
+        </div>
+    </header>
+
+    <!-- BARRE D'OUTILS -->
+    <div class="archive-toolbar">
+        <form th:action="@{/archive}" method="get" class="search-wrapper" style="display:flex; align-items:center; width:100%;">
+            <i class="fas fa-search"></i>
+            <input type="text" name="motCle" th:value="${motCle}"
+                   placeholder="Rechercher un événement..." class="search-input">
+            <input type="hidden" name="size" th:value="${archives.size}">
+        </form>
+    </div>
+
+    <!-- GRILLE DES ÉVÉNEMENTS -->
+    <div class="events-grid" id="eventsGrid">
+
+        <div class="event-card" th:each="a, iter : ${archives}"
+             th:attr="data-id=${a.id},
+                  data-title=${a.titre},
+                  data-description=${a.description},
+                  data-date=${#temporals.format(a.dateEvenement, 'dd MMMM yyyy')},
+                  data-image=${a.photoUrl != null and !a.photoUrl.isEmpty() ? a.photoUrl : ''}">
+
+            <div class="card-image">
+                <!-- Image principale -->
+                <img th:if="${a.photoUrl != null and !a.photoUrl.isEmpty()}"
+                     th:src="${a.photoUrl}"
+                     th:alt="${a.titre != null ? a.titre : 'Actualité'}"
+                     loading="lazy"
+                     onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">
+
+                <!-- Placeholder si pas d'image -->
+                <div class="image-placeholder"
+                     th:unless="${a.photoUrl != null and !a.photoUrl.isEmpty()}"
+                     th:style="
+                            ${iter.index % 4 == 0} ? 'background: linear-gradient(135deg, #0096dc, #0c0c1a); color: #f5a623;' :
+                            (${iter.index % 4 == 1} ? 'background: linear-gradient(135deg, #f5a623, #0c0c1a); color: #ffffff;' :
+                            (${iter.index % 4 == 2} ? 'background: linear-gradient(135deg, #8b5cf6, #0c0c1a); color: #f5a623;' :
+                            'background: linear-gradient(135deg, #22c55e, #0c0c1a); color: #ffffff;'))">
+                    <i class="fas fa-newspaper"></i>
+                </div>
+
+                <div class="image-overlay">
+                    <button class="btn-view" onclick="openModal(this)">
+                        <i class="fas fa-eye"></i> Voir détails
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <h3 class="event-title">
+                    <a href="#" th:text="${a.titre}">Titre</a>
+                </h3>
+                <div class="event-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-calendar-alt"></i> Publié le :
+                        <span class="date" th:text="${#temporals.format(a.datePublication, 'dd/MM/yyyy')}">Date</span>
+                    </div>
+                    <button class="btn-detail" onclick="openModal(this)">
+                        <i class="fas fa-arrow-right"></i> Voir plus
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${archives.empty}" style="grid-column:1/-1; text-align:center; padding:3rem; color:var(--gris-400);">
+            <i class="fas fa-archive" style="font-size:3rem; display:block; margin-bottom:1rem; opacity:0.3;"></i>
+            <h3 style="color:var(--gris-600);">Aucune archive disponible</h3>
+            <p>Aucun événement archivé pour le moment.</p>
+        </div>
+
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="archive-pagination" th:if="${archives.totalPages > 1}">
+        <a th:if="${!archives.first}"
+           th:href="@{/archive(page=${archives.number - 1}, size=${archives.size}, motCle=${motCle})}"
+           class="filter-btn">«</a>
+
+        <a th:each="i : ${#numbers.sequence(0, archives.totalPages - 1)}"
+           th:href="@{/archive(page=${i}, size=${archives.size}, motCle=${motCle})}"
+           th:text="${i + 1}"
+           th:classappend="${i == archives.number} ? 'active' : ''"
+           class="filter-btn">1</a>
+
+        <a th:if="${!archives.last}"
+           th:href="@{/archive(page=${archives.number + 1}, size=${archives.size}, motCle=${motCle})}"
+           class="filter-btn">»</a>
+    </div>
+
+</div>
+
+<!-- ============================================================
+                MODALE
+============================================================ -->
+<div class="modal-overlay" id="eventModal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">
+            <i class="fas fa-times"></i>
+        </button>
+
+        <!-- Wrapper image avec fallback -->
+        <div class="modal-image-wrapper">
+            <img class="modal-image" id="modalImage" src="" alt="">
+            <div class="modal-image-placeholder" id="modalImagePlaceholder">
+                <i class="fas fa-newspaper"></i>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <h2 class="modal-title" id="modalTitle">Titre de l'événement</h2>
+            <div class="modal-meta">
+                <span><i class="fas fa-calendar-alt"></i> <span id="modalDate">Date</span></span>
+            </div>
+            <p class="modal-description" id="modalDescription">
+                Description complète de l'événement...
+            </p>
+            <div class="modal-actions">
+                <button class="btn-modal secondary" onclick="closeModal()">
+                    Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================================
+SCRIPT - MODALE AVEC GESTION DES IMAGES
+============================================================ -->
+<script>
+    (function() {
+        'use strict';
+
+        const modal = document.getElementById('eventModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalImagePlaceholder = document.getElementById('modalImagePlaceholder');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDate = document.getElementById('modalDate');
+        const modalDescription = document.getElementById('modalDescription');
+
+        // Fonction d'ouverture de la modale
+        window.openModal = function(trigger) {
+            const card = trigger.closest('.event-card');
+            if (!card) return;
+
+            // Récupération des données
+            const imageUrl = card.dataset.image || '';
+            const title = card.dataset.title || 'Titre non disponible';
+            const date = card.dataset.date || 'Date non disponible';
+            const description = card.dataset.description || 'Aucune description disponible.';
+
+            // Mise à jour du titre
+            modalTitle.textContent = title;
+
+            // Mise à jour de la date
+            modalDate.textContent = date;
+
+            // Mise à jour de la description
+            modalDescription.textContent = description;
+
+            // Gestion de l'image
+            if (imageUrl && imageUrl.trim() !== '' && imageUrl !== 'undefined') {
+                modalImage.src = imageUrl;
+                modalImage.style.display = 'block';
+                modalImagePlaceholder.style.display = 'none';
+
+                // Gestion des erreurs de chargement
+                modalImage.onerror = function() {
+                    modalImage.style.display = 'none';
+                    modalImagePlaceholder.style.display = 'flex';
+                    console.warn('Image non trouvée :', imageUrl);
+                };
+
+                // Si l'image se charge bien
+                modalImage.onload = function() {
+                    modalImage.style.display = 'block';
+                    modalImagePlaceholder.style.display = 'none';
+                };
+
+            } else {
+                // Pas d'image -> afficher le placeholder
+                modalImage.style.display = 'none';
+                modalImagePlaceholder.style.display = 'flex';
+            }
+
+            // Ouverture de la modale
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        };
+
+        // Fermeture de la modale
+        window.closeModal = function() {
+            modal.classList.remove('open');
+            document.body.style.overflow = '';
+
+            // Réinitialiser l'image pour éviter le flash
+            setTimeout(function() {
+                modalImage.src = '';
+                modalImage.style.display = 'block';
+                modalImagePlaceholder.style.display = 'none';
+            }, 300);
+        };
+
+        // Fermeture en cliquant sur l'overlay
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Fermeture avec la touche Echap
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+        });
+
+        // Fermeture avec le bouton de fermeture
+        document.querySelector('.modal-close')?.addEventListener('click', closeModal);
+
+        console.log('🚀 Galerie archive initialisée avec succès.');
+
+    })();
+</script>
+
+</body>
+</html>

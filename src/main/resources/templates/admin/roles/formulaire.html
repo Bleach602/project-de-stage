@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulaire role</title>
+    <link rel="stylesheet" th:href="@{/css/formulaireRolePermissions.css}">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="page-header">
+    <h2>
+        <i class='bx bxs-shield-quarter'></i>
+        <span th:text="${roleDTO.id != null} ? 'Modifier le role' : 'Nouveau role'"></span>
+    </h2>
+</div>
+
+<div class="card form-card">
+    <form th:action="${roleDTO.id != null}
+                ? @{/dashboard/roles/{id}/modifier(id=${roleDTO.id})}
+                : @{/dashboard/roles/nouveau}"
+          th:object="${roleDTO}" method="post">
+
+        <div class="form-group">
+            <label>Intitule du role <span>*</span> </label>
+            <input type="text" th:field="*{intitule}" placeholder="Ex: ROLE_NomDuRole en majuscule" required />
+        </div>
+
+        <fieldset class="permissions-fieldset">
+            <legend><i class='bx bx-key'></i> Permissions</legend>
+            <div class="permission-option" th:each="permission : ${AllsPermissions}">
+                <input type="checkbox"
+                       th:id="${'perm-' + permission.id}"
+                       th:field="*{permissionIds}"
+                       th:value="${permission.id}" />
+                <label th:for="${'perm-' + permission.id}" th:text="${permission.nom}"></label>
+            </div>
+        </fieldset>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <i class='bx bx-check'></i> Enregistrer
+            </button>
+            <a th:href="@{/dashboard/roles}" class="btn btn-outline">
+                <i class='bx bx-arrow-back'></i> Annuler
+            </a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

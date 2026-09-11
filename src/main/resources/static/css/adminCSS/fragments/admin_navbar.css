@@ -1,0 +1,454 @@
+/* ============================================================
+   NAVBAR ADMIN – PREMIUM
+   ============================================================ */
+
+:root {
+    --navbar-height: 68px;
+    --navbar-bg: #ffffff;
+    --navbar-border: #e9edf4;
+    --navbar-text: #0f172a;
+    --navbar-text-muted: #64748b;
+    --navbar-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    --navbar-radius: 12px;
+    --navbar-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================================
+   NAVBAR PRINCIPALE
+   ============================================================ */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--navbar-height);
+    padding: 0 24px;
+    background: var(--navbar-bg);
+    border-bottom: 1px solid var(--navbar-border);
+    box-shadow: var(--navbar-shadow);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    gap: 16px;
+}
+
+/* ============================================================
+   PARTIE GAUCHE
+   ============================================================ */
+.navbar-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+}
+
+/* Bouton Hamburger */
+.hamburger-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--navbar-text);
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 8px;
+    transition: all var(--navbar-transition);
+    line-height: 1;
+}
+
+.hamburger-btn:hover {
+    background: var(--navbar-border);
+}
+
+/* Breadcrumb */
+.navbar-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--navbar-text-muted);
+}
+
+.breadcrumb-home {
+    color: var(--navbar-text);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumb-separator {
+    opacity: 0.4;
+    font-weight: 300;
+}
+
+.breadcrumb-current {
+    font-weight: 600;
+    color: var(--navbar-text);
+}
+
+/* ============================================================
+   PARTIE DROITE
+   ============================================================ */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   BOUTONS ICÔNES
+   ============================================================ */
+.icon-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    color: var(--navbar-text-muted);
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all var(--navbar-transition);
+    text-decoration: none;
+    position: relative;
+}
+
+.icon-btn:hover {
+    background: var(--navbar-border);
+    color: var(--navbar-text);
+}
+
+.icon-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--navbar-text-muted);
+}
+
+.icon-btn:hover .icon-label {
+    color: var(--navbar-text);
+}
+
+/* ============================================================
+   NOTIFICATIONS
+   ============================================================ */
+.notification-badge {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.notification-badge .icon-btn {
+    padding: 8px 10px;
+}
+
+.notif-ring {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ef4444;
+    border: 2px solid var(--navbar-bg);
+    animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: #ef4444;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    border: 2px solid var(--navbar-bg);
+    box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);
+}
+
+/* ============================================================
+   PROFIL UTILISATEUR
+   ============================================================ */
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 4px 8px 4px 4px;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: all var(--navbar-transition);
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.user-profile:hover {
+    background: var(--navbar-border);
+    border-color: var(--navbar-border);
+}
+
+.user-avatar-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0d47a1 0%, #1a73e8 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 12px;
+    box-shadow: 0 2px 8px rgba(13, 71, 161, 0.15);
+}
+
+.avatar-initials {
+    text-transform: uppercase;
+}
+
+.avatar-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #22c55e;
+    border: 2px solid var(--navbar-bg);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+    min-width: 0;
+}
+
+.user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navbar-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
+}
+
+.user-role {
+    font-size: 10px;
+    color: var(--navbar-text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.user-dropdown-btn {
+    background: none;
+    border: none;
+    color: var(--navbar-text-muted);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: all var(--navbar-transition);
+}
+
+.user-dropdown-btn:hover {
+    color: var(--navbar-text);
+}
+
+.user-dropdown-btn.open {
+    transform: rotate(180deg);
+}
+
+/* ============================================================
+   DROPDOWN PROFIL
+   ============================================================ */
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 220px;
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid var(--navbar-border);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+    padding: 6px 0;
+    display: none;
+    z-index: 100;
+    animation: dropdownIn 0.2s ease;
+}
+
+.user-dropdown-menu.show {
+    display: block;
+}
+
+@keyframes dropdownIn {
+    from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    color: var(--navbar-text);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all var(--navbar-transition);
+    border: none;
+    background: none;
+    width: 100%;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdown-item:hover {
+    background: var(--navbar-border);
+}
+
+.dropdown-item i {
+    font-size: 18px;
+    color: var(--navbar-text-muted);
+    width: 20px;
+    text-align: center;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--navbar-border);
+    margin: 4px 12px;
+}
+
+.dropdown-item.danger {
+    color: #dc2626;
+}
+
+.dropdown-item.danger i {
+    color: #dc2626;
+}
+
+.dropdown-item.danger:hover {
+    background: #fef2f2;
+}
+
+.dropdown-shortcut {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--navbar-text-muted);
+    background: var(--navbar-border);
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-family: 'Inter', monospace;
+    opacity: 0.6;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 992px) {
+    .hamburger-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .user-info {
+        display: none;
+    }
+
+    .user-profile {
+        padding: 4px;
+    }
+
+    .icon-label {
+        display: none;
+    }
+
+    .navbar-breadcrumb {
+        font-size: 13px;
+    }
+
+    .breadcrumb-home {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 16px;
+        height: 60px;
+    }
+
+    .navbar-breadcrumb .breadcrumb-separator {
+        display: none;
+    }
+
+    .navbar-breadcrumb .breadcrumb-home {
+        display: none;
+    }
+
+    .breadcrumb-current {
+        font-size: 14px;
+    }
+
+    .user-dropdown-menu {
+        right: -8px;
+        width: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar {
+        padding: 0 12px;
+        height: 56px;
+    }
+
+    .breadcrumb-current {
+        font-size: 13px;
+    }
+
+    .icon-btn {
+        padding: 6px 8px;
+        font-size: 18px;
+    }
+
+    .badge {
+        min-width: 16px;
+        height: 16px;
+        font-size: 8px;
+        top: -2px;
+        right: -2px;
+    }
+
+    .notif-ring {
+        width: 6px;
+        height: 6px;
+        top: 4px;
+        right: 4px;
+    }
+
+    .user-dropdown-menu {
+        width: 180px;
+        right: -4px;
+    }
+}

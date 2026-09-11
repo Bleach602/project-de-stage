@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layouts/admin_layout :: layout(~{::main})}">
+
+<main>
+    <link rel="stylesheet" th:href="@{/css/adminCSS/news-archives.css}">
+
+    <div class="content-container">
+
+        <!-- ==================================================
+             EN-TÊTE
+        =================================================== -->
+        <div class="page-header">
+
+            <div>
+                <h1>
+                    Actualités & Archives
+                </h1>
+
+                <p>
+                    Gérez les événements et actualités publiés sur la vitrine.
+                </p>
+            </div>
+
+            <button type="button"
+                    class="btn btn-primary"
+                    id="openCreateModal">
+
+                <i class='bx bx-plus'></i>
+
+                Nouvelle actualité
+
+            </button>
+
+        </div>
+
+        <!-- ==================================================
+             MESSAGES
+        =================================================== -->
+        <div th:if="${successMessage}" class="alert alert-success">
+            <div class="alert-content">
+                <i class='bx bx-check-circle'></i>
+                <span th:text="${successMessage}">
+                    Opération réussie.
+                </span>
+            </div>
+
+            <button type="button" class="alert-close" aria-label="Fermer">
+                <i class='bx bx-x'></i>
+            </button>
+        </div>
+
+        <div th:if="${errorMessage}" class="alert alert-error">
+            <div class="alert-content">
+                <i class='bx bx-error-circle'></i>
+                <span th:text="${errorMessage}">
+                    Une erreur est survenue.
+                </span>
+            </div>
+
+            <button type="button" class="alert-close" aria-label="Fermer">
+                <i class='bx bx-x'></i>
+            </button>
+        </div>
+
+        <!-- ==================================================
+             STATISTIQUES
+        =================================================== -->
+        <div class="stats-grid">
+
+            <!-- TOTAL ACTUALITÉS -->
+            <div class="stat-card">
+
+                <div class="stat-icon">
+
+                    <i class='bx bx-news'></i>
+
+                </div>
+
+                <div>
+
+                    <span class="stat-label">
+                        Actualités
+                    </span>
+
+                    <strong th:text="${actualites.totalElements}">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- TOTAL ARCHIVES -->
+            <div class="stat-card">
+
+                <div class="stat-icon archive">
+
+                    <i class='bx bx-archive'></i>
+
+                </div>
+
+                <div>
+
+                    <span class="stat-label">
+                        Archives
+                    </span>
+
+                    <strong th:text="${archives.totalElements}">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+            <!-- DURÉE -->
+            <div class="stat-card">
+
+                <div class="stat-icon">
+
+                    <i class='bx bx-time-five'></i>
+
+                </div>
+
+                <div>
+
+                    <span class="stat-label">
+                        Durée d'affichage
+                    </span>
+
+                    <strong>
+                        14 jours
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ==================================================
+             RECHERCHE ET FILTRES
+        =================================================== -->
+        <section class="content-section">
+
+            <div class="toolbar-container">
+
+                <!-- Formulaire de recherche -->
+                <form th:action="@{/dashboard/actualites}" method="get" class="search-filter">
+
+                    <div class="search-box">
+                        <i class='bx bx-search'></i>
+                        <input type="text"
+                               name="motCle"
+                               th:value="${motCle}"
+                               placeholder="Rechercher par titre...">
+                    </div>
+
+                    <!-- Champs cachés -->
+                    <input type="hidden" name="pageActualites" value="0">
+                    <input type="hidden" name="pageArchives" value="0">
+                    <input type="hidden" name="size" th:value="${size}">
+
+                    <button type="submit" class="btn btn-primary" title="Rechercher">
+                        <i class='bx bx-search'></i>
+                    </button>
+
+                </form>
+
+                <!-- Filtres -->
+                <div class="news-filters">
+
+                    <a th:href="@{/dashboard/actualites}"
+                       class="filter-btn"
+                       th:classappend="${filtre == 'toutes'} ? 'active' : ''"
+                       title="Actualiser">
+                        <i class='bx bx-refresh'></i>
+                    </a>
+
+                    <a th:href="@{/dashboard/actualites(filtre='actualites')}"
+                       class="filter-btn"
+                       th:classappend="${filtre == 'actualites'} ? 'active' : ''">
+                        <i class='bx bx-news'></i>
+                        Actualités
+                    </a>
+
+                    <a th:href="@{/dashboard/actualites(filtre='archives')}"
+                       class="filter-btn"
+                       th:classappend="${filtre == 'archives'} ? 'active' : ''">
+                        <i class='bx bx-archive'></i>
+                        Archives
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ==================================================
+             SECTION ACTUALITÉS
+        =================================================== -->
+        <section class="content-section" th:if="${filtre == 'toutes' or filtre == 'actualites'}">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Actualités publiées
+                    </h2>
+
+                    <p>
+                        Les actualités sont automatiquement archivées après 14 jours.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- AUCUNE ACTUALITÉ -->
+            <div th:if="${actualites.isEmpty()}"
+                 class="empty-state">
+
+                <div class="empty-icon">
+
+                    <i class='bx bx-news'></i>
+
+                </div>
+
+                <h3>
+                    Aucune actualité
+                </h3>
+
+                <p>
+                    Commencez par créer votre première actualité.
+                </p>
+
+                <button type="button"
+                        class="btn btn-primary"
+                        id="openCreateModalEmpty">
+
+                    <i class='bx bx-plus'></i>
+
+                    Ajouter une actualité
+
+                </button>
+            </div>
+
+            <!-- LISTE DES ACTUALITÉS -->
+            <div th:unless="${actualites.isEmpty()}"
+                 class="news-grid">
+
+                <article class="news-card"
+                         th:each="actualite : ${actualites}"
+
+                         th:attr="
+                            data-id=${actualite.id},
+                            data-titre=${actualite.titre},
+                            data-description=${actualite.description},
+                            data-date-evenement=${actualite.dateEvenement},
+                            data-photo-url=${actualite.photoUrl}
+                         ">
+
+                    <!-- IMAGE - ✅ CHARGEMENT DIRECT CLOUDINARY -->
+                    <div class="news-image">
+
+                        <img th:if="${actualite.photoUrl != null}"
+                             th:src="${actualite.photoUrl}"
+                             th:alt="${actualite.titre}"
+                             loading="lazy"
+                             onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">
+
+                        <div th:if="${actualite.photoUrl == null}"
+                             class="image-placeholder">
+
+                            <i class='bx bx-image'></i>
+
+                        </div>
+
+                        <span class="status-badge">
+
+                            <i class='bx bx-broadcast'></i>
+
+                            Actualité
+
+                        </span>
+
+                    </div>
+
+                    <!-- CONTENU -->
+                    <div class="news-body">
+
+                        <h3 th:text="${actualite.titre}">
+                            Titre de l'actualité
+                        </h3>
+
+                        <p class="news-description"
+                           th:text="${actualite.description}">
+                            Description de l'actualité.
+                        </p>
+
+                        <div class="news-info">
+
+                            <!-- DATE ÉVÉNEMENT -->
+                            <div class="info-item">
+
+                                <i class='bx bx-calendar'></i>
+
+                                <span>
+                                    Événement :
+                                </span>
+
+                                <strong th:text="${#temporals.format(
+                                    actualite.dateEvenement,
+                                    'dd/MM/yyyy HH:mm'
+                                )}">
+                                    00/00/0000
+                                </strong>
+
+                            </div>
+
+                            <!-- DATE PUBLICATION -->
+                            <div class="info-item">
+
+                                <i class='bx bx-time-five'></i>
+
+                                <span>Publication :</span>
+
+                                <strong th:text="${#temporals.format(actualite.datePublication,'dd/MM/yyyy HH:mm')}">
+                                    00/00/0000
+                                </strong>
+
+                            </div>
+
+                            <!-- DATE EXPIRATION -->
+                            <div class="info-item">
+                                <i class='bx bx-calendar-x'></i>
+
+                                <span>Expiration :</span>
+
+                                <strong th:text="${#temporals.format(actualite.dateEXpiration, 'dd/MM/yyyy HH:mm')}">
+                                    00/00/0000
+                                </strong>
+                            </div>
+
+                        </div>
+
+                        <!-- ACTIONS -->
+                        <div class="news-actions">
+
+                            <button type="button"
+                                    class="btn-action btn-edit"
+                                    th:attr="data-id=${actualite.id}">
+
+                                <i class='bx bx-edit'></i>
+
+                                Modifier
+
+                            </button>
+
+                            <button type="button"
+                                    class="btn-action btn-delete"
+                                    th:attr="
+                                        data-id=${actualite.id},
+                                        data-titre=${actualite.titre}
+                                    ">
+
+                                <i class='bx bx-trash'></i>
+
+                                Supprimer
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <!-- PAGINATION ACTUALITÉS -->
+            <div class="pagination"
+                 th:if="${actualites.totalPages > 1}">
+
+                <!-- PRÉCÉDENT -->
+                <a th:if="${!actualites.first}"
+                   th:href="@{/dashboard/actualites(
+                        pageActualites=${actualites.number - 1},
+                        pageArchives=${archives.number},
+                        size=${size},
+                        motCle=${motCle}
+                   )}"
+                   class="pagination-btn">
+
+                    <i class='bx bx-chevron-left'></i>
+
+                </a>
+
+                <!-- NUMÉROS -->
+                <a th:each="i : ${#numbers.sequence(0, actualites.totalPages - 1)}"
+                   th:href="@{/dashboard/actualites(
+                        pageActualites=${i},
+                        pageArchives=${archives.number},
+                        size=${size},
+                        motCle=${motCle}
+                   )}"
+                   th:text="${i + 1}"
+                   th:classappend="${i == actualites.number} ? 'active' : ''"
+                   class="pagination-btn">
+
+                    1
+
+                </a>
+
+                <!-- SUIVANT -->
+                <a th:if="${!actualites.last}"
+                   th:href="@{/dashboard/actualites(
+                        pageActualites=${actualites.number + 1},
+                        pageArchives=${archives.number},
+                        size=${size},
+                        motCle=${motCle}
+                   )}"
+                   class="pagination-btn">
+
+                    <i class='bx bx-chevron-right'></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+        <!-- ==================================================
+             SECTION ARCHIVES
+        =================================================== -->
+        <section class="content-section" th:if="${filtre == 'toutes' or filtre == 'archives'}">
+
+            <div class="section-header">
+
+                <div>
+
+                    <h2>
+                        Archives
+                    </h2>
+
+                    <p>
+                        Les actualités ayant dépassé leur durée d'affichage de 14 jours.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- AUCUNE ARCHIVE -->
+            <div th:if="${archives.isEmpty()}"
+                 class="empty-state">
+
+                <div class="empty-icon">
+
+                    <i class='bx bx-archive'></i>
+
+                </div>
+
+                <h3>
+                    Aucune archive
+                </h3>
+
+                <p>
+                    Les anciennes actualités apparaîtront automatiquement ici.
+                </p>
+
+            </div>
+
+            <!-- LISTE DES ARCHIVES -->
+            <div th:unless="${archives.isEmpty()}"
+                 class="news-grid">
+
+                <article class="news-card"
+                         th:each="actualite : ${archives}"
+
+                         th:attr="
+                            data-id=${actualite.id},
+                            data-titre=${actualite.titre},
+                            data-description=${actualite.description},
+                            data-date-evenement=${actualite.dateEvenement},
+                            data-photo-url=${actualite.photoUrl}
+                         ">
+
+                    <!-- IMAGE - ✅ CHARGEMENT DIRECT CLOUDINARY -->
+                    <div class="news-image">
+
+                        <img th:if="${actualite.photoUrl != null}"
+                             th:src="${actualite.photoUrl}"
+                             th:alt="${actualite.titre}"
+                             loading="lazy"
+                             onerror="this.style.display='none'; this.parentElement.querySelector('.image-placeholder').style.display='flex';">
+
+                        <div th:if="${actualite.photoUrl == null}"
+                             class="image-placeholder">
+
+                            <i class='bx bx-image'></i>
+
+                        </div>
+
+                        <span class="status-badge archive">
+
+                            <i class='bx bx-archive'></i>
+
+                            Archive
+
+                        </span>
+
+                    </div>
+
+                    <!-- CONTENU -->
+                    <div class="news-body">
+
+                        <h3 th:text="${actualite.titre}">
+                            Titre de l'actualité
+                        </h3>
+
+                        <p class="news-description"
+                           th:text="${actualite.description}">
+                            Description de l'actualité.
+                        </p>
+
+                        <div class="news-info">
+
+                            <!-- DATE ÉVÉNEMENT -->
+                            <div class="info-item">
+
+                                <i class='bx bx-calendar'></i>
+
+                                <span>
+                                    Événement :
+                                </span>
+
+                                <strong th:text="${#temporals.format(
+                                    actualite.dateEvenement,
+                                    'dd/MM/yyyy HH:mm'
+                                )}">
+                                    00/00/0000
+                                </strong>
+
+                            </div>
+
+                            <!-- DATE PUBLICATION -->
+                            <div class="info-item">
+
+                                <i class='bx bx-time-five'></i>
+
+                                <span>
+                                    Publication :
+                                </span>
+
+                                <strong th:text="${#temporals.format(actualite.datePublication,'dd/MM/yyyy HH:mm')}">
+                                    00/00/0000
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                        <!-- ACTIONS -->
+                        <div class="news-actions">
+
+                            <button type="button"
+                                    class="btn-action btn-edit"
+                                    th:attr="data-id=${actualite.id}">
+
+                                <i class='bx bx-edit'></i>
+
+                                Modifier
+
+                            </button>
+
+                            <button type="button"
+                                    class="btn-action btn-delete"
+                                    th:attr="
+                                        data-id=${actualite.id},
+                                        data-titre=${actualite.titre}
+                                    ">
+
+                                <i class='bx bx-trash'></i>
+
+                                Supprimer
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+            <!-- PAGINATION ARCHIVES -->
+            <div class="pagination"
+                 th:if="${archives.totalPages > 1}">
+
+                <!-- PRÉCÉDENT -->
+                <a th:if="${!archives.first}"
+                   th:href="@{/dashboard/actualites(
+                        pageActualites=${actualites.number},
+                        pageArchives=${archives.number - 1},
+                        size=${size},
+                        motCle=${motCle}
+                   )}"
+                   class="pagination-btn">
+
+                    <i class='bx bx-chevron-left'></i>
+
+                </a>
+
+                <!-- NUMÉROS -->
+                <a th:each="i : ${#numbers.sequence(0, archives.totalPages - 1)}"
+                   th:href="@{/dashboard/actualites(
+                        pageActualites=${actualites.number},
+                        pageArchives=${i},
+                        size=${size},
+                        motCle=${motCle}
+                   )}"
+                   th:text="${i + 1}"
+                   th:classappend="${i == archives.number} ? 'active' : ''"
+                   class="pagination-btn">
+
+                    1
+
+                </a>
+
+                <!-- SUIVANT -->
+                <a th:if="${!archives.last}"
+                   th:href="@{/dashboard/actualites(
+                        pageActualites=${actualites.number},
+                        pageArchives=${archives.number + 1},
+                        size=${size},
+                        motCle=${motCle}
+                   )}"
+                   class="pagination-btn">
+
+                    <i class='bx bx-chevron-right'></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- ==================================================
+         MODAL CRÉATION
+    =================================================== -->
+    <div class="modal-overlay"
+         id="createModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <h2>
+                        Nouvelle actualité
+                    </h2>
+
+                </div>
+
+                <button type="button"
+                        class="modal-close"
+                        data-close-modal="createModal">
+
+                    <i class='bx bx-x'></i>
+
+                </button>
+
+            </div>
+
+            <form th:action="@{/dashboard/actualites/create}"
+                  th:object="${createContenuDTO}"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="modal-body">
+
+                    <!-- IMAGE -->
+                    <div class="form-group">
+
+                        <label for="createImage">
+                            Image
+                        </label>
+
+                        <div class="file-upload">
+
+                            <label for="createImage"
+                                   class="file-upload-label">
+
+                                <i class='bx bx-cloud-upload'></i>
+
+                                <span class="file-name-text">
+                                    Choisir une image
+                                </span>
+
+                                <small>
+                                    JPG, JPEG ou PNG
+                                </small>
+
+                            </label>
+
+                            <input type="file"
+                                   id="createImage"
+                                   th:field="*{image}"
+                                   accept="image/png,image/jpeg">
+
+                        </div>
+
+                    </div>
+
+                    <!-- TITRE -->
+                    <div class="form-group">
+
+                        <label for="createTitre">
+                            Titre
+                        </label>
+
+                        <input type="text"
+                               id="createTitre"
+                               th:field="*{titre}"
+                               placeholder="Titre de l'actualité"
+                               required>
+
+                    </div>
+
+                    <!-- DATE ÉVÉNEMENT -->
+                    <div class="form-group">
+
+                        <label for="createDateEvenement">
+                            Date de l'événement
+                        </label>
+
+                        <input type="datetime-local"
+                               id="createDateEvenement"
+                               th:field="*{dateEvenement}"
+                               required>
+
+                        <small class="field-help">
+                            Permet d'indiquer la date prévue de l'événement.
+                        </small>
+
+                    </div>
+
+                    <!-- DESCRIPTION -->
+                    <div class="form-group">
+
+                        <label for="createDescription">
+                            Description
+                        </label>
+
+                        <textarea id="createDescription"
+                                  th:field="*{description}"
+                                  rows="5"
+                                  placeholder="Décrivez l'événement..."
+                                  required></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-close-modal="createModal">
+
+                        Annuler
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class='bx bx-check'></i>
+
+                        Publier
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ==================================================
+         MODAL MODIFICATION
+    =================================================== -->
+    <div class="modal-overlay"
+         id="editModal">
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <h2>
+                        Modifier l'actualité
+                    </h2>
+
+                </div>
+
+                <button type="button"
+                        class="modal-close"
+                        data-close-modal="editModal">
+
+                    <i class='bx bx-x'></i>
+
+                </button>
+
+            </div>
+
+            <form id="editForm"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="modal-body">
+
+                    <!-- IMAGE -->
+                    <div class="form-group">
+
+                        <label for="editImage">
+                            Nouvelle image
+                        </label>
+
+                        <div class="file-upload">
+
+                            <label for="editImage"
+                                   class="file-upload-label">
+
+                                <i class='bx bx-image-add'></i>
+
+                                <span class="file-name-text">
+                                    Remplacer l'image
+                                </span>
+
+                                <small>
+                                    Laisser vide pour conserver l'image actuelle
+                                </small>
+
+                            </label>
+
+                            <input type="file"
+                                   id="editImage"
+                                   name="image"
+                                   accept="image/png,image/jpeg">
+
+                        </div>
+
+                    </div>
+
+                    <!-- TITRE -->
+                    <div class="form-group">
+
+                        <label for="editTitre">
+                            Titre
+                        </label>
+
+                        <input type="text"
+                               id="editTitre"
+                               name="titre"
+                               required>
+
+                    </div>
+
+                    <!-- DATE ÉVÉNEMENT -->
+                    <div class="form-group">
+
+                        <label for="editDateEvenement">
+                            Date de l'événement
+                        </label>
+
+                        <input type="datetime-local"
+                               id="editDateEvenement"
+                               name="dateEvenement"
+                               required>
+
+                    </div>
+
+                    <!-- DESCRIPTION -->
+                    <div class="form-group">
+
+                        <label for="editDescription">
+                            Description
+                        </label>
+
+                        <textarea id="editDescription"
+                                  name="description"
+                                  rows="5"
+                                  required></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-close-modal="editModal">
+
+                        Annuler
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class='bx bx-save'></i>
+
+                        Enregistrer
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ==================================================
+         MODAL SUPPRESSION
+    =================================================== -->
+    <div class="modal-overlay"
+         id="deleteModal">
+
+        <div class="modal modal-small">
+
+            <div class="delete-icon">
+
+                <i class='bx bx-trash'></i>
+
+            </div>
+
+            <h2>
+                Supprimer l'actualité ?
+            </h2>
+
+            <p>
+                Vous êtes sur le point de supprimer :
+            </p>
+
+            <strong id="deleteNewsTitle">
+                Actualité
+            </strong>
+
+            <p class="warning-text">
+                Cette action est irréversible.
+            </p>
+
+            <form id="deleteForm"
+                  method="post">
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-close-modal="deleteModal">
+
+                        Annuler
+
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-danger">
+
+                        <i class='bx bx-trash'></i>
+
+                        Supprimer
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- ==================================================
+         JAVASCRIPT
+    =================================================== -->
+    <script th:src="@{/js/news-archives.js}"></script>
+
+</main>
+
+</html>

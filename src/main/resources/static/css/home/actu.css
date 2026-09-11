@@ -1,0 +1,589 @@
+/* ============================================================
+   ACTUALITÉS — DESIGN PREMIUM
+   ============================================================ */
+
+/* ============================================================
+   VARIABLES SPÉCIFIQUES
+   ============================================================ */
+:root {
+    --actus-primary: #2563eb;
+    --actus-primary-hover: #1d4ed8;
+    --actus-primary-light: #eff6ff;
+
+    --actus-gold: #f5a623;
+    --actus-gold-gradient: linear-gradient(135deg, #f5a623, #f7c948);
+    --actus-gold-light: rgba(245, 166, 35, 0.12);
+
+    --actus-blue: #0096dc;
+    --actus-blue-gradient: linear-gradient(135deg, #0096dc, #00b4d8);
+    --actus-blue-light: rgba(0, 150, 220, 0.08);
+
+    --actus-bg: #f8fafc;
+    --actus-surface: #ffffff;
+    --actus-border: #e2e8f0;
+    --actus-border-hover: #cbd5e1;
+
+    --actus-text-primary: #0f172a;
+    --actus-text-secondary: #64748b;
+    --actus-text-muted: #94a3b8;
+
+    --actus-radius-sm: 8px;
+    --actus-radius-md: 12px;
+    --actus-radius-lg: 16px;
+    --actus-radius-xl: 20px;
+    --actus-radius-full: 9999px;
+
+    --actus-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --actus-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+    --actus-shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
+    --actus-shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.12);
+
+    --actus-transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --actus-transition-slow: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================================
+   SECTION PRINCIPALE
+   ============================================================ */
+.actus-section {
+    padding: clamp(3rem, 6vw, 5rem) 0;
+    background: var(--actus-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.actus-section::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    right: -200px;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(0, 150, 220, 0.03) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.actus-section::after {
+    content: '';
+    position: absolute;
+    bottom: -200px;
+    left: -200px;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(245, 166, 35, 0.03) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* ============================================================
+   CONTENEUR
+   ============================================================ */
+.actus-section .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 clamp(1rem, 3vw, 2rem);
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================================
+   EN-TÊTE DE SECTION
+   ============================================================ */
+.section-header {
+    text-align: center;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.section-header .sub-title {
+    display: inline-block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: var(--actus-gold);
+    background: var(--actus-gold-light);
+    padding: 0.3rem 1rem;
+    border-radius: var(--actus-radius-full);
+    margin-bottom: 0.8rem;
+}
+
+.section-header h2 {
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 800;
+    color: var(--actus-text-primary);
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
+}
+
+.section-header h2 span {
+    background: var(--actus-gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-header p {
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    color: var(--actus-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ============================================================
+   GRILLE DES CARTES
+   ============================================================ */
+.actus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: clamp(1.5rem, 2.5vw, 2.5rem);
+}
+
+/* ============================================================
+   CARTE INDIVIDUELLE — DESIGN PREMIUM
+   ============================================================ */
+.actus-card {
+    background: var(--actus-surface);
+    border-radius: var(--actus-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--actus-shadow-sm);
+    border: 1px solid var(--actus-border);
+    transition: var(--actus-transition-slow);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Effet de brillance au survol */
+.actus-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--actus-gold-gradient);
+    opacity: 0;
+    transition: var(--actus-transition);
+    z-index: 2;
+}
+
+.actus-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--actus-shadow-xl);
+    border-color: rgba(245, 166, 35, 0.15);
+}
+
+.actus-card:hover::before {
+    opacity: 1;
+}
+
+/* Badge "Nouveau" ou "À venir" */
+.actus-card .actus-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 3;
+    padding: 0.25rem 0.8rem;
+    border-radius: var(--actus-radius-full);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.actus-card .actus-badge.event {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+}
+
+/* ============================================================
+   IMAGE DE LA CARTE
+   ============================================================ */
+.actus-img {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+    background: var(--actus-bg);
+    flex-shrink: 0;
+}
+
+.actus-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--actus-transition-slow);
+}
+
+.actus-card:hover .actus-img img {
+    transform: scale(1.05);
+}
+
+/* Placeholder élégant */
+.image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    transition: var(--actus-transition);
+}
+
+.image-placeholder i {
+    opacity: 0.8;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.actus-card:hover .image-placeholder {
+    transform: scale(1.02);
+}
+
+/* Gradient overlay sur l'image */
+.actus-img::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.02) 100%);
+    pointer-events: none;
+}
+
+/* ============================================================
+   CONTENU DE LA CARTE
+   ============================================================ */
+.actus-content {
+    padding: clamp(1.2rem, 2vw, 1.8rem);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+/* Tag / Catégorie */
+.actus-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 700;
+    color: var(--actus-blue);
+    background: var(--actus-blue-light);
+    padding: 0.2rem 0.8rem;
+    border-radius: var(--actus-radius-full);
+    width: fit-content;
+}
+
+.actus-tag i {
+    font-size: 0.7rem;
+}
+
+/* Titre */
+.actus-content h4 {
+    font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+    font-weight: 700;
+    color: var(--actus-text-primary);
+    margin: 0.2rem 0 0.1rem 0;
+    line-height: 1.3;
+    transition: var(--actus-transition);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.actus-card:hover .actus-content h4 {
+    color: var(--actus-gold);
+}
+
+/* Description */
+.actus-content p {
+    font-size: 0.9rem;
+    color: var(--actus-text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ============================================================
+   DATES / MÉTADONNÉES
+   ============================================================ */
+.actus-dates {
+    margin-top: auto;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--actus-border);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.actus-date {
+    font-size: 0.75rem;
+    color: var(--actus-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.actus-date i {
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.actus-date span {
+    color: var(--actus-text-secondary);
+    font-weight: 600;
+}
+
+/* ============================================================
+   BOUTON "LIRE LA SUITE"
+   ============================================================ */
+.actus-read-more {
+    margin-top: 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--actus-primary);
+    text-decoration: none;
+    transition: var(--actus-transition);
+    padding: 0.3rem 0;
+}
+
+.actus-read-more i {
+    transition: var(--actus-transition);
+    font-size: 0.7rem;
+}
+
+.actus-read-more:hover {
+    color: var(--actus-gold);
+}
+
+.actus-read-more:hover i {
+    transform: translateX(4px);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Tablettes */
+@media (max-width: 1024px) {
+    .actus-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .actus-img {
+        height: 190px;
+    }
+
+    .actus-content {
+        padding: 1.2rem 1.2rem 1.5rem;
+    }
+}
+
+/* Mobiles grands */
+@media (max-width: 768px) {
+    .actus-section {
+        padding: 2.5rem 0;
+    }
+
+    .section-header {
+        margin-bottom: 2rem;
+    }
+
+    .section-header .sub-title {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.8rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .section-header p {
+        font-size: 0.9rem;
+    }
+
+    .actus-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+    }
+
+    .actus-img {
+        height: 170px;
+    }
+
+    .actus-content h4 {
+        font-size: 1rem;
+    }
+
+    .actus-content p {
+        font-size: 0.82rem;
+        -webkit-line-clamp: 2;
+    }
+
+    .actus-date {
+        font-size: 0.7rem;
+    }
+
+    .actus-tag {
+        font-size: 0.55rem;
+        padding: 0.15rem 0.6rem;
+    }
+}
+
+/* Petits mobiles */
+@media (max-width: 480px) {
+    .actus-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+    }
+
+    .actus-img {
+        height: 200px;
+    }
+
+    .actus-card {
+        border-radius: var(--actus-radius-md);
+    }
+
+    .actus-content {
+        padding: 1rem 1rem 1.2rem;
+        gap: 0.4rem;
+    }
+
+    .actus-content h4 {
+        font-size: 1rem;
+        -webkit-line-clamp: 2;
+    }
+
+    .actus-content p {
+        font-size: 0.82rem;
+        -webkit-line-clamp: 2;
+    }
+
+    .actus-tag {
+        font-size: 0.5rem;
+        padding: 0.15rem 0.6rem;
+    }
+
+    .actus-dates {
+        padding-top: 0.6rem;
+        gap: 0.2rem;
+    }
+
+    .actus-date {
+        font-size: 0.65rem;
+    }
+
+    .actus-read-more {
+        font-size: 0.75rem;
+    }
+
+    .actus-card .actus-badge {
+        top: 0.7rem;
+        right: 0.7rem;
+        font-size: 0.5rem;
+        padding: 0.15rem 0.6rem;
+    }
+}
+
+/* Très petits écrans */
+@media (max-width: 380px) {
+    .actus-section {
+        padding: 2rem 0;
+    }
+
+    .section-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .actus-img {
+        height: 170px;
+    }
+
+    .actus-content {
+        padding: 0.8rem 0.9rem 1rem;
+    }
+
+    .actus-content h4 {
+        font-size: 0.9rem;
+    }
+
+    .actus-content p {
+        font-size: 0.75rem;
+    }
+
+    .image-placeholder {
+        font-size: 2.5rem;
+    }
+}
+
+/* ============================================================
+   ANIMATIONS AOS (si utilisées)
+   ============================================================ */
+[data-aos] {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+[data-aos].aos-animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+[data-aos="fade-up"] {
+    transform: translateY(30px);
+}
+
+[data-aos="fade-up"].aos-animate {
+    transform: translateY(0);
+}
+
+/* ============================================================
+   RÉDUCTION DE MOUVEMENT
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    .actus-card,
+    .actus-card::before,
+    .actus-img img,
+    .image-placeholder,
+    .actus-read-more i,
+    .actus-read-more {
+        transition: none;
+    }
+
+    .actus-card:hover {
+        transform: none;
+    }
+
+    .actus-card .actus-badge {
+        animation: none;
+    }
+
+    [data-aos] {
+        opacity: 1;
+        transform: none;
+    }
+}

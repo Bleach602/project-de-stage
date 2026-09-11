@@ -1,0 +1,118 @@
+<!-- ============================================================
+     ONGLET CONTACTER L'ADMINISTRATION (fragment : fragments/chat) – VERSION PREMIUM
+     ============================================================ -->
+<div id="contactTab" class="tab-content" th:fragment="chat">
+    <div class="card contact-card">
+
+        <!-- En-tête -->
+        <div class="contact-header">
+            <div class="contact-header-icon">
+                <i class="fas fa-headset"></i>
+            </div>
+            <div>
+                <h4>Contacter l'administration</h4>
+                <span class="contact-subtitle">Besoin d'aide ? Une question ? Nous sommes là pour vous</span>
+            </div>
+            <span class="contact-status">
+                <i class="fas fa-circle"></i> Disponible
+            </span>
+        </div>
+
+        <!-- ============================================================
+        INFORMATIONS DE CONTACT
+        ============================================================ -->
+        <div class="contact-body">
+
+            <!-- Carte principale -->
+            <div class="contact-admin-card">
+
+                <!-- Informations -->
+                <div class="contact-info">
+                    <div class="contact-info-item">
+                        <div class="contact-icon-wrapper">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <div>
+                            <h4>Service Administration</h4>
+                            <p>Du lundi au vendredi de 8h à 17h</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-divider"></div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon-wrapper">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div>
+                            <h4>Téléphone</h4>
+                            <p>
+                                <a href="tel:+237658626681">+237 658 626 681</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon-wrapper">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>
+                                <a href="mailto:contact@ifp-po.com">contact@ifp-po.com</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-item">
+                        <div class="contact-icon-wrapper">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div>
+                            <h4>Horaires d'ouverture</h4>
+                            <p>Lun - Ven : 8h00 - 17h00</p>
+                            <p style="font-size: 0.8rem; opacity: 0.7;">Sam - Dim : Fermé</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bouton d'action -->
+                <div class="contact-action">
+                    <button class="btn-contact" id="openContactModal">
+                        <i class="fas fa-paper-plane"></i> Envoyer un message
+                        <span class="btn-arrow"><i class="fas fa-arrow-right"></i></span>
+                    </button>
+                    <p class="contact-action-note">
+                        <i class="fas fa-lock"></i> Vos messages sont confidentiels
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- ============================================================
+            FOOTER AVEC LIENS UTILES
+            ============================================================ -->
+            <div class="contact-footer">
+                <div class="contact-footer-item">
+                    <i class="fas fa-question-circle"></i>
+                    <div>
+                        <strong>FAQ</strong>
+                        <p>Consultez notre foire aux questions</p>
+                        <a href="#" class="contact-footer-link">Voir la FAQ <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="contact-footer-divider"></div>
+                <div class="contact-footer-item">
+                    <i class="fas fa-file-alt"></i>
+                    <div>
+                        <strong>Documents utiles</strong>
+                        <p>Téléchargez vos documents administratifs</p>
+                        <a href="#" class="contact-footer-link">Accéder <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>

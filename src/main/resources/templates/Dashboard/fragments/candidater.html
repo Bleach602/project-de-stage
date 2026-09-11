@@ -1,0 +1,124 @@
+<!-- ============================================================
+     ONGLET CANDIDATER (fragment : fragments/candidater) – VERSION PREMIUM
+     ============================================================ -->
+<div id="candidaterTab" class="tab-content" th:fragment="candidater">
+    <div class="card candidater-card">
+
+        <!-- En-tête -->
+        <div class="candidater-header">
+            <div class="candidater-header-icon">
+                <i class="fas fa-file-signature"></i>
+            </div>
+            <div>
+                <h4>Déposer ma candidature</h4>
+                <span class="candidater-subtitle">Téléversez les documents requis pour finaliser votre inscription</span>
+            </div>
+            <span class="candidater-step-badge">Étape finale</span>
+        </div>
+
+        <form th:action="@{/candidat/save}" method="post"
+              th:object="${application}" enctype="multipart/form-data">
+
+            <input type="hidden"
+                   th:name="${_csrf.parameterName}"
+                   th:value="${_csrf.token}"
+            >
+
+            <!-- ============================================================
+            STEP INDICATOR (simplifié pour candidater)
+            ============================================================ -->
+            <div class="step-indicator candidater-stepper">
+                <div class="step active" data-step="3">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Documents à fournir</span>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            ÉTAPE 3 : Documents à fournir
+            ============================================================ -->
+            <div id="candStep3" class="form-section active-section">
+
+                <!-- Message d'introduction -->
+                <div class="candidater-intro">
+                    <p><i class="fas fa-info-circle"></i> Tous les documents doivent être au format JPEG, JPG ou PNG (max 25 Mo par fichier).</p>
+                </div>
+
+                <!-- ============================================================
+                CNI / Passeport
+                ============================================================ -->
+                <div class="form-group file-upload-group">
+                    <label>
+                        <i class="fas fa-id-card"></i> CNI / Passeport *
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="file-dropzone" id="cniDropzone">
+                        <div class="dropzone-content">
+                            <i class="fas fa-cloud-upload-alt drop-icon"></i>
+                            <p class="drop-text">Glissez-déposez votre fichier ici</p>
+                            <p class="drop-hint">ou cliquez pour parcourir</p>
+                        </div>
+                        <input type="file" id="candCni" name="cni" accept=".jpeg,.jpg,.png" required>
+                    </div>
+                    <div class="file-list" id="cniFileList">JPEG, JPG, PNG (max 25 Mo)</div>
+                </div>
+
+                <!-- ============================================================
+                Diplôme / Relevé de notes
+                ============================================================  -->
+                <div class="form-group file-upload-group">
+                    <label>
+                        <i class="fas fa-certificate"></i> Diplôme / Relevé de notes / Attestation de Réussite *
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="file-dropzone" id="diplomeDropzone">
+                        <div class="dropzone-content">
+                            <i class="fas fa-cloud-upload-alt drop-icon"></i>
+                            <p class="drop-text">Glissez-déposez votre fichier ici</p>
+                            <p class="drop-hint">ou cliquez pour parcourir</p>
+                        </div>
+                        <input type="file" id="candDiplome" name="diplome" accept=".jpeg,.jpg,.png">
+                    </div>
+                    <div class="file-list" id="diplomeFileList">JPEG, JPG, PNG (max 25 Mo)</div>
+                </div>
+
+                <!-- ============================================================
+                Acte de naissance
+                ============================================================ -->
+                <div class="form-group file-upload-group">
+                    <label>
+                        <i class="fas fa-file-alt"></i> Acte de naissance *
+                        <span class="required-star">*</span>
+                    </label>
+                    <div class="file-dropzone" id="acteDropzone">
+                        <div class="dropzone-content">
+                            <i class="fas fa-cloud-upload-alt drop-icon"></i>
+                            <p class="drop-text">Glissez-déposez votre fichier ici</p>
+                            <p class="drop-hint">ou cliquez pour parcourir</p>
+                        </div>
+                        <input type="file" id="candActe" name="acte" accept=".jpeg,.jpg,.png" required>
+                    </div>
+                    <div class="file-list" id="acteFileList">JPEG, JPG, PNG (max 25 Mo)</div>
+                </div>
+
+                <!-- ============================================================
+                STATUT / MESSAGE
+                ============================================================ -->
+                <div id="candStatus"></div>
+
+                <!-- ============================================================
+                BOUTON DE SOUMISSION
+                ============================================================ -->
+                <div class="candidater-actions">
+                    <button type="submit" class="btn btn-success btn-submit" id="submitCandidature">
+                        <i class="fas fa-paper-plane"></i> Envoyer ma candidature
+                    </button>
+                    <p class="candidater-note">
+                        <i class="fas fa-lock"></i> Vos documents sont sécurisés et confidentiels
+                    </p>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>

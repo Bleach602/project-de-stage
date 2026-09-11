@@ -1,0 +1,1374 @@
+/* ============================================
+   NEWS-ARCHIVES.CSS
+   Actualités & Archives IFP-PO
+   Refonte UI Complète - Ultra-Premium
+   Version UI/UX Pro v13.0
+   ============================================ */
+
+/* ============================================
+   1. VARIABLES - CHARTE IFP-PO
+   ============================================ */
+:root {
+    /* Couleurs principales IFP-PO */
+    --ifp-blue: #0082c8;
+    --ifp-blue-dark: #006699;
+    --ifp-blue-light: rgba(0, 130, 200, 0.08);
+    --ifp-blue-medium: rgba(0, 130, 200, 0.15);
+    --ifp-blue-glow: rgba(0, 130, 200, 0.20);
+    --ifp-blue-gradient: linear-gradient(135deg, #0082c8, #006699);
+
+    --ifp-gold: #d4af37;
+    --ifp-gold-dark: #b8962e;
+    --ifp-gold-light: rgba(212, 175, 55, 0.10);
+    --ifp-gold-medium: rgba(212, 175, 55, 0.20);
+    --ifp-gold-glow: rgba(212, 175, 55, 0.25);
+    --ifp-gold-gradient: linear-gradient(135deg, #d4af37, #b8962e);
+
+    --ifp-dark: #0b132b;
+    --ifp-dark-surface: #1c2541;
+    --ifp-dark-light: rgba(27, 42, 74, 0.04);
+
+    /* Fond et textes */
+    --bg-body: #f0f4f9;
+    --bg-white: #ffffff;
+    --bg-hover: #f8fafc;
+    --bg-card: #ffffff;
+
+    --text-primary: #0b132b;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --text-white: #ffffff;
+
+    /* Statuts */
+    --status-success: #10b981;
+    --status-success-bg: #d1fae5;
+    --status-danger: #ef4444;
+    --status-danger-bg: #fee2e2;
+    --status-warning: #f59e0b;
+    --status-warning-bg: #fef3c7;
+
+    /* Ombres - Plus profondes */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.10);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.14);
+    --shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.18);
+    --shadow-gold: 0 4px 24px rgba(212, 175, 55, 0.20);
+
+    /* Rayons */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 20px;
+    --radius-2xl: 24px;
+    --radius-full: 9999px;
+
+    /* Transitions */
+    --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   2. CONTENEUR PRINCIPAL
+   ============================================ */
+.content-container {
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 20px 28px;
+}
+
+/* ============================================
+   3. PAGE HEADER - REFONTE
+   ============================================ */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    background: var(--bg-white);
+    padding: 20px 28px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid #e2e8f0;
+}
+
+.page-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.page-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.page-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    background: var(--ifp-gold-light);
+    color: var(--ifp-gold);
+    font-size: 1.3rem;
+}
+
+.page-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.subtitle-line {
+    display: inline-block;
+    width: 28px;
+    height: 2px;
+    background: var(--ifp-gold-gradient);
+    border-radius: 2px;
+}
+
+/* ============================================
+   4. BOUTONS - REFONTE
+   ============================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+    transition: all var(--transition);
+    font-family: inherit;
+}
+
+.btn-primary {
+    background: var(--ifp-gold-gradient);
+    color: var(--ifp-dark);
+    box-shadow: 0 2px 16px var(--ifp-gold-glow);
+}
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 32px var(--ifp-gold-glow);
+}
+.btn-primary:active {
+    transform: scale(0.96);
+}
+
+.btn-secondary {
+    background: #f1f5f9;
+    color: var(--text-secondary);
+}
+.btn-secondary:hover {
+    background: #e2e8f0;
+}
+
+.btn-danger {
+    background: var(--status-danger);
+    color: var(--text-white);
+    box-shadow: 0 2px 12px rgba(239, 68, 68, 0.25);
+}
+.btn-danger:hover {
+    background: #b91c1c;
+    transform: translateY(-3px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1.5px solid var(--ifp-blue);
+    color: var(--ifp-blue);
+}
+.btn-outline:hover {
+    background: var(--ifp-blue-light);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   5. ALERTES - REFONTE
+   ============================================ */
+.alert {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: var(--radius-md);
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-sm);
+}
+
+.alert-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.alert i {
+    font-size: 1.3rem;
+}
+
+.alert-success {
+    background: var(--status-success-bg);
+    color: #065f46;
+    border-left: 4px solid var(--status-success);
+}
+.alert-success i { color: var(--status-success); }
+
+.alert-error {
+    background: var(--status-danger-bg);
+    color: #991b1b;
+    border-left: 4px solid var(--status-danger);
+}
+.alert-error i { color: var(--status-danger); }
+
+.alert-close {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: inherit;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition);
+    opacity: 0.5;
+}
+.alert-close:hover {
+    opacity: 1;
+    background: rgba(0,0,0,0.05);
+}
+
+/* ============================================
+   6. STATISTIQUES - REFONTE
+   ============================================ */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-bottom: 28px;
+}
+
+.stat-card {
+    background: var(--bg-white);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-lg);
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+}
+
+.stat-card.news::before { background: var(--ifp-gold-gradient); }
+.stat-card.archive::before { background: var(--ifp-blue-gradient); }
+.stat-card.duration::before { background: var(--ifp-blue-gradient); }
+
+.stat-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
+    opacity: 0;
+    transition: all var(--transition);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--ifp-gold);
+}
+.stat-card:hover::after {
+    opacity: 1;
+}
+
+.stat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.4rem;
+}
+
+.stat-card.news .stat-icon {
+    background: var(--ifp-gold-light);
+    color: var(--ifp-gold);
+}
+.stat-card.archive .stat-icon {
+    background: var(--ifp-blue-light);
+    color: var(--ifp-blue);
+}
+.stat-card.duration .stat-icon {
+    background: var(--ifp-blue-light);
+    color: var(--ifp-blue);
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.stat-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-top: 2px;
+}
+
+.stat-value .gold {
+    color: var(--ifp-gold);
+}
+.stat-value .blue {
+    color: var(--ifp-blue);
+}
+
+/* ============================================
+   7. TOOLBAR - REFONTE
+   ============================================ */
+.toolbar-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    background: var(--bg-white);
+    padding: 14px 20px;
+    border-radius: var(--radius-lg);
+    border: 1px solid #e2e8f0;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 0;
+}
+
+.search-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+.search-box {
+    position: relative;
+    flex: 1;
+    max-width: 340px;
+}
+
+.search-box i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    transition: all var(--transition);
+}
+
+.search-box input {
+    width: 100%;
+    height: 44px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    padding: 0 16px 0 42px;
+    outline: none;
+    background: #f8fafc;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-family: inherit;
+    transition: all var(--transition);
+}
+
+.search-box input:focus {
+    border-color: var(--ifp-gold);
+    background: var(--bg-white);
+    box-shadow: 0 0 0 4px var(--ifp-gold-light);
+}
+.search-box input:focus + i {
+    color: var(--ifp-gold);
+}
+
+.search-box input::placeholder {
+    color: var(--text-muted);
+}
+
+.news-filters {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    background: var(--bg-white);
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 500;
+    transition: all var(--transition);
+}
+
+.filter-btn i {
+    font-size: 1rem;
+}
+
+.filter-btn:hover {
+    border-color: var(--ifp-gold);
+    color: var(--ifp-gold);
+    background: var(--ifp-gold-light);
+}
+
+.filter-btn.active {
+    background: var(--ifp-gold-gradient);
+    color: var(--ifp-dark);
+    border-color: var(--ifp-gold);
+}
+.filter-btn.active i {
+    color: var(--ifp-dark);
+}
+
+/* ============================================
+   8. CONTENT SECTIONS - REFONTE
+   ============================================ */
+.content-section {
+    background: var(--bg-white);
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-lg);
+    padding: 26px 28px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
+}
+
+.content-section:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.section-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.section-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.section-header h2 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-header h2 i {
+    color: var(--ifp-gold);
+}
+
+.section-header p {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    margin: 2px 0 0;
+}
+
+/* ============================================
+   9. NEWS GRID - CARTES ULTRA-PREMIUM
+   ============================================ */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+/* ============================================
+   10. NEWS CARD - ULTRA-PREMIUM
+   ============================================ */
+.news-card {
+    background: var(--bg-white);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all var(--transition);
+    position: relative;
+    border: 1px solid #e2e8f0;
+}
+
+.news-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--ifp-gold-gradient);
+    opacity: 0;
+    transition: all var(--transition);
+    z-index: 2;
+}
+
+.news-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-2xl);
+    border-color: var(--ifp-gold);
+}
+.news-card:hover::before {
+    opacity: 1;
+}
+
+.news-card.archive-card::before {
+    background: var(--ifp-blue-gradient);
+}
+
+.news-image {
+    position: relative;
+    width: 100%;
+    height: 210px;
+    background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.news-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: all var(--transition-slow);
+}
+
+.news-card:hover .news-image img {
+    transform: scale(1.06);
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+.image-placeholder i {
+    font-size: 3.5rem;
+    opacity: 0.15;
+}
+
+/* --- Status Badge --- */
+.status-badge {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: var(--radius-full);
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    z-index: 3;
+}
+
+.status-badge.live {
+    background: var(--ifp-gold-gradient);
+    color: var(--ifp-dark);
+}
+.status-badge.live i {
+    color: var(--ifp-dark);
+    font-size: 0.8rem;
+}
+
+.status-badge.archive {
+    background: var(--ifp-blue-gradient);
+    color: var(--text-white);
+}
+.status-badge.archive i {
+    font-size: 0.8rem;
+}
+
+/* --- News Body --- */
+.news-body {
+    padding: 20px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.news-body h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.news-body h3 .highlight {
+    color: var(--ifp-gold);
+}
+
+.news-description {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0 0 16px;
+    flex: 1;
+}
+
+/* --- News Info --- */
+.news-info {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 14px;
+    margin-top: auto;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    padding: 4px 0;
+}
+
+.info-item i {
+    font-size: 0.9rem;
+    width: 18px;
+}
+
+.info-item .icon-gold {
+    color: var(--ifp-gold);
+}
+.info-item .icon-blue {
+    color: var(--ifp-blue);
+}
+
+.info-item strong {
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+/* --- Actions --- */
+.news-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.btn-action {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid #e2e8f0;
+    background: var(--bg-white);
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all var(--transition);
+}
+
+.btn-action i {
+    font-size: 1rem;
+}
+
+.btn-action.btn-edit:hover {
+    border-color: var(--ifp-gold);
+    color: var(--ifp-gold);
+    background: var(--ifp-gold-light);
+    transform: translateY(-2px);
+}
+
+.btn-action.btn-delete:hover {
+    border-color: var(--status-danger);
+    color: var(--status-danger);
+    background: var(--status-danger-bg);
+    transform: translateY(-2px);
+}
+
+/* ============================================
+   11. EMPTY STATE - REFONTE
+   ============================================ */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--ifp-gold-light);
+    color: var(--ifp-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 2.2rem;
+}
+
+.empty-state h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin: 0 0 4px;
+}
+
+.empty-state p {
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    margin: 0 0 18px;
+}
+
+/* ============================================
+   12. PAGINATION - REFONTE
+   ============================================ */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid #f1f5f9;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    border: 1px solid #e2e8f0;
+    background: var(--bg-white);
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: all var(--transition);
+}
+
+.pagination-btn:hover {
+    border-color: var(--ifp-gold);
+    color: var(--ifp-gold);
+    background: var(--ifp-gold-light);
+    transform: translateY(-2px);
+}
+
+.pagination-btn.active {
+    background: var(--ifp-gold-gradient);
+    border-color: var(--ifp-gold);
+    color: var(--ifp-dark);
+    box-shadow: 0 2px 12px var(--ifp-gold-glow);
+}
+
+.pagination-btn i {
+    font-size: 1.1rem;
+}
+
+/* ============================================
+   13. MODALS - ULTRA-PREMIUM
+   ============================================ */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(11, 19, 43, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+    animation: overlayIn 0.3s ease;
+}
+
+@keyframes overlayIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal {
+    width: 100%;
+    max-width: 600px;
+    max-height: 92vh;
+    overflow-y: auto;
+    background: var(--bg-white);
+    border-radius: var(--radius-2xl);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
+    animation: modalIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: translateY(40px) scale(0.95); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal.modal-small {
+    max-width: 440px;
+    padding: 32px 36px;
+    text-align: center;
+}
+
+/* --- Modal Header --- */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 24px 30px;
+    border-bottom: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #fafbfc, #ffffff);
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+}
+
+.modal-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.modal-icon-header {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.modal-icon-header.gold {
+    background: var(--ifp-gold-light);
+    color: var(--ifp-gold);
+}
+.modal-icon-header.blue {
+    background: var(--ifp-blue-light);
+    color: var(--ifp-blue);
+}
+.modal-icon-header.danger {
+    background: var(--status-danger-bg);
+    color: var(--status-danger);
+}
+
+.modal-header-text h2 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.modal-header-text .modal-sub {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin: 2px 0 0;
+}
+
+.modal-close {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: #f1f5f9;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    flex-shrink: 0;
+}
+
+.modal-close:hover {
+    background: #e2e8f0;
+    color: var(--text-primary);
+    transform: rotate(90deg);
+}
+.modal-close i {
+    font-size: 1.4rem;
+}
+
+/* --- Modal Body --- */
+.modal-body {
+    padding: 26px 30px;
+}
+
+/* --- Modal Footer --- */
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 20px 30px;
+    border-top: 1px solid #e2e8f0;
+    background: #fafbfc;
+    border-radius: 0 0 var(--radius-2xl) var(--radius-2xl);
+}
+
+/* ============================================
+   14. FORMULAIRES - REFONTE
+   ============================================ */
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group:last-child {
+    margin-bottom: 0;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.form-group label .required {
+    color: var(--status-danger);
+    margin-left: 2px;
+}
+.form-group label .optional {
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+.form-group input[type="text"],
+.form-group input[type="datetime-local"],
+.form-group textarea {
+    width: 100%;
+    border: 1.5px solid #e2e8f0;
+    border-radius: var(--radius-sm);
+    padding: 11px 16px;
+    outline: none;
+    background: #f8fafc;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.88rem;
+    transition: all var(--transition);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--ifp-gold);
+    background: var(--bg-white);
+    box-shadow: 0 0 0 4px var(--ifp-gold-light);
+}
+
+.field-help {
+    display: block;
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 0.7rem;
+}
+
+/* ============================================
+   15. FILE UPLOAD - REFONTE
+   ============================================ */
+.file-upload {
+    position: relative;
+}
+
+.file-upload-label {
+    width: 100%;
+    min-height: 130px;
+    border: 2px dashed #e2e8f0;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all var(--transition);
+    padding: 24px;
+    background: #fafbfc;
+}
+
+.file-upload-label:hover {
+    border-color: var(--ifp-gold);
+    background: var(--ifp-gold-light);
+    color: var(--ifp-gold);
+}
+.file-upload-label.drag-over {
+    border-color: var(--ifp-gold);
+    background: var(--ifp-gold-light);
+    transform: scale(1.02);
+}
+
+.file-upload-label i {
+    font-size: 2.2rem;
+}
+.file-upload-label .file-name-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+.file-upload-label small {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+}
+
+/* ============================================
+   16. MODAL SUPPRESSION - REFONTE
+   ============================================ */
+.delete-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: var(--status-danger-bg);
+    color: var(--status-danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.2rem;
+}
+
+.modal-small .modal-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 8px;
+}
+
+.modal-small .modal-desc {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0 0 4px;
+}
+
+.modal-small .delete-name {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--status-danger);
+    margin: 6px 0 14px;
+}
+
+.modal-small .warning-text {
+    color: var(--status-danger) !important;
+    font-size: 0.8rem !important;
+    opacity: 0.8;
+}
+
+/* ============================================
+   17. RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1100px) {
+    .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 850px) {
+    .content-container {
+        padding: 16px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 18px 20px;
+    }
+
+    .page-title {
+        font-size: 1.3rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .toolbar-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 16px 18px;
+    }
+
+    .search-box {
+        max-width: 100%;
+    }
+
+    .news-filters {
+        justify-content: flex-start;
+    }
+
+    .section-header {
+        flex-direction: column;
+    }
+
+    .news-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .modal {
+        max-width: 100%;
+        margin: 10px;
+        border-radius: var(--radius-xl);
+    }
+    .modal-header {
+        padding: 18px 20px;
+    }
+    .modal-body {
+        padding: 18px 20px;
+    }
+    .modal-footer {
+        padding: 14px 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .content-container {
+        padding: 12px;
+    }
+
+    .page-title {
+        font-size: 1.1rem;
+    }
+    .page-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .page-header .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .content-section {
+        padding: 16px;
+    }
+
+    .news-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .news-image {
+        height: 190px;
+    }
+
+    .news-actions {
+        flex-direction: column;
+    }
+
+    .pagination {
+        flex-wrap: wrap;
+        gap: 4px;
+    }
+    .pagination-btn {
+        min-width: 34px;
+        height: 34px;
+        font-size: 0.7rem;
+    }
+
+    .modal {
+        max-height: 95vh;
+        border-radius: var(--radius-xl);
+        margin: 10px;
+    }
+    .modal-header {
+        padding: 14px 16px;
+        flex-wrap: wrap;
+    }
+    .modal-header-left {
+        gap: 10px;
+    }
+    .modal-icon-header {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+    .modal-header-text h2 {
+        font-size: 1rem;
+    }
+    .modal-body {
+        padding: 14px 16px;
+    }
+    .modal-footer {
+        padding: 12px 16px;
+        flex-direction: column-reverse;
+    }
+    .modal-footer .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .modal.modal-small {
+        padding: 24px 20px;
+    }
+
+    .file-upload-label {
+        min-height: 100px;
+        padding: 16px;
+    }
+    .file-upload-label i {
+        font-size: 1.8rem;
+    }
+
+    .empty-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .content-container {
+        padding: 8px;
+    }
+
+    .page-title {
+        font-size: 0.95rem;
+    }
+    .page-subtitle {
+        font-size: 0.7rem;
+    }
+
+    .news-image {
+        height: 160px;
+    }
+    .news-body {
+        padding: 14px;
+    }
+    .news-body h3 {
+        font-size: 0.9rem;
+    }
+
+    .filter-btn {
+        font-size: 0.65rem;
+        padding: 5px 10px;
+    }
+    .filter-btn span {
+        display: none;
+    }
+
+    .stat-card {
+        padding: 14px 16px;
+    }
+    .stat-value {
+        font-size: 1.3rem;
+    }
+    .stat-icon {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1rem;
+    }
+}
+
+/* ============================================
+   18. ACCESSIBILITÉ
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    .modal { animation: none !important; }
+    .news-card:hover { transform: none !important; }
+}
+
+/* ============================================
+   19. PRINT
+   ============================================ */
+@media print {
+    .btn, .btn-action, .news-actions, .toolbar-container, .modal-overlay { display: none !important; }
+    .content-section { break-inside: avoid; box-shadow: none !important; border: 1px solid #e2e8f0; }
+    .news-card { break-inside: avoid; box-shadow: none !important; border: 1px solid #e2e8f0; }
+}

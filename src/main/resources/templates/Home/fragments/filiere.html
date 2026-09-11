@@ -1,0 +1,227 @@
+
+
+<div  th:fragment="filiere">
+
+<!-- ============================================================
+   FILIÈRES SECTION
+   ============================================================ -->
+
+    <section class="filiere-section" id="filiere">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="sub-title">Nos formations</span>
+                <h2>Cinq filières, <span>un seul objectif : votre emploi</span></h2>
+                <p>Des programmes conçus avec les réalités du terrain, pour des diplômés directement opérationnels sur le marché du travail.</p>
+            </div>
+
+            <!-- ============================================================
+            GRILLE DES FILIÈRES
+            ============================================================ -->
+            <div class="filiere-grid">
+
+                <!-- Boucle Thymeleaf sur la liste des filières -->
+                <div class="filiere-card" data-aos="fade-up" data-aos-delay="100"
+                     th:each="filiere : ${filieres}">
+
+                    <!-- Badge / Sigle -->
+                    <span class="category-tag">
+                        <i class="fas fa-check-circle"></i>
+                        <span th:text="${filiere.sigle}">NUM</span>
+                    </span>
+
+                    <!-- Nom de la Filière -->
+                    <h3 th:text="${filiere.nom}">Secrétariat Bureautique</h3>
+
+                    <p class="filiere-desc">
+                        Découvrez toutes les spécialités et tarifs disponibles pour cette filière.
+                    </p>
+
+                    <!-- ============================================================
+                    BOUTONS ALIGNÉS (S'inscrire + Voir plus)
+                    ============================================================ -->
+                    <div class="btn-group-actions">
+                        <!-- Bouton S'inscrire -->
+                        <a th:href="@{/login(filiereId=${filiere.id})}" class="btn-filiere">
+                            S'inscrire <i class="fas fa-arrow-right"></i>
+                        </a>
+
+                        <!-- Bouton Voir plus avec transfert de l'ID de la filière -->
+                        <a th:href="@{/offres(filiereId=${filiere.id})}" class="btn-voir-plus">
+                            <i class="fas fa-info-circle"></i> Voir plus
+                        </a>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+              <!-- Bonus -->
+    <div class="bonus-box" data-aos="fade-up">
+      <i class="fas fa-laptop"></i>
+      <div>
+        <h4>Bonus Exceptionnel</h4>
+        <p><strong>1 Apprenant Informatique = 1 Ordinateur</strong> offert en 2ème Année !</p>
+      </div>
+    </div>
+  </div>
+
+
+
+</section>
+
+<!-- ============================================================
+DÉBOUCHÉS & AVANTAGES
+============================================================ -->
+<section class="debouches-section" id="debouches">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="sub-title">Après la formation</span>
+      <h2>Des métiers concrets, <span>pas des promesses</span></h2>
+      <p>Chaque filière est pensée pour déboucher sur un vrai métier. Voici ce qui vous attend à la sortie.</p>
+    </div>
+
+    <div class="debouches-grid">
+      <div class="debouche-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="debouche-icon"><i class="fas fa-briefcase"></i></div>
+        <h3>Secrétariat Bureautique & Marketing Digital</h3>
+        <div class="debouche-jobs">
+          <span>Secrétaire de direction</span>
+          <span>Assistant(e) administratif</span>
+          <span>Community manager</span>
+          <span>Caissier(ère)</span>
+        </div>
+        <div class="debouche-avantage">
+          <i class="fas fa-star"></i>
+          <p>Un profil recherché par toutes les entreprises, administrations et ONG de la région.</p>
+        </div>
+      </div>
+
+      <div class="debouche-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="debouche-icon"><i class="fas fa-network-wired"></i></div>
+        <h3>Maintenance & Comptabilité Informatisée</h3>
+        <div class="debouche-jobs">
+          <span>Technicien(ne) maintenance</span>
+          <span>Administrateur réseau</span>
+          <span>Comptable</span>
+          <span>Gestionnaire de stock</span>
+        </div>
+        <div class="debouche-avantage">
+          <i class="fas fa-star"></i>
+          <p>Des compétences numériques recherchées, avec un vrai potentiel pour monter sa propre entreprise de services.</p>
+        </div>
+      </div>
+
+      <div class="debouche-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="debouche-icon"><i class="fas fa-code"></i></div>
+        <h3>Graphisme & Développement Web</h3>
+        <div class="debouche-jobs">
+          <span>Infographiste</span>
+          <span>Développeur web</span>
+          <span>Webmaster</span>
+          <span>Freelance</span>
+        </div>
+        <div class="debouche-avantage">
+          <i class="fas fa-star"></i>
+          <p>Un métier exerçable à distance, pour des clients locaux et internationaux, avec un fort potentiel de revenus.</p>
+        </div>
+      </div>
+
+      <div class="debouche-card" data-aos="fade-up" data-aos-delay="400">
+        <div class="debouche-icon"><i class="fas fa-briefcase-medical"></i></div>
+        <h3>Médecine Paramédicale</h3>
+        <div class="debouche-jobs">
+          <span>Auxiliaire de vie</span>
+          <span>Aide-soignant(e)</span>
+          <span>Technicien(ne) de labo</span>
+          <span>Poursuite Sage-femme</span>
+        </div>
+        <div class="debouche-avantage">
+          <i class="fas fa-star"></i>
+          <p>Un secteur essentiel, avec une demande constante dans les hôpitaux, cliniques et centres de santé.</p>
+        </div>
+      </div>
+
+      <div class="debouche-card" data-aos="fade-up" data-aos-delay="500">
+        <div class="debouche-icon"><i class="fas fa-tractor"></i></div>
+        <h3>Agropastoral & BTP</h3>
+        <div class="debouche-jobs">
+          <span>Responsable d'élevage</span>
+          <span>Technicien agricole</span>
+          <span>Maçon / Carreleur</span>
+          <span>Peintre en bâtiment</span>
+        </div>
+        <div class="debouche-avantage">
+          <i class="fas fa-star"></i>
+          <p>Un secteur porteur qui permet de créer sa propre exploitation agricole ou entreprise de bâtiment.</p>
+        </div>
+      </div>
+
+      <div class="debouche-card" data-aos="fade-up" data-aos-delay="600">
+        <div class="debouche-icon"><i class="fas fa-utensils"></i></div>
+        <h3>Hôtellerie & Restauration</h3>
+        <div class="debouche-jobs">
+          <span>Cuisinier(ère)</span>
+          <span>Barman / Barmaid</span>
+          <span>Réceptionniste</span>
+          <span>Chef de rang</span>
+        </div>
+        <div class="debouche-avantage">
+          <i class="fas fa-star"></i>
+          <p>Un secteur en pleine croissance au Cameroun, avec des débouchés locaux et à l'international.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============================================================
+   MODALITÉS
+   ============================================================ -->
+<section class="modalites-section" id="modalites">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="sub-title">Modalités</span>
+      <h2>Une organisation <span>claire et sans surprise</span></h2>
+      <p>Durées de formation, échéancier de paiement et diplômes délivrés — tout est transparent dès le départ.</p>
+    </div>
+
+    <div class="modalites-grid">
+      <div class="modalite-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="icon-top"><i class="fas fa-clock"></i></div>
+        <h4>Durées de formation</h4>
+        <ul>
+          <li><i class="fas fa-check"></i> Filière Numérique (24 Mois) : Niveau 3ème, BEPC</li>
+          <li><i class="fas fa-check"></i> Filière Numérique (12 Mois) : Niveau Tle, BAC</li>
+          <li><i class="fas fa-check"></i> Médecine, Agropastoral, Hôtellerie, BTP : 2 Ans</li>
+        </ul>
+      </div>
+
+      <div class="modalite-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="icon-top"><i class="fas fa-calendar-alt"></i></div>
+        <h4>Périodicité des paiements</h4>
+        <ul>
+          <li><i class="fas fa-check"></i> <strong>Rentrée :</strong> Inscription + 1ère Tranche</li>
+          <li><i class="fas fa-check"></i> <strong>2ème Tranche :</strong> Avant le 13 Décembre</li>
+          <li><i class="fas fa-check"></i> <strong>3ème Tranche :</strong> Avant le 14 Mars</li>
+          <li><i class="fas fa-check"></i> <strong>Frais d'examen :</strong> Avant le 30 Mai</li>
+        </ul>
+      </div>
+
+      <div class="modalite-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="icon-top"><i class="fas fa-certificate"></i></div>
+        <h4>Diplômes délivrés</h4>
+        <ul>
+          <li><i class="fas fa-check"></i> <strong>DQP</strong> - Diplôme de Qualification Professionnelle</li>
+          <li><i class="fas fa-check"></i> <strong>CQP</strong> - Certificat de Qualification Professionnelle</li>
+          <li><i class="fas fa-check"></i> <strong>AQP</strong> - Attestation de Qualification Professionnelle</li>
+          <li><i class="fas fa-check"></i> Reconnaissance Nationale et Internationale</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div>

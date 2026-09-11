@@ -1,0 +1,187 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/layouts/admin_layout :: layout(~{::section})}">
+<body>
+<section>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" th:href="@{/css/adminCSS/statistiques.css}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+    <div class="stats-header">
+        <div class="stats-header-left">
+            <div class="stats-header-icon">
+                <i class='bx bx-line-chart'></i>
+            </div>
+            <div>
+                <h1>Statistiques</h1>
+                <p>Vue d'ensemble de l'activité de l'institut</p>
+            </div>
+        </div>
+        <div class="stats-header-right">
+            <label for="periodeSelect">Période :</label>
+            <div class="periode-select-wrapper">
+                <i class='bx bx-calendar'></i>
+                <select id="periodeSelect">
+                    <option value="annee" selected>Cette année</option>
+                    <option value="session">Cette session</option>
+                    <option value="mois">Ce mois</option>
+                    <option value="30jours">Les 30 derniers jours</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-cards-grid">
+        <div class="stat-card">
+            <div class="stat-card-icon blue"><i class='bx bx-file'></i></div>
+            <span class="stat-card-title">Total candidatures</span>
+            <h3 class="stat-card-value" th:text="${statistiques.totalCandidatures}">0</h3>
+            <p class="stat-card-sub">Toutes candidatures</p>
+            <a th:href="@{/dashboard/candidatures}" class="stat-card-link blue">Voir détails <i class='bx bx-chevron-right'></i></a>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-icon orange"><i class='bx bx-time-five'></i></div>
+            <span class="stat-card-title">En attente</span>
+            <h3 class="stat-card-value" th:text="${statistiques.candidaturesEnAttente}">0</h3>
+            <p class="stat-card-sub">À traiter</p>
+            <a th:href="@{/dashboard/candidatures}" class="stat-card-link orange">Voir détails <i class='bx bx-chevron-right'></i></a>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-icon green"><i class='bx bx-check-circle'></i></div>
+            <span class="stat-card-title">Validées</span>
+            <h3 class="stat-card-value" th:text="${statistiques.candidaturesValidees}">0</h3>
+            <p class="stat-card-sub">Candidatures validées</p>
+            <a th:href="@{/dashboard/candidatures}" class="stat-card-link green">Voir détails <i class='bx bx-chevron-right'></i></a>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-icon red"><i class='bx bx-x-circle'></i></div>
+            <span class="stat-card-title">Rejetées</span>
+            <h3 class="stat-card-value" th:text="${statistiques.candidaturesRejetees}">0</h3>
+            <p class="stat-card-sub">Candidatures rejetées</p>
+            <a th:href="@{/dashboard/candidatures}" class="stat-card-link red">Voir détails <i class='bx bx-chevron-right'></i></a>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-icon purple"><i class='bx bx-group'></i></div>
+            <span class="stat-card-title">Candidats inscrits</span>
+            <h3 class="stat-card-value" th:text="${statistiques.totalCandidats}">0</h3>
+            <p class="stat-card-sub">Comptes candidats</p>
+            <a th:href="@{/dashboard/utilisateurs}" class="stat-card-link purple">Voir détails <i class='bx bx-chevron-right'></i></a>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-card-icon cyan"><i class='bx bx-book-bookmark'></i></div>
+            <span class="stat-card-title">Filières</span>
+            <h3 class="stat-card-value" th:text="${statistiques.totalFilieres}">0</h3>
+            <p class="stat-card-sub">Filières disponibles</p>
+            <a th:href="@{/dashboard/filieres}" class="stat-card-link cyan">Voir détails <i class='bx bx-chevron-right'></i></a>
+        </div>
+    </div>
+
+    <div class="stats-charts-grid">
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h2><i class='bx bx-line-chart'></i> Évolution des candidatures</h2>
+                <select disabled><option>Par mois</option></select>
+            </div>
+            <canvas id="chartEvolutionCandidatures"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h2><i class='bx bx-donut-chart'></i> Répartition des candidatures par statut</h2>
+            </div>
+            <div class="donut-chart-wrapper">
+                <canvas id="chartRepartitionStatut"></canvas>
+                <ul class="donut-legend" id="donutLegend"></ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-charts-grid">
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h2><i class='bx bx-bar-chart-alt-2'></i> Candidatures par filière</h2>
+            </div>
+            <canvas id="chartCandidaturesParFiliere"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-card-header">
+                <h2><i class='bx bx-trending-up'></i> Évolution des inscriptions (candidats)</h2>
+                <select disabled><option>Par mois</option></select>
+            </div>
+            <canvas id="chartEvolutionInscriptions"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card indicateurs-card">
+        <h2 class="indicateurs-title">Autres indicateurs</h2>
+        <div class="indicateurs-grid">
+            <div class="indicateur-item">
+                <div class="indicateur-icon purple"><i class='bx bx-book-content'></i></div>
+                <div>
+                    <span class="indicateur-value" th:text="${statistiques.totalSpecialites}">0</span>
+                    <span class="indicateur-label">Spécialités</span>
+                    <span class="indicateur-sub">Total spécialités</span>
+                </div>
+            </div>
+
+            <div class="indicateur-item">
+                <div class="indicateur-icon green"><i class='bx bx-lock-open-alt'></i></div>
+                <div>
+                    <span class="indicateur-value" th:text="${statistiques.filieresOuvertes}">0</span>
+                    <span class="indicateur-label">Filières ouvertes</span>
+                    <span class="indicateur-sub">Actuellement ouvertes</span>
+                </div>
+            </div>
+
+            <div class="indicateur-item">
+                <div class="indicateur-icon red"><i class='bx bx-lock-alt'></i></div>
+                <div>
+                    <span class="indicateur-value" th:text="${statistiques.filieresFermees}">0</span>
+                    <span class="indicateur-label">Filières fermées</span>
+                    <span class="indicateur-sub">Actuellement fermées</span>
+                </div>
+            </div>
+
+            <div class="indicateur-item">
+                <div class="indicateur-icon blue"><i class='bx bx-pie-chart-alt-2'></i></div>
+                <div>
+                    <span class="indicateur-value" th:text="${statistiques.tauxValidation} + '%'">0%</span>
+                    <span class="indicateur-label">Taux de validation</span>
+                    <span class="indicateur-sub">Candidatures validées</span>
+                </div>
+            </div>
+
+            <div class="indicateur-item">
+                <div class="indicateur-icon orange"><i class='bx bx-pie-chart-alt'></i></div>
+                <div>
+                    <span class="indicateur-value" th:text="${statistiques.tauxRejet} + '%'">0%</span>
+                    <span class="indicateur-label">Taux de rejet</span>
+                    <span class="indicateur-sub">Candidatures rejetées</span>
+                </div>
+            </div>
+
+            <div class="indicateur-item">
+                <div class="indicateur-icon purple"><i class='bx bx-pie-chart-alt-2'></i></div>
+                <div>
+                    <span class="indicateur-value" th:text="${statistiques.tauxAttente} + '%'">0%</span>
+                    <span class="indicateur-label">Taux en attente</span>
+                    <span class="indicateur-sub">En attente de traitement</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/statistiques.js}"></script>
+
+</section>
+</body>
+</html>
