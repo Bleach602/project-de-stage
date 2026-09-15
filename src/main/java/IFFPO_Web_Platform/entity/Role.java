@@ -2,10 +2,15 @@ package IFFPO_Web_Platform.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "role")
 public class Role {
@@ -25,36 +30,5 @@ public class Role {
     @OneToMany(mappedBy = "role")
     private Set<Utilisateur> utilisateurs = new HashSet<>();
 
-    //GETTERS & SETTERS
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getIntitule() {
-        return intitule;
-    }
-
-    public void setIntitule(String intitule) {
-        this.intitule = intitule;
-    }
-
-    public Set<Permissions> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(Set<Permissions> permissions) {
-        this.permissions = permissions;
-    }
-
-    public Set<Utilisateur> getUtilisateurs() {
-        return utilisateurs;
-    }
-
-    public void setUtilisateurs(Set<Utilisateur> utilisateurs) {
-        this.utilisateurs = utilisateurs;
-    }
 }

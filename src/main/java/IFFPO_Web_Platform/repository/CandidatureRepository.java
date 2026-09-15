@@ -22,7 +22,6 @@ public interface CandidatureRepository extends JpaRepository<Candidature, Long>,
 
     /**
      * Compte le nombre de candidatures déposées par un utilisateur.
-     *
      */
     long countByUtilisateur(Utilisateur utilisateur);
 

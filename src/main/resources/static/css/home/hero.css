@@ -12,11 +12,20 @@
 
 .agrement-banner p {
     font-size: 0.95rem;
+    margin:0;
+    line-height: 1.5;
+    white-space: normal !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word ;
     font-weight: 500;
 }
 
 .agrement-banner strong {
     color: var(--or);
+}
+
+.agrement-banner p strong{
+    word-break: break-all;
 }
 
 .agrement-banner i {
@@ -119,4 +128,42 @@
 .stat-item p {
     font-weight: 500;
     opacity: 0.9;
+}
+
+
+@keyframes pulseBadge {
+    0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+    50%      { transform: scale(1.06); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+/* ============================================================
+   PRÉFIXE DATE — "Clôture le" / "Ouverture le" / "Prochaine session :"
+   ============================================================ */
+.date-prefix {
+    font-size: 0.78em;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.02em;
+    margin-right: 4px;
+    text-transform: none;
+    opacity: 0.9;
+}
+
+/* Sur mobile : on masque le préfixe pour gagner de la place */
+@media (max-width: 480px) {
+    .date-prefix {
+        display: none;
+    }
+}
+
+/* Animation pulse pour le badge "Derniers jours !" */
+@keyframes pulseBadge {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+    }
+    50% {
+        transform: scale(1.06);
+        box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+    }
 }

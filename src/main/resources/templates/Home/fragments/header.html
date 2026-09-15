@@ -1,57 +1,150 @@
-
-
 <!-- ============================================================
    NAVBAR
    ============================================================ -->
 
 <div th:fragment="header">
 
-<header class="navbar-container" >
-    <nav class="navbar">
-        <a href="#accueil" class="nav-brand">
-            <div class="logo-placeholder">
-                <img th:src="@{/img/logo.jpg}" alt="Logo IFP-PO Les Perles d'Or">
-            </div>
-            <div class="brand-text">
-                <span class="brand-name">IFP-<span class="or">PERLE D'OR</span></span>
-                <span class="brand-sub">Les Perles d'Or</span>
-            </div>
-        </a>
+    <header class="navbar-container">
+        <nav class="navbar">
+            <a href="#accueil" class="nav-brand">
+                <div class="logo-placeholder">
+                    <img th:src="@{/img/logo.jpg}" alt="Logo IFP-PO Les Perles d'Or">
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">IFP-<span class="or">PERLE D'OR</span></span>
+                    <span class="brand-sub">Les Perles d'Or</span>
+                </div>
+            </a>
 
-        <div class="nav-controls">
-            <button class="menu-toggle" id="mobileMenu">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
-            </button>
+            <div class="nav-controls">
+                <button class="menu-toggle" id="mobileMenu" aria-label="Ouvrir le menu" aria-expanded="false">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+            <ul class="nav-links" id="navLinks">
+
+                <!-- SECTION 1 : Découverte -->
+                <li class="nav-section-title">Découverte</li>
+
+                <li>
+                    <a href="#accueil" class="nav-item active" data-section="accueil">
+                        <span class="nav-icon"><i class="fas fa-home"></i></span>
+                        <span class="nav-text">
+                <strong>Accueil</strong>
+                <small>Page principale</small>
+            </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#about" class="nav-item" data-section="about">
+                        <span class="nav-icon"><i class="fas fa-info-circle"></i></span>
+                        <span class="nav-text">
+                <strong>À propos</strong>
+                <small>Notre histoire & nos valeurs</small>
+            </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#filiere" class="nav-item" data-section="filiere">
+                        <span class="nav-icon"><i class="fas fa-graduation-cap"></i></span>
+                        <span class="nav-text">
+                <strong>Formations</strong>
+                <small>Nos filières professionnelles</small>
+            </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#debouches" class="nav-item" data-section="debouches">
+                        <span class="nav-icon"><i class="fas fa-briefcase"></i></span>
+                        <span class="nav-text">
+                <strong>Débouchés</strong>
+                <small>Métiers & carrières</small>
+            </span>
+                    </a>
+                </li>
+
+                <!-- SECTION 2 : L'institut -->
+                <li class="nav-section-title">L'institut</li>
+
+                <li>
+                    <a href="#equipe" class="nav-item" data-section="equipe">
+                        <span class="nav-icon"><i class="fas fa-users"></i></span>
+                        <span class="nav-text">
+                <strong>Équipe</strong>
+                <small>Formateurs & encadrement</small>
+            </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#actus" class="nav-item" data-section="actus">
+                        <span class="nav-icon"><i class="fas fa-newspaper"></i></span>
+                        <span class="nav-text">
+                <strong>Actualités</strong>
+                <small>Vie de l'institut</small>
+            </span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/archive}" class="nav-item" data-section="archive">
+                        <span class="nav-icon"><i class="fas fa-archive"></i></span>
+                        <span class="nav-text">
+                <strong>Archives</strong>
+                <small>Promotions passées</small>
+            </span>
+                    </a>
+                </li>
+
+                <!-- SECTION 3 : Orientation -->
+                <li class="nav-section-title">Orientation</li>
+
+                <li>
+                    <a th:href="@{/orientation}" class="nav-item nav-item-highlight" data-section="orientation">
+                        <span class="nav-icon"><i class="fas fa-compass"></i></span>
+                        <span class="nav-text">
+                <strong>Test d'orientation</strong>
+                <small>Trouve ta voie en 2 min</small>
+            </span>
+                        <span class="nav-badge">Nouveau</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#contact" class="nav-item" data-section="contact">
+                        <span class="nav-icon"><i class="fas fa-envelope"></i></span>
+                        <span class="nav-text">
+                <strong>Contact</strong>
+                <small>Nous joindre</small>
+            </span>
+                    </a>
+                </li>
+
+                <!-- ✅ CTA : Connexion — visible EN DESKTOP ET EN MOBILE -->
+                <li class="nav-cta-item">
+                    <a th:href="@{/login}" class="nav-item btn-inscription-nav" data-section="login">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Connexion</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </header>
+
+    <!-- OVERLAY (assombrit le fond quand le drawer est ouvert) -->
+    <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
+
+    <!-- ============================================================
+    AGRÉMENT MINISTÉRIEL
+    ============================================================ -->
+    <div class="agrement-banner">
+        <div class="container">
+            <p>
+                <i class="fas fa-certificate"></i>
+                Agrément Ministériel : <strong>N° 00000444/MINEFOP/SG/DFOP/SDGSF/CSACD/CBAC</strong> du 19 Nov. 2021
+                &nbsp;•&nbsp; Sous la tutelle du <strong>MINEFOP</strong>
+            </p>
         </div>
-
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#accueil" class="nav-item active">Accueil</a></li>
-            <li><a href="#about" class="nav-item">À propos</a></li>
-            <li><a href="#filiere" class="nav-item">Nos formations</a></li>
-            <li><a href="#debouches" class="nav-item">Débouchés</a></li>
-            <li><a href="#equipe" class="nav-item">Équipe</a></li>
-            <li><a href="#actus" class="nav-item">Actualités</a></li>
-            <li><a th:href="@{/archive}" class="nav-item">Archives</a></li>
-            <li><a href="#contact" class="nav-item">Contact</a></li>
-            <li><a th:href="@{/login}" class="nav-item btn-inscription-nav">📝 S'inscrire</a></li>
-        </ul>
-    </nav>
-</header>
-
-<!-- ============================================================
-AGRÉMENT MINISTÉRIEL
-============================================================ -->
-<div class="agrement-banner">
-    <div class="container">
-        <p>
-            <i class="fas fa-certificate"></i>
-            Agrément Ministériel : <strong>N° 00000444/MINEFOP/SG/DFOP/SDGSF/CSACD/CBAC</strong> du 19 Nov. 2021
-            &nbsp;•&nbsp; Sous la tutelle du <strong>MINEFOP</strong>
-        </p>
     </div>
-</div>
 
 </div>
-

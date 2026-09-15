@@ -32,12 +32,12 @@ public class SecuriryConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
-                //.csrf(csrf-> csrf.disable())
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/contact/whatsapp"))
 
                 .authorizeHttpRequests(auth->auth
                         .requestMatchers("/","/offres", "/inscription", "/inscription/etape1",
-                                "/img/**", "/css/**", "/js/**","/archive","/robots.txt",
-                                "/api/contact/**","/login").permitAll()
+                                "/img/**", "/css/**", "/js/**","/archive","/robots.txt","/orientation",
+                                "/login","/api/contact/**").permitAll()
 
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/candidat/**").hasRole("CANDIDAT")

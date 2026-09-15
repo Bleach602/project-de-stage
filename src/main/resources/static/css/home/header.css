@@ -1,10 +1,12 @@
+
 :root {
-    /* Couleurs principales - Charte IFP-PO */
+    /* Couleurs principales */
     --bleu-cyan: #0096dc;
     --bleu-cyan-clair: #4bb8f0;
     --bleu-cyan-fonce: #0072b3;
     --bleu-cyan-transparent: rgba(0, 150, 220, 0.08);
     --bleu-cyan-gradient: linear-gradient(135deg, #0096dc 0%, #0072b3 100%);
+
 
     --or: #d4af37;
     --or-clair: #e8c84a;
@@ -22,6 +24,11 @@
     --gris-medium: #d1d5db;
     --gris-fonce: #6b7280;
 
+    --navy-950: #060f1f;
+    --navy-900: #0b1e3d;
+    --navy-800: #152b4e;
+    --navy-700: #1f3a63;
+
     /* Variables fonctionnelles */
     --bg-body: #ffffff;
     --bg-section: #f8fafc;
@@ -35,6 +42,7 @@
     --radius-sm: 12px;
     --radius-full: 100px;
     --transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-drawer: cubic-bezier(.22, 1, .36, 1);
 }
 
 /* ============================================================
@@ -48,6 +56,8 @@
 
 html {
     scroll-behavior: smooth;
+    scrollbar-width: none;
+
 }
 
 body {
@@ -179,30 +189,51 @@ a {
 }
 
 /* ============================================================
-   NAVBAR
+   NAVBAR — DESKTOP (version d'origine premium)
    ============================================================ */
+/*.navbar-container {*/
+/*    position: fixed;*/
+/*    top: 24px;*/
+/*    left: 50%;*/
+/*    transform: translateX(-50%);*/
+/*    width: min(94%, 1280px);*/
+/*    max-width: 1280px;*/
+/*    z-index: 1000;*/
+/*    transition: var(--transition);*/
+/*}*/
+
 .navbar-container {
     position: fixed;
     top: 24px;
     left: 50%;
     transform: translateX(-50%);
-    width: 90%;
-    max-width: 1280px;
+    width: min(96%, 1440px);   /* 🎯 passe de 1280 → 1440 */
+    max-width: 1440px;
     z-index: 1000;
     transition: var(--transition);
 }
+
 
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 14px 32px;
+    padding: clamp(0.6rem, 1.1vw, 0.85rem) clamp(1rem, 1.8vw, 1.75rem);
+    gap: clamp(0.75rem, 1.2vw, 1.5rem);   /* 🎯 gap un peu réduit */
+    flex-wrap: nowrap;
+
     background: rgba(255, 255, 255, 0.85);
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
+
     border-radius: var(--radius-full);
     border: 1px solid rgba(255, 255, 255, 0.6);
+
     box-shadow: var(--shadow-md);
+
+    /* 🎯 Empêche tout débordement du contenu */
+    min-width: 0;
+    overflow: visible;
 }
 
 .nav-brand {
@@ -210,11 +241,13 @@ a {
     align-items: center;
     gap: 14px;
     text-decoration: none;
+    min-width: 0;
+    flex-shrink: 0;
 }
 
 .logo-placeholder {
-    width: 50px;
-    height: 50px;
+    width: clamp(40px, 4vw, 50px);
+    height: clamp(40px, 4vw, 50px);
     background: var(--blanc);
     border-radius: 50%;
     display: flex;
@@ -238,13 +271,18 @@ a {
 .brand-text {
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .brand-name {
-    font-size: 1.3rem;
+    font-size: clamp(1rem, 0.8rem + 0.5vw, 1.3rem);
     font-weight: 800;
     color: var(--bleu-cyan);
     letter-spacing: -0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 }
 
 .brand-name .or {
@@ -254,11 +292,14 @@ a {
 }
 
 .brand-sub {
-    font-size: 0.6rem;
+    font-size: clamp(0.5rem, 0.45rem + 0.15vw, 0.6rem);
     color: var(--text-muted);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .nav-controls {
@@ -267,21 +308,27 @@ a {
     gap: 1rem;
 }
 
+
+
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 32px;
+    gap: clamp(0.6rem, 1.1vw, 1.4rem);   /* 🎯 gap réduit : 2rem → 1.4rem max */
     list-style: none;
+    padding: 0;
+    margin: 0;
+    min-width: 0;
 }
 
 .nav-item {
     text-decoration: none;
     color: var(--text-muted);
     font-weight: 600;
-    font-size: 0.7rem;
+    font-size: clamp(0.7rem, 0.65rem + 0.25vw, 0.85rem);
     transition: var(--transition);
     position: relative;
-    padding: 6px 0;
+    padding: 8px 0;
+    white-space: nowrap;
 }
 
 .nav-item:hover,
@@ -306,28 +353,106 @@ a {
     width: 100%;
 }
 
+/* ============================================================
+   🎯 BOUTON CONNEXION PREMIUM (desktop + drawer)
+   ============================================================ */
 .btn-inscription-nav {
-    background: var(--bleu-cyan-gradient);
-    color: var(--blanc) !important;
-    padding: 0.6rem 1.8rem !important;
-    border-radius: 40px !important;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    padding: 0.65rem clamp(1.1rem, 1.8vw, 1.8rem) !important;
+    font-size: clamp(0.72rem, 0.68rem + 0.2vw, 0.85rem) !important;
     font-weight: 700 !important;
-    border-bottom: none !important;
-    box-shadow: 0 4px 16px rgba(0, 150, 220, 0.25);
-    transition: var(--transition);
+    letter-spacing: 0.02em;
+
+    color: var(--blanc) !important;
+    background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%) !important;
+
+    border-radius: 40px !important;
+    border: 1.5px solid rgba(212, 175, 55, 0.4) !important;
+    border-bottom: 1.5px solid rgba(212, 175, 55, 0.4) !important;
+
+    box-shadow:
+            0 4px 16px rgba(11, 30, 61, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+    transition: all 0.35s cubic-bezier(.22, 1, .36, 1);
+    overflow: hidden;
+    white-space: nowrap;
+    isolation: isolate;
+    cursor: pointer;
+}
+
+/* Fond doré au survol */
+.btn-inscription-nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--or) 0%, var(--or-fonce) 100%);
+    opacity: 0;
+    transition: opacity 0.35s cubic-bezier(.22, 1, .36, 1);
+    z-index: -1;
+    border-radius: 40px;
+}
+
+/* Effet de brillance traversant */
+.btn-inscription-nav::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -100%;
+    width: 100%;
+    background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 100%);
+    transition: left 0.75s cubic-bezier(.22, 1, .36, 1);
+    border-radius: 40px;
+    z-index: 1;
+    display: block;
+}
+
+.btn-inscription-nav:hover::after {
+    left: 100%;
 }
 
 .btn-inscription-nav:hover {
+    color: var(--navy-950) !important;
+    border-color: var(--or) !important;
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(0, 150, 220, 0.35);
-    border-bottom: none !important;
-    color: var(--blanc) !important;
+    box-shadow:
+            0 8px 26px rgba(212, 175, 55, 0.42),
+            0 0 0 4px rgba(212, 175, 55, 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-.btn-inscription-nav::after {
-    display: none;
+.btn-inscription-nav:hover::before {
+    opacity: 1;
 }
 
+.btn-inscription-nav i {
+    position: relative;
+    z-index: 2;
+    font-size: 0.9em;
+    transition: transform 0.35s cubic-bezier(.22, 1, .36, 1);
+}
+
+.btn-inscription-nav:hover i {
+    transform: scale(1.15) rotate(-5deg);
+}
+
+.btn-inscription-nav > * {
+    position: relative;
+    z-index: 2;
+}
+
+/* ============================================================
+   MENU TOGGLE (hamburger)
+   ============================================================ */
 .menu-toggle {
     display: none;
     flex-direction: column;
@@ -344,4 +469,830 @@ a {
     background: var(--text-color);
     border-radius: 4px;
     transition: var(--transition);
+}
+
+/* ============================================================
+   OVERLAY MOBILE
+   ============================================================ */
+.nav-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 15, 31, 0.6);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.35s ease, visibility 0.35s ease;
+    z-index: 998;
+    pointer-events: none;
+}
+
+.nav-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* ============================================================
+   ÉLÉMENTS DRAWER CACHÉS EN DESKTOP
+   ============================================================ */
+.nav-drawer-header,
+.nav-section-title,
+.nav-badge,
+.nav-links .nav-icon,
+.nav-links .nav-text small {
+    display: none;
+}
+
+/* Le CTA Connexion est TOUJOURS visible (desktop + mobile) */
+.nav-cta-item {
+    display: block;
+    list-style: none;
+}
+
+/* En desktop, on affiche uniquement le texte simple */
+@media (min-width: 1081px) {
+    .nav-links .nav-text strong {
+        font-size: inherit;
+        font-weight: inherit;
+        color: inherit;
+    }
+}
+
+/* ============================================================
+   TABLETTE — on compacte les liens
+   ============================================================ */
+/*@media (max-width: 1180px) {*/
+/*    .nav-links {*/
+/*        gap: 0.8rem;*/
+/*    }*/
+
+/*    .nav-item {*/
+/*        font-size: 0.72rem;*/
+/*        letter-spacing: -0.1px;*/
+/*    }*/
+
+/*    .btn-inscription-nav {*/
+/*        padding: 0.55rem 1rem !important;*/
+/*        font-size: 0.72rem !important;*/
+/*    }*/
+/*}*/
+
+
+@media (max-width: 1180px) {
+    .nav-links {
+        gap: 0.55rem;   /* 🎯 encore plus serré */
+    }
+
+    .nav-item {
+        font-size: 0.7rem;
+        letter-spacing: -0.15px;
+        padding: 8px 4px;   /* 🎯 petit padding latéral */
+    }
+
+    .btn-inscription-nav {
+        padding: 0.5rem 0.9rem !important;
+        font-size: 0.7rem !important;
+    }
+}
+
+/* ============================================================
+   MODE DRAWER MOBILE (≤ 1080px)
+   ============================================================ */
+@media (max-width: 1080px) {
+
+    /* Affiche l'overlay en mobile */
+    .nav-overlay {
+        display: block;
+    }
+
+    /* -------- BOUTON HAMBURGER -------- */
+    .menu-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 5px;
+        padding: 8px;
+        border-radius: 10px;
+        background: transparent;
+        transition: var(--transition);
+        position: relative;
+        z-index: 1001;
+    }
+
+    .menu-toggle:hover,
+    .menu-toggle:focus-visible {
+        background: rgba(0, 150, 220, 0.08);
+    }
+
+    .menu-toggle .bar {
+        width: 26px;
+        height: 2.5px;
+        background: var(--text-color);
+        border-radius: 4px;
+        transition:
+                transform 0.4s cubic-bezier(.22, 1, .36, 1),
+                opacity 0.25s ease,
+                background 0.25s ease;
+        transform-origin: center;
+    }
+
+    .menu-toggle.active .bar:nth-child(1) {
+        transform: translateY(7.5px) rotate(45deg);
+        background: var(--or);
+    }
+    .menu-toggle.active .bar:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    .menu-toggle.active .bar:nth-child(3) {
+        transform: translateY(-7.5px) rotate(-45deg);
+        background: var(--or);
+    }
+
+    /* -------- 🎯 DRAWER LATÉRAL (scrollable, ne prend pas tout l'écran) -------- */
+    .nav-links {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        left: auto;
+
+        width: 380px;
+        max-width: 90vw;
+
+        height: auto;
+        max-height: calc(100dvh - 40px);
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 0;
+        padding: 0;
+
+        background: #ffffff;
+        border-radius: 24px;
+        border: 1px solid rgba(212, 175, 55, 0.15);
+        box-shadow:
+                -8px 8px 40px rgba(6, 15, 31, 0.25),
+                0 0 0 1px rgba(212, 175, 55, 0.08);
+
+        transform: translateX(calc(100% + 40px));
+        transition: transform 0.45s cubic-bezier(.22, 1, .36, 1);
+
+        overflow-y: auto;
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+
+        opacity: 1;
+        visibility: visible;
+        pointer-events: none;
+
+        z-index: 999;
+        list-style: none;
+        margin: 0;
+    }
+
+    .nav-links.open {
+        transform: translateX(0);
+        pointer-events: auto;
+    }
+
+    /* Scrollbar fine et élégante */
+    .nav-links::-webkit-scrollbar {
+        width: 4px;
+    }
+    .nav-links::-webkit-scrollbar-track {
+        background: transparent;
+        margin: 20px 0;
+    }
+    .nav-links::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, var(--or), var(--or-fonce));
+        border-radius: 10px;
+    }
+
+    /* -------- EN-TÊTE DU DRAWER -------- */
+    .nav-drawer-header {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 20px 18px 18px;
+        background: linear-gradient(135deg, #0b1e3d 0%, #152b4e 100%);
+        color: #fff;
+        position: sticky;
+        top: 0;
+        z-index: 3;
+        margin: 0 !important;
+        border-radius: 24px 24px 0 0;
+        list-style: none;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .drawer-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+        flex: 1;
+    }
+
+    .drawer-brand img {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--or);
+        box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+        flex-shrink: 0;
+        background: #fff;
+        padding: 2px;
+    }
+
+    .drawer-brand-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+        min-width: 0;
+    }
+
+    .drawer-brand-text strong {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        font-size: 15px;
+        color: #fff;
+        letter-spacing: 0.2px;
+    }
+
+    .drawer-brand-text span {
+        font-size: 9.5px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(212, 175, 55, 0.9);
+        font-weight: 600;
+    }
+
+    .drawer-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 11px;
+        color: rgba(255, 255, 255, 0.85);
+        cursor: pointer;
+        transition: all 0.25s ease;
+        flex-shrink: 0;
+        font-size: 14px;
+    }
+
+    .drawer-close:hover {
+        background: rgba(212, 175, 55, 0.2);
+        color: var(--or);
+        transform: rotate(90deg);
+    }
+
+    /* -------- TITRES DE SECTION -------- */
+    .nav-section-title {
+        display: block !important;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #6b7280;
+        padding: 14px 20px 6px;
+        opacity: 0.75;
+        list-style: none;
+        pointer-events: none;
+    }
+
+    /* -------- ITEMS -------- */
+    .nav-links li {
+        width: 100%;
+        list-style: none;
+        padding: 0 10px;
+        margin: 0;
+    }
+
+    .nav-links .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+
+        width: 100%;
+        padding: 11px 13px;
+        margin-bottom: 2px;
+
+        font-size: 14px;
+        font-weight: 500;
+        color: #1a1a1a;
+        text-decoration: none;
+
+        border-radius: 12px;
+        transition: all 0.25s cubic-bezier(.22, 1, .36, 1);
+        position: relative;
+        min-height: 54px;
+    }
+
+    /* Icône carrée navy + or */
+    .nav-links .nav-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 11px;
+        background: linear-gradient(135deg, #0b1e3d 0%, #1f3a63 100%);
+        color: var(--or);
+        font-size: 15px;
+        flex-shrink: 0;
+        box-shadow: 0 4px 12px -4px rgba(11, 30, 61, 0.3);
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    /* Label avec sous-titre */
+    .nav-links .nav-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.25;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .nav-links .nav-text strong {
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #0b1e3d;
+    }
+
+    .nav-links .nav-text small {
+        display: block;
+        font-size: 10.5px;
+        font-weight: 400;
+        color: #6b7280;
+        margin-top: 2px;
+    }
+
+    /* Badge "Nouveau" */
+    .nav-links .nav-badge {
+        display: inline-flex;
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 4px 9px;
+        border-radius: 30px;
+        background: linear-gradient(135deg, var(--or) 0%, var(--or-fonce) 100%);
+        color: #0b1e3d;
+        flex-shrink: 0;
+        animation: pulseBadge 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseBadge {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    /* Item mis en avant (Orientation) */
+    .nav-links .nav-item-highlight {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.02));
+        border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    /* Hover & Active */
+    .nav-links .nav-item:hover,
+    .nav-links .nav-item.active {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(212, 175, 55, 0.03));
+        transform: translateX(-3px);
+    }
+
+    .nav-links .nav-item.active::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 12px;
+        bottom: 12px;
+        width: 3px;
+        background: linear-gradient(135deg, var(--or), var(--or-fonce));
+        border-radius: 0 3px 3px 0;
+    }
+
+    .nav-links .nav-item:hover .nav-icon,
+    .nav-links .nav-item.active .nav-icon {
+        transform: scale(1.05) rotate(-3deg);
+        box-shadow: 0 6px 18px -4px rgba(212, 175, 55, 0.4);
+    }
+
+    /* On neutralise le soulignement desktop */
+    .nav-item::after {
+        display: none;
+    }
+
+    /* -------- ✅ CTA CONNEXION DANS LE DRAWER -------- */
+    .nav-cta-item {
+        margin-top: 12px;
+        padding: 16px 10px 20px !important;
+        border-top: 1px solid rgba(11, 30, 61, 0.08);
+        background: linear-gradient(180deg, transparent 0%, rgba(212, 175, 55, 0.04) 100%);
+        border-radius: 0 0 24px 24px;
+        list-style: none;
+    }
+
+    .nav-cta-item .btn-inscription-nav {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+
+        width: 100%;
+        padding: 14px 20px !important;
+        margin: 0 !important;
+
+        font-size: 14px !important;
+        font-weight: 700 !important;
+
+        background: linear-gradient(135deg, var(--or) 0%, var(--or-fonce) 100%) !important;
+        color: #0b1e3d !important;
+
+        border-radius: 60px !important;
+        border: none !important;
+        min-height: 50px;
+
+        box-shadow: 0 6px 20px -6px rgba(212, 175, 55, 0.5);
+        transition: all 0.3s cubic-bezier(.22, 1, .36, 1);
+        transform: none !important;
+    }
+
+    .nav-cta-item .btn-inscription-nav::after,
+    .nav-cta-item .btn-inscription-nav::before {
+        display: none !important;
+    }
+
+    .nav-cta-item .btn-inscription-nav:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 10px 28px -6px rgba(212, 175, 55, 0.6);
+        color: #0b1e3d !important;
+    }
+
+    .nav-cta-item .btn-inscription-nav i {
+        font-size: 15px;
+    }
+}
+
+/* ------------------------------------------------------------
+   MOBILE — Plus compact
+   ------------------------------------------------------------ */
+@media (max-width: 720px) {
+    .navbar-container {
+        top: 12px;
+        width: 94%;
+    }
+
+    .navbar {
+        padding: 0.6rem 0.95rem;
+        border-radius: 24px;
+    }
+
+    .nav-brand {
+        gap: 10px;
+    }
+
+    .logo-placeholder {
+        width: 42px;
+        height: 42px;
+        padding: 2px;
+        box-shadow:
+                0 4px 12px rgba(0, 150, 220, 0.2),
+                0 0 0 2px var(--or);
+    }
+
+    .brand-name {
+        font-size: 1rem;
+        letter-spacing: -0.3px;
+    }
+
+    .brand-sub {
+        font-size: 0.5rem;
+    }
+
+    /* Drawer ajusté */
+    .nav-links {
+        width: 360px;
+        max-width: 88vw;
+        top: 16px;
+        right: 16px;
+        max-height: calc(100dvh - 32px);
+    }
+
+    .nav-links .nav-item {
+        padding: 10px 12px;
+        gap: 12px;
+        min-height: 52px;
+    }
+
+    .nav-links .nav-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 14px;
+    }
+
+    .nav-links .nav-text strong {
+        font-size: 13px;
+    }
+
+    .nav-links .nav-text small {
+        font-size: 10px;
+    }
+
+    .nav-cta-item {
+        padding: 14px 10px 18px !important;
+    }
+
+    .nav-cta-item .btn-inscription-nav {
+        padding: 13px 18px !important;
+        font-size: 13.5px !important;
+        min-height: 48px;
+    }
+}
+
+/* ------------------------------------------------------------
+   PETIT MOBILE (≤ 480px) — Drawer presque plein écran
+   ------------------------------------------------------------ */
+@media (max-width: 480px) {
+    .navbar-container {
+        top: 10px;
+        width: 94%;
+    }
+
+    .navbar {
+        padding: 0.55rem 0.85rem;
+    }
+
+    .logo-placeholder {
+        width: 38px;
+        height: 38px;
+    }
+
+    .brand-name {
+        font-size: 0.92rem;
+    }
+
+    .brand-sub {
+        font-size: 0.45rem;
+        letter-spacing: 0.04em;
+    }
+
+    .menu-toggle .bar {
+        width: 24px;
+        height: 2.2px;
+    }
+
+    /* Drawer : presque plein écran mais garde 12px de marge */
+    .nav-links {
+        width: calc(100vw - 24px);
+        max-width: none;
+        top: 12px;
+        right: 12px;
+        max-height: calc(100dvh - 24px);
+        border-radius: 20px;
+    }
+
+    .nav-drawer-header {
+        padding: 16px 16px 14px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .drawer-brand img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .drawer-brand-text strong {
+        font-size: 13.5px;
+    }
+
+    .drawer-brand-text span {
+        font-size: 9px;
+    }
+
+    .nav-section-title {
+        font-size: 9.5px;
+        padding: 12px 16px 5px;
+    }
+
+    .nav-links li {
+        padding: 0 8px;
+    }
+
+    .nav-links .nav-item {
+        padding: 10px 11px;
+        gap: 10px;
+        min-height: 50px;
+    }
+
+    .nav-links .nav-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 13.5px;
+        border-radius: 10px;
+    }
+
+    .nav-links .nav-text strong {
+        font-size: 12.5px;
+    }
+
+    .nav-links .nav-text small {
+        font-size: 9.5px;
+    }
+
+    .nav-cta-item {
+        padding: 14px 8px 16px !important;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .nav-cta-item .btn-inscription-nav {
+        padding: 12px 16px !important;
+        font-size: 13px !important;
+        min-height: 48px;
+    }
+}
+
+/* ------------------------------------------------------------
+   TRÈS PETIT MOBILE (≤ 360px)
+   ------------------------------------------------------------ */
+@media (max-width: 360px) {
+    .navbar {
+        padding: 0.5rem 0.7rem;
+    }
+
+    .logo-placeholder {
+        width: 34px;
+        height: 34px;
+    }
+
+    .brand-name {
+        font-size: 0.85rem;
+    }
+
+    .brand-sub {
+        display: none;
+    }
+
+    /* Drawer : plein écran presque complet */
+    .nav-links {
+        width: calc(100vw - 16px);
+        top: 8px;
+        right: 8px;
+        max-height: calc(100dvh - 16px);
+        border-radius: 18px;
+    }
+
+    .nav-links .nav-item {
+        padding: 9px 10px;
+        gap: 10px;
+        min-height: 48px;
+    }
+
+    .nav-links .nav-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+
+    .nav-links .nav-text strong {
+        font-size: 12.5px;
+    }
+
+    .nav-links .nav-text small {
+        font-size: 9.5px;
+    }
+}
+
+
+
+
+@media (min-width: 1600px) {
+    .navbar-container {
+        max-width: 1520px;
+    }
+}
+
+@media (min-width: 2000px) {
+    .navbar-container {
+        max-width: 1720px;
+    }
+}
+
+@media (max-width: 720px) {
+    .agrement-banner {
+        padding: 0.75rem 0;
+    }
+
+    .agrement-banner p {
+        font-size: 0.78rem;
+        gap: 0.35rem 0.5rem;
+        line-height: 1.45;
+    }
+
+    .agrement-banner p strong {
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .agrement-banner p i {
+        font-size: 0.95em;
+    }
+}
+
+@media (max-width: 480px) {
+    .agrement-banner p {
+        font-size: 0.74rem;
+        line-height: 1.5;
+    }
+}
+
+/* ============================================================
+   ACCESSIBILITÉ & CONFORT
+   ============================================================ */
+
+/* Focus visible clavier */
+.menu-toggle:focus-visible,
+.nav-item:focus-visible,
+.btn-inscription-nav:focus-visible,
+.drawer-close:focus-visible {
+    outline: 2px solid var(--or);
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+/* Sur tactile : pas de hover bloquant */
+@media (hover: none) {
+    .nav-item:hover,
+    .btn-inscription-nav:hover {
+        transform: none;
+    }
+
+    .btn-inscription-nav:hover::before {
+        opacity: 0;
+    }
+}
+
+/* Réduction des animations */
+@media (prefers-reduced-motion: reduce) {
+    .nav-links,
+    .menu-toggle .bar,
+    .nav-item,
+    .btn-inscription-nav,
+    .nav-overlay,
+    .drawer-close {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+/* ------------------------------------------------------------
+   PAYSAGE MOBILE
+   ------------------------------------------------------------ */
+@media (max-height: 520px) and (orientation: landscape) {
+    .navbar-container {
+        top: 8px;
+    }
+
+    .navbar {
+        padding: 0.5rem 0.9rem;
+    }
+
+    .nav-links {
+        top: 8px;
+        right: 8px;
+        max-height: calc(100dvh - 16px);
+        width: 340px;
+    }
+
+    .nav-links .nav-item {
+        padding: 8px 11px;
+        min-height: 44px;
+    }
+
+    .nav-section-title {
+        padding: 10px 18px 5px;
+    }
+
+    .nav-drawer-header {
+        padding: 14px 16px 12px;
+    }
+}
+
+/* ============================================================
+   SUPPORT DE LA HAUTEUR D'ÉCRAN (dvh) — fallback
+   ============================================================ */
+@supports not (height: 100dvh) {
+    .nav-links {
+        max-height: calc(100vh - 40px);
+    }
 }

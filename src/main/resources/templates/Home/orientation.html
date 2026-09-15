@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5">
+
+    <title>Orientation — IFP-PO Les Perles d'Or | Trouvez votre voie</title>
+    <meta name="description" content="En 2 minutes, découvrez les 2-3 formations IFP-PO Les Perles d'Or qui correspondent à votre profil. Un test d'orientation gratuit, rapide et personnalisé.">
+    <meta name="keywords" content="orientation professionnelle Cameroun, test orientation Foumban, IFP Perle d'Or, quelle formation choisir après BAC">
+
+    <!-- CSRF -->
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+    <!-- FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/home/orientation.css}">
+    <link rel="stylesheet" th:href="@{/css/home/footer.css}">
+
+</head>
+
+<body>
+
+<!-- ============================================================
+     HEADER COMPACT
+     ============================================================ -->
+<header class="orientation-header">
+    <div class="container-header">
+        <a th:href="@{/}" class="brand-logo">
+            <img th:src="@{/img/logo.jpg}" alt="IFP-PO Les Perles d'Or">
+            <div class="brand-text">
+                <span class="brand-name">IFP Perle d'Or</span>
+                <span class="brand-sub">Institut de Formation Professionnelle</span>
+            </div>
+        </a>
+
+        <a th:href="@{/}" class="back-link">
+            <i class="fas fa-arrow-left"></i>
+            <span>Retour à l'accueil</span>
+        </a>
+    </div>
+</header>
+
+<!-- ============================================================
+     SECTION 1 — HERO
+     ============================================================ -->
+<section class="orient-hero">
+    <div class="orient-hero-bg"></div>
+    <div class="container">
+
+        <div class="orient-hero-content">
+            <div class="orient-badge">
+                <i class="fas fa-compass"></i>
+                <span>Orientation gratuite</span>
+            </div>
+
+            <h1 class="orient-title">
+                Tu viens d'avoir ton <span class="gold">BAC</span>…
+                <br>
+                et <span class="gold-italic">maintenant</span> ?
+            </h1>
+
+            <p class="orient-subtitle">
+                Réponds à <strong>5 questions simples</strong>.
+                Découvre en <strong>2 minutes</strong> les 2-3 formations
+                IFP-PO qui te correspondent vraiment — <em>et pourquoi</em>.
+            </p>
+
+            <div class="orient-cta-group">
+                <button class="btn-start" id="startQuiz">
+                    <i class="fas fa-play"></i>
+                    Démarrer le test
+                    <span class="btn-badge">2 min</span>
+                </button>
+
+                <a th:href="@{/offres}" class="btn-ghost-orient">
+                    <i class="fas fa-list"></i>
+                    Voir toutes nos filières
+                </a>
+            </div>
+
+            <div class="orient-trust">
+                <div class="trust-item">
+                    <i class="fas fa-users"></i>
+                    <span>1 200+ élèves orientés</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-star"></i>
+                    <span>100% de réussite aux examens</span>
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Agréé MINEFOP</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Illustration décorative -->
+        <div class="orient-hero-visual">
+            <div class="compass-ring">
+                <div class="compass-inner">
+                    <i class="fas fa-compass"></i>
+                </div>
+                <div class="ring-pulse"></div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============================================================
+     SECTION 2 — QUIZ
+     ============================================================ -->
+<section class="orient-quiz" id="quizSection" style="display:none;">
+    <div class="container-quiz">
+
+        <!-- Barre de progression -->
+        <div class="quiz-progress-wrap">
+            <div class="quiz-progress-info">
+                <span id="progressLabel">Question 1 sur 5</span>
+                <span id="progressPercent">20%</span>
+            </div>
+            <div class="quiz-progress-bar">
+                <div class="quiz-progress-fill" id="progressFill" style="width:20%;"></div>
+            </div>
+        </div>
+
+        <!-- Question active -->
+        <div class="quiz-card" id="quizCard">
+            <!-- Rempli dynamiquement par le JS -->
+        </div>
+
+        <!-- Navigation -->
+        <div class="quiz-nav">
+            <button class="btn-quiz-back" id="quizBack" disabled>
+                <i class="fas fa-arrow-left"></i>
+                Précédent
+            </button>
+            <button class="btn-quiz-restart" id="quizRestart">
+                <i class="fas fa-redo"></i>
+                Recommencer
+            </button>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============================================================
+     SECTION 3 — RÉSULTAT
+     ============================================================ -->
+<section class="orient-result" id="resultSection" style="display:none;">
+    <div class="container-result">
+
+        <!-- En-tête résultat -->
+        <div class="result-header">
+            <div class="result-check">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 class="result-title">
+                Ton profil est prêt !
+            </h2>
+            <p class="result-subtitle">
+                Voici ce que ton parcours révèle.
+            </p>
+        </div>
+
+        <!-- Profil dominant -->
+        <div class="profile-card profile-main" id="profileMain">
+            <!-- Rempli par JS -->
+        </div>
+
+        <!-- Profil secondaire -->
+        <div class="profile-card profile-secondary" id="profileSecondary">
+            <!-- Rempli par JS -->
+        </div>
+
+        <!-- Filières recommandées -->
+        <div class="filieres-block">
+            <div class="filieres-header">
+                <h3>
+                    <i class="fas fa-graduation-cap"></i>
+                    Les formations qui te correspondent
+                </h3>
+                <p>Classées par ordre de compatibilité avec ton profil.</p>
+            </div>
+
+            <div class="filieres-grid" id="filieresGrid">
+                <!-- Rempli par JS -->
+            </div>
+        </div>
+
+        <!-- CTA final -->
+        <div class="result-cta">
+            <div class="cta-card">
+                <div class="cta-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3>Prêt à sauter le pas ?</h3>
+                <p>
+                    Ton profil correspond à <strong id="ctaFilieresCount">plusieurs</strong> de nos formations.
+                    Les inscriptions sont ouvertes — places limitées.
+                </p>
+
+                <div class="cta-buttons">
+                    <a th:href="@{/login}" class="btn-cta-primary">
+                        <i class="fas fa-user-graduate"></i>
+                        S'inscrire maintenant
+                    </a>
+
+                    <a href="https://wa.me/237698098266?text=Bonjour%20IFP-PO%2C%20je%20viens%20de%20faire%20le%20test%20d'orientation%20et%20je%20souhaite%20des%20informations."
+                       target="_blank" rel="noopener" class="btn-cta-whatsapp">
+                        <i class="fab fa-whatsapp"></i>
+                        Parler à un conseiller
+                    </a>
+                </div>
+
+                <button class="btn-cta-restart" id="restartFromResult">
+                    <i class="fas fa-redo"></i>
+                    Refaire le test
+                </button>
+            </div>
+        </div>
+
+        <!-- Rassurance -->
+        <div class="result-reassurance">
+            <div class="reassurance-item">
+                <i class="fas fa-clock"></i>
+                <div>
+                    <strong>Inscriptions ouvertes</strong>
+                    <span id="reassuranceDates">—</span>
+                </div>
+            </div>
+            <div class="reassurance-item">
+                <i class="fas fa-award"></i>
+                <div>
+                    <strong>Agrément MINEFOP</strong>
+                    <span>N° 00000444/MINEFOP</span>
+                </div>
+            </div>
+            <div class="reassurance-item">
+                <i class="fas fa-trophy"></i>
+                <div>
+                    <strong>100% de réussite</strong>
+                    <span>Depuis 2021</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============================================================
+     FOOTER COMPACT
+     ============================================================ -->
+<div th:replace="~{Home/fragments/footer :: footer}"></div>
+
+<script th:src="@{/js/home/orientation.js}"></script>
+</body>
+</html>

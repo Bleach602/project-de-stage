@@ -106,19 +106,13 @@
                         </div>
                     </div>
 
-                    <!-- Bouton "Lire la suite" - CORRECTION ICI -->
-                    <!-- Utilisation de 'titre' ou 'id' comme condition, pas 'lien' -->
+                 
                     <a href="#" class="actus-read-more" th:if="${actualite.titre != null and !actualite.titre.isEmpty()}">
                         Lire la suite
                         <i class="fas fa-arrow-right"></i>
                     </a>
 
-                    <!-- Alternative : si vous avez un champ 'url' ou 'lien' différent -->
-                    <!-- <a th:if="${actualite.url != null}"
-                           th:href="${actualite.url}"
-                           class="actus-read-more">
-                        Lire la suite <i class="fas fa-arrow-right"></i>
-                    </a> -->
+
                 </div>
             </div>
         </div>

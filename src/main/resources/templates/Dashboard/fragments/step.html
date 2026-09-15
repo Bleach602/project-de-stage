@@ -186,10 +186,6 @@
                 </section>
 
 
-                <!-- =================================================
-                     SPECIALITE ID
-                                            name="specialite.id"
-                     ================================================= -->
                 <input type="hidden"
                        id="selectedSpecialiteId"
                       name="specialiteId"
@@ -234,6 +230,8 @@
                             <input type="date"
                                    id="dateNaissance"
                                    name="dateNaissance"
+                                   min="1990-01-01"
+                                   max="2050-01-01"
                                    required
                                    th:readonly="${ficheExiste}">
 
@@ -476,10 +474,10 @@
                                         <strong>
                                             Sélectionner une photo
                                         </strong>
-
-                                        <span>
-                                            JPG ou PNG · 25 Mo maximum
-                                        </span>
+                                        <div class="file-list" id="PhotoFileList">JPEG, JPG, PNG (max 25 Mo)</div>
+<!--                                        <span>-->
+<!--                                            JPG ou PNG · 25 Mo maximum-->
+<!--                                        </span>-->
                                     </div>
 
                                 </div>

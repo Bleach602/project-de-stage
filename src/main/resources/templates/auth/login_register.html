@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/login_register.css}">
     <link rel="stylesheet" href="../../static/css/role-gestion_users.css">
 </head>
@@ -18,62 +19,15 @@
 <div class="app" data-mode="login" id="app">
 
     <!-- ============================================================
-    PANEL GAUCHE – LOGO + ILLUSTRATION
+    PANEL GAUCHE – LOGO + OVERLAY
     ============================================================ -->
     <aside class="brand">
         <div class="pearls-field" id="pearlsField"></div>
 
         <div class="brand-mark">
-
-
-
             <img th:src="@{/img/logo.jpg}" alt="IFP Perle d'Or" class="brand-logo-img">
             <div class="mark-name">IFP Perle d'Or</div>
             <div class="mark-sub">Institut de Formation Professionnel les Perles D'or.</div>
-        </div>
-
-        <div class="brand-art">
-            <svg viewBox="0 0 500 560" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <linearGradient id="artGold" x1="0" y1="0" x2="500" y2="560" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#f0dfa0"/>
-                        <stop offset="1" stop-color="#c9a227"/>
-                    </linearGradient>
-                    <radialGradient id="screenGlow" cx="50%" cy="50%" r="50%">
-                        <stop offset="0" stop-color="#e9cd77" stop-opacity=".55"/>
-                        <stop offset="100%" stop-color="#e9cd77" stop-opacity="0"/>
-                    </radialGradient>
-                    <linearGradient id="silhouette" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0" stop-color="#2a4a78"/>
-                        <stop offset="1" stop-color="#152b4e"/>
-                    </linearGradient>
-                </defs>
-                <ellipse cx="250" cy="300" rx="180" ry="150" fill="url(#screenGlow)"/>
-                <g fill="none" stroke="url(#artGold)" stroke-width="2" opacity=".85">
-                    <text x="90" y="130" font-family="'Inter',sans-serif" font-size="26" font-weight="700" stroke="none" fill="url(#artGold)">&lt;/&gt;</text>
-                    <text x="360" y="110" font-family="'Inter',sans-serif" font-size="22" font-weight="700" stroke="none" fill="url(#artGold)">{ }</text>
-                    <circle cx="120" cy="200" r="4" fill="url(#artGold)" stroke="none"/>
-                    <circle cx="400" cy="220" r="3" fill="url(#artGold)" stroke="none"/>
-                    <text x="380" y="180" font-family="'Inter',sans-serif" font-size="16" font-weight="700" stroke="none" fill="url(#artGold)" opacity=".7">01</text>
-                </g>
-                <path d="M110 430 L390 430 L410 470 L90 470 Z" fill="var(--navy-700, #1f3a63)" opacity=".9"/>
-                <rect x="95" y="428" width="310" height="6" fill="url(#artGold)" opacity=".8"/>
-                <path d="M195 300 q-6 60 -4 100 q0 24 14 30 h90 q14 -6 14 -30 q2 -40 -4 -100 z" fill="url(#silhouette)"/>
-                <circle cx="250" cy="255" r="34" fill="url(#silhouette)"/>
-                <path d="M250 221a34 34 0 0 1 34 34c0 4 -1 8 -2 11 -8 -10 -20 -16 -32 -16 -14 0 -27 7 -35 18 -1 -4 -1 -9 -1 -13a34 34 0 0 1 36 -34z" fill="#0e1f3c"/>
-                <path d="M206 340 q-18 10 -22 34" stroke="url(#silhouette)" stroke-width="16" fill="none" stroke-linecap="round"/>
-                <path d="M294 340 q18 10 22 34" stroke="url(#silhouette)" stroke-width="16" fill="none" stroke-linecap="round"/>
-                <rect x="178" y="368" width="144" height="10" rx="3" fill="var(--navy-800, #152b4e)"/>
-                <path d="M186 368 L192 300 a6 6 0 0 1 6 -5 h104 a6 6 0 0 1 6 5 l6 68 z" fill="var(--navy-800, #152b4e)" stroke="url(#artGold)" stroke-width="1.4"/>
-                <rect x="200" y="306" width="100" height="56" rx="2" fill="url(#screenGlow)" stroke="url(#artGold)" stroke-width="1"/>
-                <g stroke="url(#artGold)" stroke-width="1.6" opacity=".9">
-                    <line x1="210" y1="318" x2="248" y2="318"/>
-                    <line x1="210" y1="328" x2="270" y2="328"/>
-                    <line x1="210" y1="338" x2="238" y2="338"/>
-                    <line x1="210" y1="348" x2="260" y2="348"/>
-                </g>
-                <circle cx="250" cy="280" r="200" fill="none" stroke="url(#artGold)" stroke-width="1" stroke-dasharray="2 8" opacity=".35" class="orbit-ring"/>
-            </svg>
         </div>
     </aside>
 
@@ -86,7 +40,6 @@
             <!-- Logo mobile -->
             <div class="mobile-mark">
                 <img th:src="@{/img/logo.jpg}" alt="IFP Perle d'Or" class="brand-logo-img">
-
             </div>
 
             <!-- Tabs -->
@@ -97,44 +50,36 @@
             </div>
 
             <!-- ============================================================
-            LOGIN – Sans placeholders
+            LOGIN
             ============================================================ -->
             <section class="pane" data-pane="login">
                 <form id="loginForm" th:action="@{/login}" method="post" novalidate>
 
                     <div th:if="${param.error}" class="error-global">
-
                         <i class="bx bx-error-circle"></i>
-
                         <div th:switch="${param.error[0]}">
-
-        <span th:case="'compte_bloque'">
-            Votre compte a été bloqué.
-            Contactez l'administrateur.
-        </span>
-
+                            <span th:case="'compte_bloque'">
+                                Votre compte a été bloqué.
+                                Contactez l'administrateur.
+                            </span>
                             <span th:case="'compte_inactif'">
-            Votre compte est actuellement inactif.
-            Contactez l'administrateur.
-        </span>
-
+                                Votre compte est actuellement inactif.
+                                Contactez l'administrateur.
+                            </span>
                             <span th:case="'identifiants_invalides'">
-            Email ou mot de passe incorrect.
-        </span>
-
+                                Email ou mot de passe incorrect.
+                            </span>
                             <span th:case="*">
-            Une erreur est survenue lors de la connexion.
-        </span>
-
+                                Une erreur est survenue lors de la connexion.
+                            </span>
                         </div>
-
                     </div>
 
                     <div class="field" id="loginEmailField">
                         <label for="loginEmail">E-mail</label>
                         <div class="input-wrap">
                             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
-                            <input type="email" id="loginEmail"  placeholder="Votre email " name="username" autocomplete="email" required>
+                            <input type="email" id="loginEmail" placeholder="Votre email" name="username" autocomplete="email" required>
                         </div>
                         <div class="error-msg">Adresse e-mail invalide.</div>
                     </div>
@@ -143,7 +88,7 @@
                         <label for="loginPassword">Mot de passe</label>
                         <div class="input-wrap">
                             <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
-                            <input type="password" id="loginPassword" name="password" class="has-toggle"   placeholder="Votre mot de passe" autocomplete="current-password" required>
+                            <input type="password" id="loginPassword" name="password" class="has-toggle" placeholder="Votre mot de passe" autocomplete="current-password" required>
                             <button type="button" class="eye-toggle" onclick="togglePassword('loginPassword', this)" aria-label="Afficher le mot de passe">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1.5 12s4-7.5 10.5-7.5S22.5 12 22.5 12s-4 7.5-10.5 7.5S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>
                             </button>
@@ -156,7 +101,6 @@
                         <a href="#" onclick="return false;">Mot de passe oublié ?</a>
                     </div>
 
-
                     <button type="submit" class="btn btn-primary">
                         Se connecter
                         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -164,7 +108,7 @@
                 </form>
 
                 <p class="foot-link">Vous n'avez pas encore de compte ? <a onclick="switchTab('register')">S'inscrire</a></p>
-                <!-- Bouton Retour Accueil - Version Dynamique -->
+
                 <a th:href="@{/}" class="back-home-btn back-home-arrow" title="Retour à l'accueil">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -174,7 +118,9 @@
                 </a>
             </section>
 
-
+            <!-- ============================================================
+            INSCRIPTION
+            ============================================================ -->
             <section class="pane" data-pane="register">
                 <div class="necklace" id="necklace">
                     <div class="neck-step">
@@ -195,25 +141,23 @@
 
                 <form id="registerForm" th:action="@{/inscription/etape1}" th:object="${inscrireDTO}" method="post" novalidate>
 
-                    <!-- Step 1 : Identité – Nom puis Prénom -->
+                    <!-- Step 1 : Identité -->
                     <div class="step active" data-step="1">
                         <div class="field-row">
-                            <!-- NOM en premier -->
                             <div class="field" id="nomField">
                                 <label for="nom">Nom</label>
                                 <div class="input-wrap">
                                     <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.5-4.5 5-6 7.5-6s6 1.5 7.5 6"/></svg>
-                                    <input type="text" id="nom" th:field="*{nom}"  placeholder="Votre nom" autocomplete="family-name" required>
+                                    <input type="text" id="nom" th:field="*{nom}" placeholder="Votre nom" autocomplete="family-name" required>
                                 </div>
                                 <div class="error-msg">Requis.</div>
                                 <span th:if="${#fields.hasErrors('nom')}" th:errors="*{nom}" class="error-thymeleaf"></span>
                             </div>
-                            <!-- PRÉNOM en second -->
                             <div class="field" id="prenomField">
                                 <label for="prenom">Prénom</label>
                                 <div class="input-wrap">
                                     <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c1.5-4.5 5-6 7.5-6s6 1.5 7.5 6"/></svg>
-                                    <input type="text" id="prenom" th:field="*{prenom}"  placeholder="Votre prenom" autocomplete="given-name" required>
+                                    <input type="text" id="prenom" th:field="*{prenom}" placeholder="Votre prenom" autocomplete="given-name" required>
                                 </div>
                                 <div class="error-msg">Requis.</div>
                                 <span th:if="${#fields.hasErrors('prenom')}" th:errors="*{prenom}" class="error-thymeleaf"></span>
@@ -225,13 +169,13 @@
                         </button>
                     </div>
 
-                    <!-- Step 2 : Contact – Sans placeholders -->
+                    <!-- Step 2 : Contact -->
                     <div class="step" data-step="2">
                         <div class="field" id="regEmailField">
                             <label for="regEmail">E-mail</label>
                             <div class="input-wrap">
                                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg>
-                                <input type="email" id="regEmail" th:field="*{email}"  placeholder="Votre email" autocomplete="email" required>
+                                <input type="email" id="regEmail" th:field="*{email}" placeholder="Votre email" autocomplete="email" required>
                             </div>
                             <div class="error-msg">Adresse e-mail invalide.</div>
                             <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-thymeleaf"></span>
@@ -242,10 +186,9 @@
                             <div class="input-wrap">
                                 <div class="flag-icon">🇨🇲</div>
                                 <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 3h3l2 5-2.5 1.5a12 12 0 006 6L16 13l5 2v3a2 2 0 01-2 2C10.7 20 4 13.3 4 5a2 2 0 012-2z"/></svg>
-                                <input type="tel" id="tel" th:field="*{telephone}"  placeholder="6 xx xx xx xx" autocomplete="tel" required>
+                                <input type="tel" id="tel" th:field="*{telephone}" placeholder="6 xx xx xx xx" autocomplete="tel" required>
                             </div>
 
-                            <!-- Message WhatsApp -->
                             <div class="whatsapp-info">
                                 <i class="fas fa-info-circle"></i>
                                 <span>
@@ -269,7 +212,7 @@
                         </div>
                     </div>
 
-                    <!-- Step 3 : Sécurité – Sans placeholders -->
+                    <!-- Step 3 : Sécurité -->
                     <div class="step" data-step="3">
                         <div class="field" id="regPasswordField">
                             <label for="regPassword">Mot de passe</label>

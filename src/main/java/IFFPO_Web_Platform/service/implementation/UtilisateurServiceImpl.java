@@ -113,7 +113,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         return  utilisateurRepository
                 .findUtilisateursAvecPermission("PERM_GESTION_CONTENU")
                 .stream()
-                .limit(2)
+                .limit(3)
                 .toList();
     }
 

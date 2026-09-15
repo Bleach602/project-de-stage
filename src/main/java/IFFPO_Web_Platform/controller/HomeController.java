@@ -87,4 +87,11 @@ public class HomeController {
                 contactService.preparerMessagesWhatsApp(request);
         return ResponseEntity.ok(contacts);
     }
+
+
+        @GetMapping("/orientation")
+        public String orientation() {
+            return "Home/orientation";
+        }
+
 }

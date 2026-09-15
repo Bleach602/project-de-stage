@@ -179,6 +179,8 @@ a {
     margin-bottom: var(--space-xl);
     border: 1px solid var(--gris-clair);
     transition: var(--transition);
+    min-width: 0;
+    overflow-wrap: break-word;
 }
 
 .card:hover {
@@ -1008,421 +1010,9 @@ td img {
     font-size: 11px;
 }
 
-
-
-
-
-
-
-/* ============================================================
-   RESPONSIVE – POINTS DE RUPTURE AMÉLIORÉS
-   ============================================================ */
-
-/* Écrans larges (≥ 1200px) */
-@media (min-width: 1200px) {
-    .main-content {
-        padding: var(--space-xl) var(--space-2xl);
-    }
-}
-
-/* Tablettes et petits écrans (≤ 1024px) */
-@media (max-width: 1024px) {
-    .main-content {
-        padding: var(--space-lg);
-    }
-
-    .card {
-        padding: var(--space-lg);
-    }
-}
-
-/* Tablettes et mobiles larges (≤ 992px) */
-@media (max-width: 992px) {
-    .filiere-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Mobile (≤ 768px) */
-@media (max-width: 768px) {
-    /* Sidebar */
-    .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100vh;
-        transform: translateX(-100%);
-        box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
-        padding-top: var(--space-lg);
-        z-index: 999;
-        border-right: none;
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
-    }
-
-    .mobile-menu-btn {
-        display: block;
-    }
-
-    /* Main content */
-    .main-content {
-        padding: var(--space-md) 0.8rem;
-    }
-
-    .top-bar {
-        padding: 0.6rem var(--space-md);
-        border-radius: var(--radius-sm);
-    }
-
-    .top-bar h3 {
-        font-size: 0.95rem;
-    }
-
-    .user-profile-info span {
-        display: none;
-    }
-
-    /* Cards */
-    .card {
-        padding: var(--space-lg) var(--space-md);
-        border-radius: var(--radius-sm);
-    }
-
-    /* Stepper */
-    .step-indicator {
-        gap: 0.3rem;
-        padding: 0.5rem 0.8rem;
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        justify-content: flex-start;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .step {
-        font-size: 0.65rem;
-        padding: 0.3rem 0.9rem;
-        white-space: nowrap;
-    }
-
-    /* Contact admin */
-    .contact-admin-card {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    /* Table */
-    .table-responsive {
-        overflow-x: auto;
-    }
-
-    table {
-        font-size: 0.75rem;
-    }
-
-    th,
-    td {
-        padding: 0.5rem 0.3rem;
-    }
-
-    td img {
-        width: 40px;
-        height: 40px;
-    }
-
-    /* Buttons */
-    .btn {
-        font-size: 0.8rem;
-        padding: 0.5rem 1.2rem;
-    }
-
-    .btn-group {
-        flex-direction: column;
-    }
-
-    .btn-group .btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .modal-content {
-        padding: var(--space-lg);
-    }
-
-    /* Notifications toast */
-    #notification-container {
-        top: 15px;
-        right: 15px;
-        max-width: calc(100% - 30px);
-    }
-
-    .notification {
-        padding: 14px 16px;
-        gap: 12px;
-        border-radius: 14px;
-    }
-
-    .notification-icon {
-        width: 45px;
-        height: 45px;
-        font-size: 20px;
-    }
-
-    .notification-content h4 {
-        font-size: 15px;
-    }
-
-    /* Popup */
-    .popup {
-        padding: 20px;
-        width: 92%;
-        max-width: 100%;
-    }
-
-    /* Filieres grid */
-    .filiere-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--space-md);
-    }
-
-    .filiere-card {
-        padding: var(--space-lg) var(--space-md);
-        min-height: 150px;
-    }
-}
-
-/* Très petits mobiles (≤ 576px) */
-@media (max-width: 576px) {
-    .top-bar h3 {
-        font-size: 0.85rem;
-    }
-
-    .top-bar {
-        padding: 0.5rem 0.8rem;
-    }
-
-    .card {
-        padding: var(--space-md) 0.8rem;
-    }
-
-    .sidebar {
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .filiere-grid {
-        grid-template-columns: 1fr;
-        gap: 0.8rem;
-    }
-
-    .filiere-card {
-        padding: var(--space-md) 0.8rem;
-        min-height: 130px;
-    }
-
-    .filiere-card .filiere-icon {
-        font-size: 2rem;
-    }
-
-    .filiere-card .filiere-name {
-        font-size: 0.95rem;
-    }
-
-    .filiere-card .filiere-desc {
-        font-size: 0.75rem;
-    }
-
-    .modal-content {
-        padding: var(--space-md);
-        max-width: 95%;
-    }
-
-    .notification {
-        padding: 12px 14px;
-        gap: 10px;
-    }
-
-    .notification-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-    }
-
-    .notification-content h4 {
-        font-size: 14px;
-    }
-
-    .notification-content p {
-        font-size: 0.85rem;
-    }
-
-    .popup {
-        padding: 16px;
-        width: 95%;
-    }
-
-    .popup h3 {
-        font-size: 1.1rem;
-    }
-
-    .form-group input,
-    .form-group select {
-        font-size: 0.85rem;
-        padding: 0.6rem 0.8rem;
-    }
-
-    /* Timeline notifications (onglet) */
-    .timeline {
-        margin-left: 10px;
-    }
-
-    .timeline-item {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .timeline-point {
-        width: 35px;
-        height: 35px;
-        min-width: 35px;
-        font-size: 0.8rem;
-    }
-
-    .notification-box {
-        padding: 15px;
-    }
-}
-
-/* Très petits écrans (≤ 400px) */
-@media (max-width: 400px) {
-    .main-content {
-        padding: 0.6rem 0.5rem;
-    }
-
-    .top-bar {
-        padding: 0.4rem 0.6rem;
-    }
-
-    .top-bar h3 {
-        font-size: 0.75rem;
-    }
-
-    .user-profile-info {
-        font-size: 0.7rem;
-        padding: 0.2rem 0.6rem 0.2rem 0.4rem;
-    }
-
-    .user-profile-info i {
-        font-size: 1.2rem;
-    }
-
-    .card {
-        padding: 0.8rem 0.6rem;
-        border-radius: 10px;
-    }
-
-    .btn {
-        font-size: 0.75rem;
-        padding: 0.4rem 0.8rem;
-    }
-
-    .modal-content {
-        padding: 0.8rem;
-    }
-
-    #notification-container {
-        top: 10px;
-        right: 10px;
-        max-width: calc(100% - 20px);
-    }
-
-    .notification {
-        padding: 10px 12px;
-        gap: 8px;
-        border-radius: 12px;
-    }
-
-    .notification-icon {
-        width: 35px;
-        height: 35px;
-        font-size: 16px;
-    }
-
-    .notification-content h4 {
-        font-size: 13px;
-    }
-
-    .notification-content p {
-        font-size: 0.75rem;
-    }
-
-    .popup {
-        padding: 14px;
-    }
-}
-
-/* ============================================================
-   AMÉLIORATIONS SUPPLEMENTAIRES
-   ============================================================ */
-
-/* Hover sur les cartes filières */
-.filiere-card {
-    transition: var(--transition);
-}
-
-.filiere-card:hover {
-    border-color: var(--bleu-cyan);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-4px);
-}
-
-.filiere-card.selected {
-    border-color: var(--or);
-    background: var(--or-transparent);
-}
-
-/* Amélioration des boutons dans les cartes */
-.filiere-card .btn-sm {
-    margin-top: 0.5rem;
-}
-
-/* Badge de statut */
-.badge-status {
-    font-weight: 600;
-}
-
-/* Transition sur les modales */
-.modal-content {
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* Scrollbar personnalisée (optionnel) */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--gris-clair);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--bleu-cyan);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--bleu-cyan-fonce);
-}
-
-
-
 /* ============================================================
    TOP BAR – DESIGN PREMIUM
    ============================================================ */
-
 .top-bar {
     display: flex;
     align-items: center;
@@ -1443,30 +1033,11 @@ td img {
     box-shadow: var(--shadow-md);
 }
 
-/* ============================================================
-   PARTIE GAUCHE
-   ============================================================ */
 .top-bar-left {
     display: flex;
     align-items: center;
     gap: 1rem;
     flex: 1;
-}
-
-.mobile-menu-btn {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.4rem;
-    color: var(--text-color);
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 8px;
-    transition: var(--transition);
-}
-
-.mobile-menu-btn:hover {
-    background: var(--gris-clair);
 }
 
 .top-bar-title {
@@ -1500,18 +1071,12 @@ td img {
     color: var(--bleu-cyan);
 }
 
-/* ============================================================
-   PARTIE DROITE
-   ============================================================ */
 .top-bar-right {
     display: flex;
     align-items: center;
     gap: 1.2rem;
 }
 
-/* ============================================================
-   RECHERCHE
-   ============================================================ */
 .top-bar-search {
     position: relative;
     display: flex;
@@ -1558,9 +1123,6 @@ td img {
     color: var(--bleu-cyan);
 }
 
-/* ============================================================
-   NOTIFICATIONS (icône)
-   ============================================================ */
 .top-bar-notifications {
     position: relative;
     cursor: pointer;
@@ -1601,9 +1163,6 @@ td img {
     padding: 0 4px;
 }
 
-/* ============================================================
-   PROFIL UTILISATEUR
-   ============================================================ */
 .top-bar-user {
     display: flex;
     align-items: center;
@@ -1662,125 +1221,18 @@ td img {
 }
 
 /* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 1024px) {
-    .top-bar-search input {
-        width: 140px;
-    }
-
-    .top-bar-search input:focus {
-        width: 170px;
-    }
-}
-
-@media (max-width: 768px) {
-    .top-bar {
-        padding: 0.6rem 1rem;
-        border-radius: var(--radius-sm);
-        min-height: 60px;
-    }
-
-    .mobile-menu-btn {
-        display: block;
-    }
-
-    .top-bar-title h3 {
-        font-size: 1rem;
-    }
-
-    .top-bar-breadcrumb {
-        display: none;
-    }
-
-    .top-bar-search {
-        display: none;
-    }
-
-    .top-bar-user .user-info {
-        display: none;
-    }
-
-    .top-bar-user {
-        padding: 0.2rem 0.4rem;
-    }
-
-    .user-avatar {
-        font-size: 1.6rem;
-    }
-
-    .top-bar-notifications {
-        width: 32px;
-        height: 32px;
-        font-size: 1rem;
-    }
-
-    .top-bar-notifications .notif-dot {
-        min-width: 16px;
-        height: 16px;
-        font-size: 0.5rem;
-        top: -2px;
-        right: -2px;
-    }
-}
-
-@media (max-width: 480px) {
-    .top-bar {
-        padding: 0.4rem 0.8rem;
-        gap: 0.5rem;
-        min-height: 50px;
-    }
-
-    .top-bar-title h3 {
-        font-size: 0.85rem;
-    }
-
-    .mobile-menu-btn {
-        font-size: 1.2rem;
-        padding: 0.3rem;
-    }
-
-    .top-bar-right {
-        gap: 0.6rem;
-    }
-
-    .top-bar-notifications {
-        width: 28px;
-        height: 28px;
-        font-size: 0.9rem;
-    }
-
-    .top-bar-notifications .notif-dot {
-        min-width: 14px;
-        height: 14px;
-        font-size: 0.45rem;
-        top: -2px;
-        right: -2px;
-        border-width: 1.5px;
-    }
-
-    .user-avatar {
-        font-size: 1.4rem;
-    }
-
-    .user-dropdown {
-        display: none;
-    }
-}
-
-/* ============================================================
-   EN-TÊTE DE LA CARTE
+   EN-TÊTE DE LA CARTE CANDIDATER
    ============================================================ */
 .candidater-card {
-    padding: 0.5rem 0;
+    padding: var(--space-xl) var(--space-2xl); /* 🎯 hérite du padding de .card */
 }
 
 .candidater-header {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
+    margin-bottom: 1.75rem;
+    padding: 0 0 1rem 0;
     border-bottom: 2px solid var(--gris-clair);
     flex-wrap: wrap;
 }
@@ -1877,13 +1329,13 @@ td img {
 }
 
 /* ============================================================
-   INTRO
+   INTRO CANDIDATER
    ============================================================ */
 .candidater-intro {
     background: var(--bleu-cyan-transparent);
     border-radius: var(--radius-sm);
-    padding: 0.8rem 1.2rem;
-    margin-bottom: 2rem;
+    padding: 0.9rem 1.2rem;
+    margin: 0 0 1.75rem 0;
     border-left: 4px solid var(--bleu-cyan);
 }
 
@@ -1913,6 +1365,7 @@ td img {
     font-size: 0.9rem;
     color: var(--text-color);
     margin-bottom: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .file-upload-group label i {
@@ -2033,6 +1486,23 @@ td img {
     margin-right: 0.3rem;
 }
 
+.file-tag.file-selected {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .35rem .8rem;
+    border-radius: 40px;
+    background: rgba(34, 197, 94, .10);
+    color: #16a34a;
+    border: 1px solid rgba(34, 197, 94, .25);
+    font-size: .75rem;
+    font-weight: 600;
+}
+
+.file-tag.file-selected i {
+    font-size: .8rem;
+}
+
 /* ============================================================
    STATUT / MESSAGE
    ============================================================ */
@@ -2066,7 +1536,7 @@ td img {
 }
 
 /* ============================================================
-   ACTIONS
+   ACTIONS CANDIDATER
    ============================================================ */
 .candidater-actions {
     display: flex;
@@ -2102,6 +1572,7 @@ td img {
     font-size: 0.8rem;
     color: var(--text-muted);
     margin: 0;
+    text-align: center;
 }
 
 .candidater-note i {
@@ -2110,93 +1581,10 @@ td img {
 }
 
 /* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 768px) {
-    .candidater-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-
-    .candidater-step-badge {
-        margin-left: 0;
-    }
-
-    .candidater-stepper .step {
-        width: 100%;
-        justify-content: center;
-        padding: 0.5rem 1rem;
-    }
-
-    .file-dropzone {
-        padding: 1.8rem 1rem;
-    }
-
-    .file-dropzone .drop-icon {
-        font-size: 2.2rem;
-    }
-
-    .file-dropzone .drop-text {
-        font-size: 0.9rem;
-    }
-
-    .file-dropzone .drop-hint {
-        font-size: 0.75rem;
-    }
-
-    .candidater-actions .btn-submit {
-        width: 100%;
-        min-width: unset;
-        justify-content: center;
-    }
-
-    .candidater-intro {
-        padding: 0.6rem 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .candidater-header-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-
-    .candidater-header h4 {
-        font-size: 1rem;
-    }
-
-    .file-dropzone {
-        padding: 1.2rem 0.8rem;
-    }
-
-    .file-dropzone .drop-icon {
-        font-size: 1.8rem;
-    }
-
-    .file-dropzone .drop-text {
-        font-size: 0.8rem;
-    }
-
-    .file-list {
-        font-size: 0.7rem;
-    }
-
-    .candidater-actions .btn-submit {
-        font-size: 0.9rem;
-        padding: 0.7rem 1.5rem;
-    }
-}
-
-
-
-
-/* ============================================================
-   EN-TÊTE DE LA CARTE
+   EN-TÊTE DE LA CARTE DOCUMENTS
    ============================================================ */
 .documents-card {
-    padding: 0.5rem 0;
+    padding: var(--space-xl) var(--space-2xl); /* 🎯 même padding que .card */
 }
 
 .documents-header {
@@ -2304,33 +1692,6 @@ td img {
     color: var(--text-color);
 }
 
-
-.file-list {
-    margin-top: .6rem;
-    font-size: .75rem;
-    color: var(--text-muted);
-}
-
-.file-tag.file-selected {
-    display: inline-flex;
-    align-items: center;
-    gap: .45rem;
-    padding: .35rem .8rem;
-    border-radius: 40px;
-    background: rgba(34, 197, 94, .10);
-    color: #16a34a;
-    border: 1px solid rgba(34, 197, 94, .25);
-    font-size: .75rem;
-    font-weight: 600;
-}
-
-.file-tag.file-selected i {
-    font-size: .8rem;
-}
-
-
-
-
 /* ============================================================
    TYPE DE DOCUMENT (badge)
    ============================================================ */
@@ -2359,11 +1720,6 @@ td img {
     background: rgba(212, 175, 55, 0.1);
     color: var(--or-fonce);
 }
-
-/*.doc-type-badge['Acte de naissance'] {*/
-/*    background: rgba(16, 185, 129, 0.1);*/
-/*    color: #059669;*/
-/*}*/
 
 .doc-type-badge.Autre {
     background: var(--gris-clair);
@@ -2410,7 +1766,7 @@ td img {
 }
 
 /* ============================================================
-   ACTIONS
+   ACTIONS DOCUMENTS
    ============================================================ */
 .doc-actions {
     display: flex;
@@ -2488,7 +1844,7 @@ td img {
 }
 
 /* ============================================================
-   FOOTER DE LA CARTE
+   FOOTER DE LA CARTE DOCUMENTS
    ============================================================ */
 .documents-footer {
     display: flex;
@@ -2575,6 +1931,7 @@ td img {
     border-radius: var(--radius-sm);
     margin-bottom: 1.2rem;
     border: 1px solid var(--gris-clair);
+    flex-wrap: wrap;
 }
 
 .popup-current-file .current-label {
@@ -2589,7 +1946,6 @@ td img {
     font-size: 0.9rem;
 }
 
-/* File upload dans la popup */
 .popup-document .file-upload-group {
     margin-bottom: 1.5rem;
 }
@@ -2616,6 +1972,7 @@ td img {
     background: var(--blanc-casse);
     transition: var(--transition);
     cursor: pointer;
+    position: relative;
 }
 
 .popup-document .file-dropzone:hover {
@@ -2694,122 +2051,10 @@ td img {
 }
 
 /* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 768px) {
-    .documents-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-
-    .documents-count {
-        margin-left: 0;
-    }
-
-    .documents-table table {
-        font-size: 0.8rem;
-    }
-
-    .documents-table thead th {
-        padding: 0.6rem 0.6rem;
-        font-size: 0.65rem;
-    }
-
-    .documents-table tbody td {
-        padding: 0.6rem 0.6rem;
-    }
-
-    .doc-actions {
-        flex-direction: column;
-        gap: 0.3rem;
-    }
-
-    .doc-actions .btn {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .documents-footer {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .documents-footer .btn-add-document {
-        width: 100%;
-        justify-content: center;
-    }
-
-    .popup-document {
-        margin: 0.5rem;
-        padding: 1.2rem;
-    }
-
-    .popup-actions {
-        flex-direction: column;
-    }
-
-    .popup-actions .btn {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .documents-header-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 1rem;
-    }
-
-    .documents-header h4 {
-        font-size: 1rem;
-    }
-
-    .documents-table table {
-        font-size: 0.7rem;
-    }
-
-    .doc-type-badge {
-        font-size: 0.65rem;
-        padding: 0.15rem 0.6rem;
-    }
-
-    .doc-file-name {
-        font-size: 0.75rem;
-    }
-
-    .doc-date {
-        font-size: 0.7rem;
-    }
-
-    .empty-state i {
-        font-size: 2.5rem;
-    }
-
-    .popup-document .popup-header {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    .popup-document .file-dropzone {
-        padding: 1.2rem 0.8rem;
-    }
-
-    .popup-document .file-dropzone .drop-icon {
-        font-size: 1.8rem;
-    }
-}
-
-
-/* ============================================================
-   ONGLET CONTACTER L'ADMINISTRATION – DESIGN PREMIUM
-   ============================================================ */
-
-/* ============================================================
-   EN-TÊTE DE LA CARTE
+   ONGLET CONTACTER L'ADMINISTRATION
    ============================================================ */
 .contact-card {
-    padding: 0.5rem 0;
+    padding: var(--space-xl) var(--space-2xl); /* 🎯 même padding que .card */
 }
 
 .contact-header {
@@ -2869,18 +2114,12 @@ td img {
     font-size: 0.5rem;
 }
 
-/* ============================================================
-   CONTACT BODY
-   ============================================================ */
 .contact-body {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-/* ============================================================
-   CARTE ADMIN
-   ============================================================ */
 .contact-admin-card {
     background: var(--bleu-cyan-gradient);
     border-radius: var(--radius);
@@ -2895,7 +2134,6 @@ td img {
     overflow: hidden;
 }
 
-/* Effet de fond décoratif */
 .contact-admin-card::before {
     content: '';
     position: absolute;
@@ -2925,9 +2163,6 @@ td img {
     transform: translateY(-2px);
 }
 
-/* ============================================================
-   INFORMATIONS DE CONTACT
-   ============================================================ */
 .contact-info {
     display: flex;
     flex-direction: column;
@@ -2976,6 +2211,7 @@ td img {
     font-size: 0.95rem;
     color: var(--blanc);
     opacity: 0.95;
+    word-break: break-word;
 }
 
 .contact-info-item p a {
@@ -2994,9 +2230,6 @@ td img {
     margin: 0.2rem 0;
 }
 
-/* ============================================================
-   ACTION (bouton)
-   ============================================================ */
 .contact-action {
     display: flex;
     flex-direction: column;
@@ -3062,15 +2295,13 @@ td img {
     display: flex;
     align-items: center;
     gap: 0.3rem;
+    text-align: center;
 }
 
 .contact-action-note i {
     color: var(--or);
 }
 
-/* ============================================================
-   FOOTER
-   ============================================================ */
 .contact-footer {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -3110,6 +2341,7 @@ td img {
     margin: 0;
     font-size: 0.8rem;
     color: var(--text-muted);
+    word-break: break-word;
 }
 
 .contact-footer-link {
@@ -3134,9 +2366,111 @@ td img {
 }
 
 /* ============================================================
-   RESPONSIVE
+   AMÉLIORATIONS SUPPLÉMENTAIRES
+   ============================================================ */
+.filiere-card {
+    transition: var(--transition);
+}
+
+.filiere-card:hover {
+    border-color: var(--bleu-cyan);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+}
+
+.filiere-card.selected {
+    border-color: var(--or);
+    background: var(--or-transparent);
+}
+
+.filiere-card .btn-sm {
+    margin-top: 0.5rem;
+}
+
+.badge-status {
+    font-weight: 600;
+}
+
+.modal-content {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Scrollbar personnalisée */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gris-clair);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bleu-cyan);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bleu-cyan-fonce);
+}
+
+/* ============================================================
+   RESPONSIVE – GARDE-FOUS DE PADDING (Éviter que le contenu colle)
+   ============================================================ */
+
+/* ============================================================
+   Très grands écrans (≥ 1440px)
+   ============================================================ */
+@media (min-width: 1440px) {
+    .main-content {
+        padding: var(--space-2xl) 3rem;
+    }
+}
+
+/* ============================================================
+   Grands écrans (≥ 1200px)
+   ============================================================ */
+@media (min-width: 1200px) {
+    .main-content {
+        padding: var(--space-xl) var(--space-2xl);
+    }
+}
+
+/* ============================================================
+   Tablettes (≤ 1024px)
+   ============================================================ */
+@media (max-width: 1024px) {
+    .main-content {
+        padding: 1.75rem 1.5rem; /* 🎯 padding latéral garanti : 1.5rem = 24px */
+    }
+
+    .card {
+        padding: 1.6rem 1.5rem;
+    }
+
+    .candidater-card,
+    .documents-card,
+    .contact-card {
+        padding: 1.6rem 1.5rem;
+    }
+
+    .top-bar-search input {
+        width: 140px;
+    }
+
+    .top-bar-search input:focus {
+        width: 170px;
+    }
+}
+
+/* ============================================================
+   Tablettes & mobiles larges (≤ 992px)
    ============================================================ */
 @media (max-width: 992px) {
+    .filiere-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
     .contact-admin-card {
         grid-template-columns: 1fr;
         gap: 1.5rem;
@@ -3156,7 +2490,197 @@ td img {
     }
 }
 
+/* ============================================================
+   Mobiles (≤ 768px)
+   ============================================================ */
 @media (max-width: 768px) {
+    /* 🎯 PADDING GLOBAL GARANTI */
+    .main-content {
+        padding: 1rem 1rem; /* 🎯 16px latéral minimum */
+    }
+
+    /* Sidebar */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        transform: translateX(-100%);
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+        padding-top: var(--space-lg);
+        z-index: 999;
+        border-right: none;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    /* Top bar */
+    .top-bar {
+        padding: 0.7rem 1rem;
+        border-radius: var(--radius-sm);
+        min-height: 60px;
+    }
+
+    .top-bar-title h3 {
+        font-size: 1rem;
+    }
+
+    .top-bar-breadcrumb {
+        display: none;
+    }
+
+    .top-bar-search {
+        display: none;
+    }
+
+    .top-bar-user .user-info {
+        display: none;
+    }
+
+    .top-bar-user {
+        padding: 0.2rem 0.4rem;
+    }
+
+    .user-avatar {
+        font-size: 1.6rem;
+    }
+
+    .top-bar-notifications {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+
+    .top-bar-notifications .notif-dot {
+        min-width: 16px;
+        height: 16px;
+        font-size: 0.5rem;
+        top: -2px;
+        right: -2px;
+    }
+
+    /* Cards — PADDING CONFORTABLE */
+    .card {
+        padding: 1.4rem 1.25rem; /* 🎯 20px latéral */
+        border-radius: var(--radius-sm);
+    }
+
+    .candidater-card,
+    .documents-card,
+    .contact-card {
+        padding: 1.4rem 1.25rem;
+    }
+
+    /* Formulaires */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    /* Candidater */
+    .candidater-header {
+        gap: 0.8rem;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.9rem;
+    }
+
+    .candidater-header-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 1.1rem;
+    }
+
+    .candidater-header h4 {
+        font-size: 1.05rem;
+    }
+
+    .candidater-subtitle {
+        font-size: 0.75rem;
+    }
+
+    .candidater-step-badge {
+        margin-left: 0;
+    }
+
+    .candidater-stepper .step {
+        width: 100%;
+        justify-content: center;
+        padding: 0.5rem 1rem;
+    }
+
+    .candidater-intro {
+        padding: 0.8rem 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .candidater-intro p {
+        font-size: 0.85rem;
+    }
+
+    /* Stepper scrollable */
+    .step-indicator {
+        gap: 0.3rem;
+        padding: 0.5rem 1rem;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        -webkit-overflow-scrolling: touch;
+        scroll-padding: 1rem;
+    }
+
+    .step {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.9rem;
+        white-space: nowrap;
+    }
+
+    /* Dropzone */
+    .file-dropzone {
+        padding: 1.8rem 1.2rem;
+    }
+
+    .file-dropzone .drop-icon {
+        font-size: 2.2rem;
+    }
+
+    .file-dropzone .drop-text {
+        font-size: 0.9rem;
+    }
+
+    .file-dropzone .drop-hint {
+        font-size: 0.75rem;
+    }
+
+    .candidater-actions {
+        padding-top: 1.2rem;
+        margin-top: 1.5rem;
+    }
+
+    .candidater-actions .btn-submit {
+        width: 100%;
+        min-width: unset;
+        justify-content: center;
+        font-size: 0.9rem;
+        padding: 0.85rem 1.5rem;
+    }
+
+    /* Contact admin */
+    .contact-admin-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+        border-radius: var(--radius-sm);
+    }
+
     .contact-header {
         flex-direction: column;
         align-items: flex-start;
@@ -3165,11 +2689,6 @@ td img {
 
     .contact-status {
         margin-left: 0;
-    }
-
-    .contact-admin-card {
-        padding: 1.5rem;
-        border-radius: var(--radius-sm);
     }
 
     .contact-info-item {
@@ -3203,9 +2722,362 @@ td img {
     .contact-footer-item strong {
         font-size: 0.85rem;
     }
+
+    /* Documents */
+    .documents-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .documents-count {
+        margin-left: 0;
+    }
+
+    .documents-table table {
+        font-size: 0.8rem;
+    }
+
+    .documents-table thead th {
+        padding: 0.6rem 0.7rem;
+        font-size: 0.65rem;
+    }
+
+    .documents-table tbody td {
+        padding: 0.6rem 0.7rem;
+    }
+
+    .doc-actions {
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+
+    .doc-actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .documents-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .documents-footer .btn-add-document {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .popup-document {
+        margin: 0.5rem;
+        padding: 1.2rem;
+    }
+
+    .popup-actions {
+        flex-direction: column;
+    }
+
+    .popup-actions .btn {
+        width: 100%;
+    }
+
+    /* Table */
+    .table-responsive {
+        overflow-x: auto;
+        margin: 0 -0.2rem; /* léger débord pour compenser le padding */
+        padding: 0 0.2rem;
+    }
+
+    table {
+        font-size: 0.75rem;
+    }
+
+    th,
+    td {
+        padding: 0.5rem 0.4rem;
+    }
+
+    td img {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Buttons */
+    .btn {
+        font-size: 0.8rem;
+        padding: 0.5rem 1.2rem;
+    }
+
+    .btn-group {
+        flex-direction: column;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .modal-content {
+        padding: 1.5rem 1.25rem;
+    }
+
+    /* Notifications toast */
+    #notification-container {
+        top: 15px;
+        right: 15px;
+        left: 15px;
+        max-width: none;
+    }
+
+    .notification {
+        padding: 14px 16px;
+        gap: 12px;
+        border-radius: 14px;
+    }
+
+    .notification-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
+
+    .notification-content h4 {
+        font-size: 15px;
+    }
+
+    /* Popup */
+    .popup {
+        padding: 20px;
+        width: 92%;
+        max-width: 100%;
+    }
+
+    /* Filières grid */
+    .filiere-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+    }
+
+    .filiere-card {
+        padding: var(--space-lg) var(--space-md);
+        min-height: 150px;
+    }
 }
 
-@media (max-width: 480px) {
+/* ============================================================
+   Petits mobiles (≤ 576px)
+   ============================================================ */
+@media (max-width: 576px) {
+    /* 🎯 PADDING GLOBAL */
+    .main-content {
+        padding: 0.9rem 0.9rem;
+    }
+
+    .top-bar {
+        padding: 0.5rem 0.8rem;
+    }
+
+    .top-bar h3 {
+        font-size: 0.85rem;
+    }
+
+    /* 🎯 CARDS — PADDING CONFORTABLE GARANTI */
+    .card {
+        padding: 1.25rem 1.1rem; /* 🎯 ~18px latéral */
+        border-radius: var(--radius-sm);
+    }
+
+    .candidater-card,
+    .documents-card,
+    .contact-card {
+        padding: 1.25rem 1.1rem;
+    }
+
+    /* Formulaires */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.7rem 0.9rem;
+        font-size: 0.88rem;
+    }
+
+    /* Dropzone */
+    .file-dropzone {
+        padding: 1.5rem 1rem;
+    }
+
+    /* Filières grid */
+    .filiere-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    .filiere-card {
+        padding: var(--space-md) 0.8rem;
+        min-height: 130px;
+    }
+
+    .filiere-card .filiere-icon {
+        font-size: 2rem;
+    }
+
+    .filiere-card .filiere-name {
+        font-size: 0.95rem;
+    }
+
+    .filiere-card .filiere-desc {
+        font-size: 0.75rem;
+    }
+
+    /* Sidebar */
+    .sidebar {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    /* Modales */
+    .modal-content {
+        padding: 1.2rem 1rem;
+        max-width: 95%;
+    }
+
+    /* Notifications */
+    .notification {
+        padding: 12px 14px;
+        gap: 10px;
+    }
+
+    .notification-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .notification-content h4 {
+        font-size: 14px;
+    }
+
+    .notification-content p {
+        font-size: 0.85rem;
+    }
+
+    .popup {
+        padding: 16px;
+        width: 95%;
+    }
+
+    .popup h3 {
+        font-size: 1.1rem;
+    }
+
+    /* Timeline notifications */
+    .timeline {
+        margin-left: 10px;
+    }
+
+    .timeline-item {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .timeline-point {
+        width: 35px;
+        height: 35px;
+        min-width: 35px;
+        font-size: 0.8rem;
+    }
+
+    .notification-box {
+        padding: 15px;
+    }
+
+    /* Candidater */
+    .candidater-header-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .candidater-header h4 {
+        font-size: 1rem;
+    }
+
+    .candidater-intro {
+        padding: 0.75rem 0.9rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .candidater-intro p {
+        font-size: 0.82rem;
+        line-height: 1.5;
+    }
+
+    .file-dropzone {
+        padding: 1.2rem 0.9rem;
+    }
+
+    .file-dropzone .drop-icon {
+        font-size: 1.8rem;
+    }
+
+    .file-dropzone .drop-text {
+        font-size: 0.8rem;
+    }
+
+    .file-list {
+        font-size: 0.7rem;
+    }
+
+    .candidater-actions .btn-submit {
+        font-size: 0.9rem;
+        padding: 0.75rem 1.5rem;
+    }
+
+    /* Documents */
+    .documents-header-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .documents-header h4 {
+        font-size: 1rem;
+    }
+
+    .documents-table table {
+        font-size: 0.7rem;
+    }
+
+    .doc-type-badge {
+        font-size: 0.65rem;
+        padding: 0.15rem 0.6rem;
+    }
+
+    .doc-file-name {
+        font-size: 0.75rem;
+    }
+
+    .doc-date {
+        font-size: 0.7rem;
+    }
+
+    .empty-state i {
+        font-size: 2.5rem;
+    }
+
+    .popup-document .popup-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .popup-document .file-dropzone {
+        padding: 1.2rem 0.9rem;
+    }
+
+    .popup-document .file-dropzone .drop-icon {
+        font-size: 1.8rem;
+    }
+
+    /* Contact */
     .contact-header-icon {
         width: 40px;
         height: 40px;
@@ -3250,5 +3122,124 @@ td img {
 
     .contact-footer-item p {
         font-size: 0.75rem;
+    }
+}
+
+/* ============================================================
+   Très petits écrans (≤ 400px)
+   ============================================================ */
+@media (max-width: 400px) {
+    /* 🎯 PADDING GLOBAL GARANTI */
+    .main-content {
+        padding: 0.75rem 0.75rem;
+    }
+
+    .top-bar {
+        padding: 0.4rem 0.6rem;
+    }
+
+    .top-bar h3 {
+        font-size: 0.75rem;
+    }
+
+    .user-profile-info {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem 0.2rem 0.4rem;
+    }
+
+    .user-profile-info i {
+        font-size: 1.2rem;
+    }
+
+    /* 🎯 CARDS — PADDING PLANCHER ABSOLU : 1rem = 16px */
+    .card {
+        padding: 1.1rem 1rem;
+        border-radius: 12px;
+    }
+
+    .candidater-card,
+    .documents-card,
+    .contact-card {
+        padding: 1.1rem 1rem;
+    }
+
+    /* Formulaires */
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.65rem 0.85rem;
+        font-size: 0.85rem;
+    }
+
+    /* Dropzone */
+    .file-dropzone {
+        padding: 1.2rem 0.85rem;
+    }
+
+    .btn {
+        font-size: 0.75rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .modal-content {
+        padding: 1rem 0.9rem;
+    }
+
+    /* Notifications */
+    #notification-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+    }
+
+    .notification {
+        padding: 10px 12px;
+        gap: 8px;
+        border-radius: 12px;
+    }
+
+    .notification-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    .notification-content h4 {
+        font-size: 13px;
+    }
+
+    .notification-content p {
+        font-size: 0.75rem;
+    }
+
+    .popup {
+        padding: 14px;
+    }
+}
+
+/* ============================================================
+   Mobile en orientation paysage
+   ============================================================ */
+@media (max-height: 500px) and (orientation: landscape) {
+    .main-content {
+        padding: 0.75rem 1rem;
+    }
+
+    .card {
+        padding: 1rem 1.1rem;
+        margin-bottom: 1rem;
+    }
+}
+
+/* ============================================================
+   RÉDUCTION DE MOUVEMENT
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
     }
 }

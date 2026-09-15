@@ -4,6 +4,7 @@ import IFFPO_Web_Platform.entity.Utilisateur;
 import IFFPO_Web_Platform.entity.enums.StatutCompte;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -36,7 +37,6 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long>,
     List<Utilisateur> findByRole_IntituleAndStatutCompteAndDateInscriptionBefore(String intitule,
                                                                                  StatutCompte statut, LocalDateTime avant);
 
-
     // pour recupérer les permissions adéquoit
     @Query("""
     SELECT DISTINCT u
@@ -45,5 +45,23 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Long>,
     JOIN r.permissions p
     WHERE p.nom = :permission""")
     List<Utilisateur> findUtilisateursAvecPermission(@Param("permission") String permission);
+
+
+    //filtrage des utilisaturs éligible à la suppression de compte
+    @Modifying
+    @Query("""
+        Delete  FROM Utilisateur u
+           WHERE u.dateInscription < :limit
+               AND NOT EXISTS (
+                   SELECT 1 FROM FicheInscription f
+                       WHERE f.utilisateur.id= u.id
+                   )
+        AND NOT EXISTS (
+            SELECT 1 FROM Candidature c
+                WHERE c.utilisateur.id = u.id
+            )
+                And u.role.id =1
+    """)
+    int findUserEligibleForDeletion(@Param("limit") LocalDateTime limit);
 
 }

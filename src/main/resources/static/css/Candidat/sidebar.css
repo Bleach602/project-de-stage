@@ -1,17 +1,11 @@
-/* ============================================================
-   SIDEBAR – DESIGN PREMIUM ULTRA
-   ============================================================ */
 
-/* ============================================================
-   VARIABLES SPÉCIFIQUES
-   ============================================================ */
 :root {
     --sidebar-bg-start: #0c0c1a;
     --sidebar-bg-end: #111128;
     --sidebar-border: rgba(255, 255, 255, 0.04);
     --sidebar-text-primary: #e8edf5;
-    --sidebar-text-secondary: rgba(255, 255, 255, 0.55);
-    --sidebar-text-muted: rgba(255, 255, 255, 0.25);
+    --sidebar-text-secondary: rgba(255, 255, 255, 0.6);
+    --sidebar-text-muted: rgba(255, 255, 255, 0.3);
     --sidebar-hover-bg: rgba(255, 255, 255, 0.05);
     --sidebar-active-bg: rgba(0, 150, 255, 0.08);
     --sidebar-active-border: rgba(0, 150, 255, 0.12);
@@ -43,7 +37,7 @@
    CONTENEUR PRINCIPAL
    ============================================================ */
 .sidebar {
-    width: 280px;
+    width: 290px;
     background: linear-gradient(180deg, var(--sidebar-bg-start) 0%, var(--sidebar-bg-end) 50%, var(--sidebar-bg-start) 100%);
     color: var(--sidebar-text-primary);
     display: flex;
@@ -52,7 +46,7 @@
     position: sticky;
     top: 0;
     height: 100vh;
-    overflow-y: auto;
+    overflow-y: auto; /* scroll naturel de la sidebar */
     flex-shrink: 0;
     transition: var(--sidebar-transition);
     z-index: 100;
@@ -142,27 +136,69 @@
 
 .brand-visual {
     position: relative;
-    width: 44px;
-    height: 44px;
+    width: 48px;
+    height: 48px;
     border-radius: var(--sidebar-radius-sm);
     overflow: hidden;
     flex-shrink: 0;
-    box-shadow: 0 4px 20px rgba(0, 150, 220, 0.2);
+    border: 2px solid rgba(245, 166, 35, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 150, 220, 0.15),
+    inset 0 0 30px rgba(245, 166, 35, 0.05);
+    transition: var(--sidebar-transition);
 }
 
-.brand-visual img {
+.brand-visual:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 30px rgba(245, 166, 35, 0.2),
+    inset 0 0 30px rgba(245, 166, 35, 0.1);
+}
+
+.brand-visual img,
+.brand-logo-img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
+    border-radius: 30px;
     display: block;
+    transition: var(--sidebar-transition-slow);
+    padding: 2px;
+}
+
+.brand-visual:hover .brand-logo-img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
 .brand-visual-overlay {
     position: absolute;
     inset: 0;
-    background: var(--blue-cyan-gradient);
-    opacity: 0.65;
+    background: linear-gradient(135deg,
+    rgba(0, 150, 220, 0.15) 0%,
+    rgba(245, 166, 35, 0.08) 100%);
+    opacity: 0.4;
     mix-blend-mode: overlay;
+    transition: var(--sidebar-transition);
+    pointer-events: none;
+}
+
+.brand-visual:hover .brand-visual-overlay {
+    opacity: 0.6;
+}
+
+.brand-visual::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 20%,
+    rgba(245, 166, 35, 0.1) 0%,
+    transparent 70%);
+    opacity: 0;
+    transition: var(--sidebar-transition);
+    pointer-events: none;
+}
+
+.brand-visual:hover::after {
+    opacity: 1;
 }
 
 .brand-icon {
@@ -179,6 +215,19 @@
 .brand-icon svg {
     width: 22px;
     height: 22px;
+}
+
+.brand-icon-text {
+    font-size: 1.2rem;
+    color: var(--gold);
+    opacity: 0.8;
+    text-shadow: 0 0 20px rgba(245, 166, 35, 0.3);
+    animation: sparkle 3s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
 }
 
 .brand-content h1 {
@@ -244,7 +293,7 @@
     align-items: center;
     gap: 0.9rem;
     padding: 0.9rem 1rem;
-    margin: 0.8rem 1.2rem 1.2rem;
+    margin: 0.8rem 1.2rem 1rem;
     background: rgba(255, 255, 255, 0.02);
     border-radius: var(--sidebar-radius-md);
     border: 1px solid var(--sidebar-border);
@@ -309,7 +358,7 @@
 .candidate-name {
     font-weight: 600;
     color: #ffffff;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     display: block;
     white-space: nowrap;
     overflow: hidden;
@@ -318,7 +367,7 @@
 }
 
 .candidate-role {
-    font-size: 0.6rem;
+    font-size: 0.62rem;
     color: var(--sidebar-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -342,23 +391,19 @@
 }
 
 /* ============================================================
-   NAVIGATION — OCCUPE TOUT L'ESPACE
+   NAVIGATION
    ============================================================ */
 .sidebar-nav {
-    flex: 1;
+    flex: 0 0 auto; /* taille naturelle, pas d'étirement */
     display: flex;
     flex-direction: column;
     padding: 0.3rem 0.8rem 0;
-    overflow-y: auto;
-    min-height: 0;
 }
 
 .nav-container {
     display: flex;
     flex-direction: column;
-    flex: 1;
-    height: 100%;
-    gap: 0.25rem;
+    gap: 0.5rem;
 }
 
 .nav-section {
@@ -366,44 +411,36 @@
     flex-direction: column;
 }
 
-/* Section qui prend tout l'espace restant */
-.nav-section-fill {
-    flex: 1;
-}
-
-.nav-section-fill ul {
-    flex: 1;
-}
-
 .nav-section-title {
     display: block;
-    font-size: 0.55rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: var(--sidebar-text-muted);
+    letter-spacing: 0.16em;
+    color: var(--sidebar-text-secondary);
     font-weight: 700;
-    padding: 0.5rem 1rem 0.3rem;
-    opacity: 0.6;
+    padding: 0.7rem 1rem 0.4rem;
+    opacity: 0.85;
 }
 
 .sidebar-nav ul {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 4px;
     padding: 0;
     margin: 0;
 }
 
-/* Liens de navigation agrandis */
+/* Liens de navigation — TAILLE AUGMENTÉE */
 .sidebar-nav ul li a {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    padding: 0.85rem 1rem;
+    gap: 0.85rem;
+    padding: 0.95rem 1rem;
+    min-height: 50px;
     border-radius: var(--sidebar-radius-sm);
     font-weight: 500;
-    font-size: 0.88rem;
+    font-size: 0.95rem;
     color: var(--sidebar-text-secondary);
     transition: var(--sidebar-transition);
     position: relative;
@@ -415,10 +452,9 @@
     text-align: left;
 }
 
-/* Augmentation de la taille des éléments */
 .sidebar-nav ul li a .nav-icon {
-    width: 1.6rem;
-    height: 1.6rem;
+    width: 1.75rem;
+    height: 1.75rem;
     flex-shrink: 0;
     transition: var(--sidebar-transition);
 }
@@ -431,10 +467,18 @@
 .sidebar-nav ul li a .nav-text {
     flex: 1;
     font-weight: 500;
-    font-size: 0.88rem;
+    font-size: 0.95rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sidebar-nav ul li a .nav-text i {
+    color: var(--gold);
+    font-size: 0.9em;
 }
 
 /* Flèche de navigation */
@@ -444,8 +488,8 @@
     transition: var(--sidebar-transition);
     color: var(--sidebar-text-muted);
     flex-shrink: 0;
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1.3rem;
+    height: 1.3rem;
 }
 
 .sidebar-nav ul li a .nav-arrow svg {
@@ -462,10 +506,10 @@
 
 /* Badges et statuts */
 .sidebar-nav ul li a .nav-status {
-    font-size: 0.5rem;
+    font-size: 0.55rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 0.15rem 0.6rem;
+    padding: 0.18rem 0.6rem;
     border-radius: var(--sidebar-radius-full);
     background: rgba(16, 185, 129, 0.15);
     color: #34d399;
@@ -474,10 +518,10 @@
 }
 
 .sidebar-nav ul li a .nav-badge {
-    font-size: 0.45rem;
+    font-size: 0.55rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 0.1rem 0.5rem;
+    padding: 0.2rem 0.6rem;
     border-radius: var(--sidebar-radius-full);
     background: var(--gold-light);
     color: var(--gold);
@@ -495,12 +539,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    min-width: 22px;
-    height: 22px;
+    min-width: 24px;
+    height: 24px;
     padding: 0 7px;
     background: linear-gradient(135deg, #ef4444, #dc2626);
     color: #ffffff;
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     font-weight: 700;
     border-radius: var(--sidebar-radius-full);
     border: 2px solid var(--sidebar-bg-start);
@@ -568,304 +612,206 @@
 }
 
 /* ============================================================
-   ZONE DE DÉCONNEXION
+   🆕 BLOC DÉCONNEXION + FOOTER
+   Placé juste après la nav, avec seulement 5px d'écart
    ============================================================ */
-/* ============================================================
-   BOUTON DE DÉCONNEXION - DESIGN PREMIUM
-   ============================================================ */
-
-/* Conteneur du formulaire */
-.logout-form {
-    display: block;
-    width: 100%;
-    margin: 0;
-    padding: 0;
+.sidebar-bottom-block {
+    flex-shrink: 0;
+    margin-top: 5px; /* 🎯 petit écart avec le dernier lien */
+    padding-top: 4px;
+    position: relative;
+    z-index: 5;
 }
 
-/* Bouton de déconnexion */
-.logout-btn {
+/* Ligne dorée subtile pour marquer la séparation */
+.sidebar-bottom-block::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background: linear-gradient(90deg,
+    transparent,
+    rgba(245, 166, 35, 0.18),
+    transparent);
+    pointer-events: none;
+}
+
+/* ============================================================
+   BOUTON DÉCONNEXION HÉRO — visible, accessible
+   ============================================================ */
+.logout-hero {
+    padding: 0.7rem 1.2rem 0.5rem;
+    margin: 0;
+    position: relative;
+}
+
+.logout-btn-hero {
     display: flex;
     align-items: center;
-    gap: 0.8rem;
-    padding: 0.85rem 1rem;
-    border-radius: var(--sidebar-radius-sm, 8px);
-    font-weight: 500;
-    font-size: 0.88rem;
-    color: rgba(239, 68, 68, 0.45);
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    text-decoration: none;
-    cursor: pointer;
-    border: none;
-    background: transparent;
+    gap: 0.85rem;
     width: 100%;
-    text-align: left;
+    padding: 0.95rem 1.1rem;
+    min-height: 54px;
+
+    /* Rouge affirmé mais élégant */
+    background: linear-gradient(135deg,
+    rgba(239, 68, 68, 0.14) 0%,
+    rgba(220, 38, 38, 0.09) 100%);
+    border: 1.5px solid rgba(239, 68, 68, 0.32);
+    border-radius: var(--sidebar-radius-md);
+
     font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #fca5a5;
+
+    cursor: pointer;
+    text-align: left;
     position: relative;
     overflow: hidden;
+    transition: var(--sidebar-transition);
+    box-shadow: 0 2px 14px -4px rgba(239, 68, 68, 0.2);
 }
 
 /* Effet de brillance au survol */
-.logout-btn::before {
+.logout-btn-hero::before {
     content: '';
     position: absolute;
-    inset: 0;
-    border-radius: var(--sidebar-radius-sm, 8px);
-    background: rgba(239, 68, 68, 0.04);
-    opacity: 0;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.12),
+    transparent);
+    transition: left 0.6s var(--sidebar-transition);
 }
 
-.logout-btn:hover::before {
-    opacity: 1;
+.logout-btn-hero:hover::before {
+    left: 100%;
 }
 
-/* Icône de déconnexion */
-.logout-btn .nav-icon {
-    width: 1.6rem;
-    height: 1.6rem;
+.logout-btn-hero:hover {
+    background: linear-gradient(135deg,
+    rgba(239, 68, 68, 0.22) 0%,
+    rgba(220, 38, 38, 0.16) 100%);
+    border-color: rgba(239, 68, 68, 0.55);
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px -6px rgba(239, 68, 68, 0.45);
+}
+
+.logout-btn-hero:active {
+    transform: translateY(0);
+}
+
+/* Icône */
+.logout-icon-hero {
+    width: 1.55rem;
+    height: 1.55rem;
     flex-shrink: 0;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ef4444;
+    transition: var(--sidebar-transition);
 }
 
-.logout-btn .nav-icon svg {
+.logout-icon-hero svg {
     width: 100%;
     height: 100%;
 }
 
-/* Texte du bouton */
-.logout-btn .nav-text {
+.logout-btn-hero:hover .logout-icon-hero {
+    color: #ffffff;
+    transform: translateX(-2px) scale(1.05);
+}
+
+/* Texte */
+.logout-text-hero {
     flex: 1;
-    font-weight: 500;
-    font-size: 0.88rem;
-    position: relative;
-    z-index: 1;
+    font-weight: 700;
+    font-size: 0.92rem;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Flèche de navigation */
-.logout-btn .nav-arrow {
-    opacity: 0;
-    transform: translateX(-8px);
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-    color: var(--sidebar-text-muted, rgba(255, 255, 255, 0.25));
+/* Flèche */
+.logout-arrow-hero {
+    width: 1.15rem;
+    height: 1.15rem;
     flex-shrink: 0;
-    width: 1.2rem;
-    height: 1.2rem;
-    position: relative;
-    z-index: 1;
+    color: #ef4444;
+    opacity: 0.7;
+    transition: var(--sidebar-transition);
+    transform: translateX(0);
 }
 
-.logout-btn .nav-arrow svg {
+.logout-arrow-hero svg {
     width: 100%;
     height: 100%;
 }
 
-/* États du bouton */
-.logout-btn:hover {
-    color: #fca5a5;
+.logout-btn-hero:hover .logout-arrow-hero {
+    color: #ffffff;
+    opacity: 1;
     transform: translateX(4px);
 }
 
-.logout-btn:hover .nav-icon {
-    color: #ef4444;
-}
-
-.logout-btn:hover .nav-arrow {
-    opacity: 1;
-    transform: translateX(0);
-    color: #ef4444;
-}
-
-/* Effet de pulsation au survol */
-.logout-btn::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: var(--sidebar-radius-sm, 8px);
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.02) 0%, transparent 70%);
-    pointer-events: none;
-    opacity: 0;
-    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.logout-btn:hover::after {
-    opacity: 1;
-}
-
-/* Focus visible pour l'accessibilité */
-.logout-btn:focus-visible {
+/* Focus accessible */
+.logout-btn-hero:focus-visible {
     outline: 2px solid #ef4444;
-    outline-offset: 2px;
+    outline-offset: 3px;
 }
 
-/* Désactivation pendant le chargement */
-.logout-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
-}
-
-/* ============================================================
-   VARIANTE AVEC BORDURE ET ICÔNE ROUGE
-   ============================================================ */
-.logout-btn-danger {
-    background: rgba(239, 68, 68, 0.04);
-    border: 1px solid rgba(239, 68, 68, 0.08);
-    color: rgba(239, 68, 68, 0.6);
-}
-
-.logout-btn-danger:hover {
-    background: rgba(239, 68, 68, 0.08);
-    border-color: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
-}
-
-.logout-btn-danger .nav-icon {
-    color: rgba(239, 68, 68, 0.5);
-}
-
-.logout-btn-danger:hover .nav-icon {
-    color: #ef4444;
-}
-
-/* ============================================================
-   SPINNER PENDANT LA DÉCONNEXION
-   ============================================================ */
-.logout-btn.loading {
+/* Spinner pendant la déconnexion */
+.logout-btn-hero.loading {
     pointer-events: none;
     opacity: 0.7;
 }
 
-.logout-btn.loading .nav-text {
+.logout-btn-hero.loading .logout-text-hero {
     opacity: 0;
 }
 
-.logout-btn.loading::after {
+.logout-btn-hero.loading::after {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(239, 68, 68, 0.1);
+    width: 22px;
+    height: 22px;
+    border: 2.5px solid rgba(239, 68, 68, 0.2);
     border-top-color: #ef4444;
     border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    animation: spinLogout 0.8s linear infinite;
     transform: translate(-50%, -50%);
     z-index: 2;
 }
 
-@keyframes spin {
+@keyframes spinLogout {
     to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 
 /* ============================================================
-   RESPONSIVE
-   ============================================================ */
-@media (max-width: 768px) {
-    .logout-btn {
-        padding: 0.7rem 0.85rem;
-        font-size: 0.82rem;
-        gap: 0.7rem;
-    }
-
-    .logout-btn .nav-icon {
-        width: 1.3rem;
-        height: 1.3rem;
-    }
-
-    .logout-btn .nav-text {
-        font-size: 0.82rem;
-    }
-
-    .logout-btn .nav-arrow {
-        width: 1rem;
-        height: 1rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .logout-btn {
-        padding: 0.6rem 0.75rem;
-        font-size: 0.78rem;
-        gap: 0.6rem;
-    }
-
-    .logout-btn .nav-icon {
-        width: 1.2rem;
-        height: 1.2rem;
-    }
-
-    .logout-btn .nav-text {
-        font-size: 0.78rem;
-    }
-
-    .logout-btn .nav-arrow {
-        width: 0.9rem;
-        height: 0.9rem;
-    }
-}
-
-@media (max-width: 380px) {
-    .logout-btn {
-        padding: 0.5rem 0.6rem;
-        font-size: 0.72rem;
-        gap: 0.5rem;
-    }
-
-    .logout-btn .nav-icon {
-        width: 1.1rem;
-        height: 1.1rem;
-    }
-
-    .logout-btn .nav-text {
-        font-size: 0.72rem;
-    }
-}
-
-/* ============================================================
-   RÉDUCTION DE MOUVEMENT
-   ============================================================ */
-@media (prefers-reduced-motion: reduce) {
-    .logout-btn,
-    .logout-btn .nav-icon,
-    .logout-btn .nav-arrow,
-    .logout-btn::before,
-    .logout-btn::after {
-        transition: none !important;
-    }
-
-    .logout-btn .nav-arrow {
-        opacity: 1;
-        transform: none;
-    }
-
-    .logout-btn:hover {
-        transform: none;
-    }
-
-    .logout-btn.loading::after {
-        animation: none;
-    }
-}
-/* ============================================================
    PIED DE PAGE
    ============================================================ */
-.sidebar-footer {
-    padding: 0.7rem 1.5rem 1rem;
-    border-top: 1px solid var(--sidebar-border);
+.sidebar-bottom-block .sidebar-footer {
+    padding: 0.5rem 1.2rem 0.9rem;
+    border-top: none; /* pas de bordure : il n'est plus tout en bas */
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 0.55rem;
+    font-size: 0.6rem;
     color: var(--sidebar-text-muted);
     font-weight: 400;
     letter-spacing: 0.03em;
-    flex-shrink: 0;
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 .footer-brand {
@@ -910,55 +856,65 @@
 }
 
 /* ============================================================
-   RESPONSIVE — OPTIMISÉ
+   RESPONSIVE — OPTIMISÉ 2026
    ============================================================ */
 
 /* Tablettes */
 @media (max-width: 1024px) {
     .sidebar {
-        width: 260px;
+        width: 265px;
     }
 
     .brand-content h1 {
-        font-size: 0.95rem;
+        font-size: 1rem;
     }
 
     .candidate-avatar {
-        width: 42px;
-        height: 42px;
-        font-size: 0.9rem;
+        width: 44px;
+        height: 44px;
+        font-size: 0.95rem;
     }
 
     .candidate-name {
-        font-size: 0.82rem;
+        font-size: 0.86rem;
     }
 
     .sidebar-nav ul li a {
-        padding: 0.75rem 0.9rem;
-        font-size: 0.82rem;
+        padding: 0.9rem 0.95rem;
+        font-size: 0.9rem;
+        min-height: 48px;
     }
 
     .sidebar-nav ul li a .nav-icon {
-        width: 1.4rem;
-        height: 1.4rem;
+        width: 1.65rem;
+        height: 1.65rem;
     }
 
     .sidebar-nav ul li a .nav-text {
-        font-size: 0.82rem;
+        font-size: 0.9rem;
     }
 
-    .nav-footer .logout-link {
-        padding: 0.75rem 0.9rem;
-        font-size: 0.82rem;
+    .logout-hero {
+        padding: 0.65rem 1rem 0.45rem;
     }
 
-    .nav-footer .logout-link .nav-icon {
-        width: 1.4rem;
-        height: 1.4rem;
+    .logout-btn-hero {
+        padding: 0.9rem 1rem;
+        min-height: 50px;
+        font-size: 0.88rem;
     }
 
-    .nav-footer .logout-link .nav-text {
-        font-size: 0.82rem;
+    .logout-text-hero {
+        font-size: 0.88rem;
+    }
+
+    .logout-icon-hero {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .sidebar-bottom-block .sidebar-footer {
+        padding: 0.45rem 1rem 0.8rem;
     }
 }
 
@@ -968,7 +924,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        width: 300px;
+        width: 320px;
         height: 100vh;
         transform: translateX(-100%);
         box-shadow: 0 0 50px rgba(0, 0, 0, 0.6);
@@ -1002,8 +958,149 @@
     }
 
     .brand-visual {
-        width: 38px;
-        height: 38px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .brand-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .brand-content h1 {
+        font-size: 0.95rem;
+    }
+
+    .brand-content p {
+        font-size: 0.5rem;
+    }
+
+    .candidate-card {
+        padding: 0.9rem 1rem;
+        margin: 0.7rem 1rem 1rem;
+        gap: 0.8rem;
+    }
+
+    .candidate-avatar {
+        width: 44px;
+        height: 44px;
+        font-size: 0.9rem;
+    }
+
+    .candidate-status {
+        width: 11px;
+        height: 11px;
+    }
+
+    .candidate-name {
+        font-size: 0.86rem;
+    }
+
+    .candidate-role {
+        font-size: 0.58rem;
+    }
+
+    /* Menus mobiles — plus grands */
+    .sidebar-nav {
+        padding: 0 0.6rem 0;
+    }
+
+    .nav-section-title {
+        font-size: 0.6rem;
+        padding: 0.6rem 0.9rem 0.3rem;
+    }
+
+    .sidebar-nav ul {
+        gap: 4px;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 0.95rem 1rem;
+        min-height: 50px;
+        font-size: 0.95rem;
+        gap: 0.85rem;
+    }
+
+    .sidebar-nav ul li a .nav-icon {
+        width: 1.7rem;
+        height: 1.7rem;
+    }
+
+    .sidebar-nav ul li a .nav-text {
+        font-size: 0.95rem;
+    }
+
+    .sidebar-nav ul li a .nav-arrow {
+        width: 1.15rem;
+        height: 1.15rem;
+    }
+
+    .sidebar-nav ul li a .nav-badge {
+        font-size: 0.5rem;
+        padding: 0.15rem 0.55rem;
+    }
+
+    .sidebar-nav ul li a .notification-count {
+        min-width: 24px;
+        height: 24px;
+        font-size: 0.58rem;
+        padding: 0 6px;
+        border-width: 2px;
+    }
+
+    /* Déconnexion mobile */
+    .sidebar-bottom-block {
+        margin-top: 5px;
+    }
+
+    .logout-hero {
+        padding: 0.7rem 1rem 0.5rem;
+    }
+
+    .logout-btn-hero {
+        padding: 1rem 1.1rem;
+        min-height: 54px;
+        font-size: 0.95rem;
+        gap: 0.85rem;
+        border-radius: var(--sidebar-radius-md);
+    }
+
+    .logout-icon-hero {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+
+    .logout-text-hero {
+        font-size: 0.95rem;
+        font-weight: 700;
+    }
+
+    .logout-arrow-hero {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+
+    .sidebar-bottom-block .sidebar-footer {
+        padding: 0.5rem 1rem 0.8rem;
+        font-size: 0.58rem;
+    }
+}
+
+/* Petits mobiles */
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+        max-width: 360px;
+        border-radius: 0;
+    }
+
+    .sidebar-header {
+        padding: 0.9rem 1rem 0.8rem;
+    }
+
+    .brand-visual {
+        width: 36px;
+        height: 36px;
     }
 
     .brand-icon svg {
@@ -1012,28 +1109,28 @@
     }
 
     .brand-content h1 {
-        font-size: 0.9rem;
+        font-size: 0.88rem;
     }
 
     .brand-content p {
         font-size: 0.45rem;
     }
 
+    .sidebar-close {
+        width: 36px;
+        height: 36px;
+    }
+
     .candidate-card {
-        padding: 0.8rem 0.9rem;
-        margin: 0.6rem 0.9rem 1rem;
+        padding: 0.75rem 0.9rem;
+        margin: 0.6rem 0.9rem 0.9rem;
         gap: 0.7rem;
     }
 
     .candidate-avatar {
         width: 40px;
         height: 40px;
-        font-size: 0.85rem;
-    }
-
-    .candidate-status {
-        width: 10px;
-        height: 10px;
+        font-size: 0.82rem;
     }
 
     .candidate-name {
@@ -1041,374 +1138,85 @@
     }
 
     .candidate-role {
+        font-size: 0.52rem;
+    }
+
+    .sidebar-nav {
+        padding: 0 0.5rem 0;
+    }
+
+    .nav-section-title {
+        font-size: 0.55rem;
+        padding: 0.5rem 0.8rem 0.25rem;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 0.9rem 0.95rem;
+        min-height: 50px;
+        font-size: 0.92rem;
+        gap: 0.8rem;
+    }
+
+    .sidebar-nav ul li a .nav-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+    }
+
+    .sidebar-nav ul li a .nav-text {
+        font-size: 0.92rem;
+    }
+
+    .sidebar-nav ul li a .nav-arrow {
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .sidebar-nav ul li a .notification-count {
+        min-width: 22px;
+        height: 22px;
         font-size: 0.55rem;
     }
 
-    .sidebar-nav {
-        padding: 0 0.4rem;
+    /* Déconnexion mobile — toujours grande */
+    .logout-hero {
+        padding: 0.65rem 0.9rem 0.45rem;
     }
 
-    .nav-section-title {
-        font-size: 0.5rem;
-        padding: 0.4rem 0.8rem 0.2rem;
+    .logout-btn-hero {
+        padding: 1rem 1rem;
+        min-height: 54px;
+        font-size: 0.92rem;
+        gap: 0.8rem;
     }
 
-    .sidebar-nav ul li a {
-        padding: 0.7rem 0.85rem;
-        font-size: 0.82rem;
-        gap: 0.7rem;
-        border-radius: var(--sidebar-radius-sm);
+    .logout-icon-hero {
+        width: 1.55rem;
+        height: 1.55rem;
     }
 
-    .sidebar-nav ul li a .nav-icon {
-        width: 1.3rem;
-        height: 1.3rem;
+    .logout-text-hero {
+        font-size: 0.92rem;
     }
 
-    .sidebar-nav ul li a .nav-text {
-        font-size: 0.82rem;
+    .logout-arrow-hero {
+        width: 1.15rem;
+        height: 1.15rem;
     }
 
-    .sidebar-nav ul li a .nav-status {
-        font-size: 0.45rem;
-        padding: 0.05rem 0.4rem;
-    }
-
-    .sidebar-nav ul li a .nav-badge {
-        font-size: 0.4rem;
-        padding: 0.05rem 0.4rem;
-    }
-
-    .sidebar-nav ul li a .notification-count {
-        min-width: 20px;
-        height: 20px;
-        font-size: 0.5rem;
-        padding: 0 5px;
-        border-width: 1.5px;
-    }
-
-    .sidebar-nav ul li a .nav-arrow {
-        width: 1rem;
-        height: 1rem;
-    }
-
-    .sidebar-nav ul li a::before {
-        left: -3px;
-        width: 2px;
-    }
-
-    .sidebar-nav ul li a.active::before {
-        height: 50%;
-    }
-
-    .nav-footer {
-        padding: 0.4rem 0.4rem 0.2rem;
-    }
-
-    .nav-footer .logout-link {
-        padding: 0.7rem 0.85rem;
-        font-size: 0.82rem;
-        gap: 0.7rem;
-    }
-
-    .nav-footer .logout-link .nav-icon {
-        width: 1.3rem;
-        height: 1.3rem;
-    }
-
-    .nav-footer .logout-link .nav-text {
-        font-size: 0.82rem;
-    }
-
-    .nav-footer .logout-link .nav-arrow {
-        width: 1rem;
-        height: 1rem;
-    }
-
-    .sidebar-footer {
-        padding: 0.6rem 1rem 0.9rem;
-        font-size: 0.5rem;
-    }
-}
-
-/* Petits mobiles */
-@media (max-width: 480px) {
-    .sidebar {
-        width: 100%;
-        max-width: 340px;
-        border-radius: 0;
-        border-right: none;
-    }
-
-    .sidebar.open {
-        border-radius: 0;
-    }
-
-    .sidebar-header {
-        padding: 0.8rem 0.9rem 0.7rem;
-    }
-
-    .brand-visual {
-        width: 34px;
-        height: 34px;
-        border-radius: var(--sidebar-radius-sm);
-    }
-
-    .brand-icon svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .brand-content h1 {
-        font-size: 0.82rem;
-    }
-
-    .brand-content p {
-        font-size: 0.4rem;
-        letter-spacing: 0.15em;
-    }
-
-    .sidebar-close {
-        width: 32px;
-        height: 32px;
-        padding: 4px;
-    }
-
-    .sidebar-close svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .candidate-card {
-        padding: 0.6rem 0.8rem;
-        margin: 0.5rem 0.7rem 0.8rem;
-        gap: 0.6rem;
-        border-radius: var(--sidebar-radius-sm);
-    }
-
-    .candidate-avatar {
-        width: 36px;
-        height: 36px;
-        font-size: 0.75rem;
-        border-width: 1.5px;
-    }
-
-    .candidate-status {
-        width: 9px;
-        height: 9px;
-        border-width: 2px;
-    }
-
-    .candidate-name {
-        font-size: 0.78rem;
-    }
-
-    .candidate-role {
-        font-size: 0.5rem;
-        letter-spacing: 0.06em;
-    }
-
-    .candidate-menu-indicator svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    .sidebar-nav {
-        padding: 0 0.3rem;
-    }
-
-    .nav-section-title {
-        font-size: 0.45rem;
-        padding: 0.3rem 0.6rem 0.2rem;
-    }
-
-    .sidebar-nav ul {
-        gap: 0;
-    }
-
-    .sidebar-nav ul li a {
-        padding: 0.6rem 0.75rem;
-        font-size: 0.78rem;
-        gap: 0.6rem;
-        /*border-radius: var(--sidebar-radius-xs);*/
-    }
-
-    .sidebar-nav ul li a .nav-icon {
-        width: 1.2rem;
-        height: 1.2rem;
-    }
-
-    .sidebar-nav ul li a .nav-text {
-        font-size: 0.78rem;
-    }
-
-    .sidebar-nav ul li a .nav-status {
-        font-size: 0.4rem;
-        padding: 0.05rem 0.35rem;
-    }
-
-    .sidebar-nav ul li a .nav-badge {
-        font-size: 0.35rem;
-        padding: 0.05rem 0.3rem;
-    }
-
-    .sidebar-nav ul li a .notification-count {
-        min-width: 18px;
-        height: 18px;
-        font-size: 0.45rem;
-        padding: 0 4px;
-        border-width: 1.5px;
-    }
-
-    .sidebar-nav ul li a .nav-arrow {
-        width: 0.9rem;
-        height: 0.9rem;
-    }
-
-    .nav-footer .logout-link {
-        padding: 0.6rem 0.75rem;
-        font-size: 0.78rem;
-        gap: 0.6rem;
-    }
-
-    .nav-footer .logout-link .nav-icon {
-        width: 1.2rem;
-        height: 1.2rem;
-    }
-
-    .nav-footer .logout-link .nav-text {
-        font-size: 0.78rem;
-    }
-
-    .nav-footer .logout-link .nav-arrow {
-        width: 0.9rem;
-        height: 0.9rem;
-    }
-
-    .sidebar-footer {
-        padding: 0.5rem 0.9rem 0.7rem;
-        font-size: 0.45rem;
-    }
-
-    .footer-dot {
-        width: 3px;
-        height: 3px;
+    .sidebar-bottom-block .sidebar-footer {
+        padding: 0.45rem 0.9rem 0.7rem;
+        font-size: 0.52rem;
     }
 }
 
 /* Très petits écrans (iPhone SE) */
 @media (max-width: 380px) {
     .sidebar {
-        max-width: 290px;
+        max-width: 320px;
     }
 
     .sidebar-header {
-        padding: 0.6rem 0.7rem 0.5rem;
-    }
-
-    .brand-visual {
-        width: 30px;
-        height: 30px;
-    }
-
-    .brand-icon svg {
-        width: 14px;
-        height: 14px;
-    }
-
-    .brand-content h1 {
-        font-size: 0.72rem;
-    }
-
-    .brand-content p {
-        font-size: 0.35rem;
-    }
-
-    .sidebar-close {
-        width: 28px;
-        height: 28px;
-    }
-
-    .sidebar-close svg {
-        width: 14px;
-        height: 14px;
-    }
-
-    .candidate-card {
-        padding: 0.5rem 0.6rem;
-        margin: 0.4rem 0.5rem 0.6rem;
-        gap: 0.5rem;
-    }
-
-    .candidate-avatar {
-        width: 32px;
-        height: 32px;
-        font-size: 0.65rem;
-    }
-
-    .candidate-status {
-        width: 8px;
-        height: 8px;
-        border-width: 1.5px;
-    }
-
-    .candidate-name {
-        font-size: 0.7rem;
-    }
-
-    .candidate-role {
-        font-size: 0.45rem;
-    }
-
-    .candidate-menu-indicator svg {
-        width: 14px;
-        height: 14px;
-    }
-
-    .sidebar-nav ul li a {
-        padding: 0.5rem 0.6rem;
-        font-size: 0.72rem;
-        gap: 0.5rem;
-    }
-
-    .sidebar-nav ul li a .nav-icon {
-        width: 1.1rem;
-        height: 1.1rem;
-    }
-
-    .sidebar-nav ul li a .nav-text {
-        font-size: 0.72rem;
-    }
-
-    .nav-footer .logout-link {
-        padding: 0.5rem 0.6rem;
-        font-size: 0.72rem;
-        gap: 0.5rem;
-    }
-
-    .nav-footer .logout-link .nav-icon {
-        width: 1.1rem;
-        height: 1.1rem;
-    }
-
-    .nav-footer .logout-link .nav-text {
-        font-size: 0.72rem;
-    }
-
-    .sidebar-footer {
-        padding: 0.4rem 0.7rem 0.6rem;
-        font-size: 0.4rem;
-    }
-}
-
-/* Mobile en orientation paysage */
-@media (max-height: 500px) and (orientation: landscape) {
-    .sidebar {
-        width: 260px;
-    }
-
-    .sidebar-header {
-        padding: 0.7rem 1rem 0.6rem;
+        padding: 0.8rem 0.85rem 0.7rem;
     }
 
     .brand-visual {
@@ -1425,36 +1233,170 @@
         font-size: 0.8rem;
     }
 
+    .brand-content p {
+        font-size: 0.4rem;
+    }
+
+    .sidebar-close {
+        width: 32px;
+        height: 32px;
+    }
+
     .candidate-card {
-        padding: 0.5rem 0.8rem;
-        margin: 0.4rem 0.8rem 0.6rem;
+        padding: 0.65rem 0.75rem;
+        margin: 0.5rem 0.75rem 0.75rem;
         gap: 0.6rem;
     }
 
     .candidate-avatar {
-        width: 34px;
-        height: 34px;
+        width: 36px;
+        height: 36px;
         font-size: 0.75rem;
+    }
+
+    .candidate-name {
+        font-size: 0.78rem;
+    }
+
+    .candidate-role {
+        font-size: 0.48rem;
     }
 
     .sidebar-nav ul li a {
-        padding: 0.5rem 0.7rem;
-        font-size: 0.75rem;
+        padding: 0.85rem 0.85rem;
+        min-height: 48px;
+        font-size: 0.88rem;
+        gap: 0.75rem;
     }
 
     .sidebar-nav ul li a .nav-icon {
-        width: 1.1rem;
-        height: 1.1rem;
+        width: 1.5rem;
+        height: 1.5rem;
     }
 
-    .nav-footer .logout-link {
-        padding: 0.5rem 0.7rem;
-        font-size: 0.75rem;
+    .sidebar-nav ul li a .nav-text {
+        font-size: 0.88rem;
     }
 
-    .sidebar-footer {
-        padding: 0.3rem 1rem 0.5rem;
-        font-size: 0.45rem;
+    .sidebar-nav ul li a .nav-arrow {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    /* Déconnexion toujours grande */
+    .logout-hero {
+        padding: 0.6rem 0.75rem 0.4rem;
+    }
+
+    .logout-btn-hero {
+        padding: 0.95rem 0.9rem;
+        min-height: 52px;
+        font-size: 0.88rem;
+        gap: 0.7rem;
+    }
+
+    .logout-icon-hero {
+        width: 1.45rem;
+        height: 1.45rem;
+    }
+
+    .logout-text-hero {
+        font-size: 0.88rem;
+    }
+
+    .logout-arrow-hero {
+        width: 1.05rem;
+        height: 1.05rem;
+    }
+
+    .sidebar-bottom-block .sidebar-footer {
+        padding: 0.4rem 0.8rem 0.6rem;
+        font-size: 0.48rem;
+    }
+}
+
+/* Mobile en orientation paysage */
+@media (max-height: 500px) and (orientation: landscape) {
+    .sidebar {
+        width: 280px;
+    }
+
+    .sidebar-header {
+        padding: 0.7rem 1rem 0.6rem;
+    }
+
+    .brand-visual {
+        width: 34px;
+        height: 34px;
+    }
+
+    .brand-icon svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    .brand-content h1 {
+        font-size: 0.85rem;
+    }
+
+    .candidate-card {
+        padding: 0.6rem 0.85rem;
+        margin: 0.5rem 0.85rem 0.7rem;
+        gap: 0.65rem;
+    }
+
+    .candidate-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 0.78rem;
+    }
+
+    .sidebar-nav ul li a {
+        padding: 0.7rem 0.8rem;
+        min-height: 46px;
+        font-size: 0.85rem;
+    }
+
+    .sidebar-nav ul li a .nav-icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .sidebar-nav ul li a .nav-text {
+        font-size: 0.85rem;
+    }
+
+    .logout-hero {
+        padding: 0.5rem 0.85rem 0.4rem;
+    }
+
+    .logout-btn-hero {
+        padding: 0.75rem 0.9rem;
+        min-height: 48px;
+        font-size: 0.85rem;
+    }
+
+    .logout-icon-hero {
+        width: 1.4rem;
+        height: 1.4rem;
+    }
+
+    .logout-text-hero {
+        font-size: 0.85rem;
+    }
+
+    .sidebar-bottom-block .sidebar-footer {
+        padding: 0.4rem 1rem 0.5rem;
+        font-size: 0.5rem;
+    }
+}
+
+/* ============================================================
+   SUPPORT DE LA HAUTEUR D'ÉCRAN (dvh)
+   ============================================================ */
+@supports (height: 100dvh) {
+    .sidebar {
+        height: 100dvh;
     }
 }
 
@@ -1473,149 +1415,28 @@
     .sidebar-nav ul li a,
     .candidate-card,
     .sidebar-close,
-    .nav-footer .logout-link {
+    .logout-btn-hero,
+    .brand-visual {
         transition: none;
     }
 
     .sidebar-nav ul li a::before,
-    .sidebar-nav ul li a::after {
+    .sidebar-nav ul li a::after,
+    .logout-btn-hero::before {
         transition: none;
     }
 
-    .sidebar-nav ul li a .nav-arrow {
-        transition: none;
-    }
-
-    .nav-footer .logout-link .nav-arrow {
+    .sidebar-nav ul li a .nav-arrow,
+    .logout-arrow-hero,
+    .logout-icon-hero {
         transition: none;
     }
 
     @keyframes badgePulse {
         0%, 100% { opacity: 1; }
     }
-}
 
-
-/* ============================================================
-   LOGO INSTITUTIONNEL
-   ============================================================ */
-
-.brand-logo-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 30px;
-    display: block;
-    transition: var(--sidebar-transition-slow);
-    padding: 2px;
-}
-
-/* Effet de brillance au survol du logo */
-.brand-visual:hover .brand-logo-img {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-}
-
-/* Icône décorative en surbrillance */
-.brand-icon-text {
-    font-size: 1.2rem;
-    color: var(--gold);
-    opacity: 0.8;
-    text-shadow: 0 0 20px rgba(245, 166, 35, 0.3);
-    animation: sparkle 3s ease-in-out infinite;
-}
-
-@keyframes sparkle {
-    0%, 100% { opacity: 0.6; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.1); }
-}
-
-/* Overlay plus subtil pour le logo */
-.brand-visual-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg,
-    rgba(0, 150, 220, 0.15) 0%,
-    rgba(245, 166, 35, 0.08) 100%);
-    opacity: 0.4;
-    mix-blend-mode: overlay;
-    transition: var(--sidebar-transition);
-    pointer-events: none;
-}
-
-.brand-visual:hover .brand-visual-overlay {
-    opacity: 0.6;
-}
-
-/* Effet de bordure dorée autour du logo */
-.brand-visual {
-    position: relative;
-    width: 48px;
-    height: 48px;
-    border-radius: var(--sidebar-radius-sm);
-    overflow: hidden;
-    flex-shrink: 0;
-    border: 2px solid rgba(245, 166, 35, 0.15);
-    box-shadow: 0 4px 20px rgba(0, 150, 220, 0.15),
-    inset 0 0 30px rgba(245, 166, 35, 0.05);
-    transition: var(--sidebar-transition);
-}
-
-.brand-visual:hover {
-    border-color: var(--gold);
-    box-shadow: 0 4px 30px rgba(245, 166, 35, 0.2),
-    inset 0 0 30px rgba(245, 166, 35, 0.1);
-}
-
-/* Effet de lumière au survol du logo */
-.brand-visual::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 30% 20%,
-    rgba(245, 166, 35, 0.1) 0%,
-    transparent 70%);
-    opacity: 0;
-    transition: var(--sidebar-transition);
-    pointer-events: none;
-}
-
-.brand-visual:hover::after {
-    opacity: 1;
-}
-
-/* Version mobile adaptée */
-@media (max-width: 768px) {
-    .brand-visual {
-        width: 42px;
-        height: 42px;
-    }
-}
-
-@media (max-width: 480px) {
-    .brand-visual {
-        width: 36px;
-        height: 36px;
-        border-width: 1.5px;
-    }
-
-    .brand-icon-text {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 380px) {
-    .brand-visual {
-        width: 32px;
-        height: 32px;
-    }
-}
-
-/* ============================================================
-   SUPPORT DE LA HAUTEUR D'ÉCRAN (vh)
-   ============================================================ */
-@supports (height: 100dvh) {
-    .sidebar {
-        height: 100dvh;
+    @keyframes sparkle {
+        0%, 100% { opacity: 0.8; }
     }
 }

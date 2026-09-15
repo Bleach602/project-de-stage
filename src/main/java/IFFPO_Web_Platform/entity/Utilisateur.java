@@ -57,7 +57,4 @@ public class Utilisateur {
     private FicheInscription ficheInscription;
 
 
-
-
-
 }

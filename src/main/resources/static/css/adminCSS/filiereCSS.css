@@ -1,5 +1,5 @@
 /* ==========================================
-   VARIABLES & CHARTE GRAPHIQUE (UI/UX Premium)
+   VARIABLES & CHARTE
    ========================================== */
 :root {
     --primary: #2563eb;
@@ -10,12 +10,10 @@
     --success-border: #a7f3d0;
     --success-text: #065f46;
     --danger: #ef4444;
-    --danger-hover: #dc2626;
     --danger-light: #fef2f2;
     --danger-border: #fca5a5;
     --danger-text: #991b1b;
     --warning: #f59e0b;
-    --warning-hover: #d97706;
 
     --bg-main: #f8fafc;
     --surface: #ffffff;
@@ -32,14 +30,12 @@
 
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 
     --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==========================================
-   EN-TÊTE PRINCIPAL
+   EN-TÊTE
    ========================================== */
 .main-header {
     display: flex;
@@ -65,7 +61,7 @@
 }
 
 /* ==========================================
-   BOUTONS & ACTIONS
+   BOUTONS
    ========================================== */
 .btn {
     display: inline-flex;
@@ -92,7 +88,6 @@
 .btn-primary:hover {
     background-color: var(--primary-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
 }
 
 .btn-outline {
@@ -119,10 +114,6 @@
 .btn-outline.success {
     color: var(--success-text);
     border-color: var(--success-border);
-}
-
-.btn-outline.success:hover {
-    background-color: var(--success-light);
 }
 
 .btn-danger-outline {
@@ -163,7 +154,7 @@
 }
 
 /* ==========================================
-   LAYOUT GRID (PANNEAUX GAUCHE/DROITE)
+   LAYOUT
    ========================================== */
 .dashboard-container {
     display: grid;
@@ -193,7 +184,7 @@
 }
 
 /* ==========================================
-   LISTE DES FILIÈRES (GAUCHE)
+   LISTE FILIÈRES
    ========================================== */
 .filiere-list {
     display: flex;
@@ -284,7 +275,7 @@
 }
 
 /* ==========================================
-   BADGES & PILLS
+   BADGES
    ========================================== */
 .count-badge {
     background: var(--bg-main);
@@ -316,7 +307,7 @@
 }
 
 /* ==========================================
-   PANNEAU DÉTAILS (DROITE)
+   PANNEAU DÉTAILS
    ========================================== */
 .empty-state {
     text-align: center;
@@ -381,6 +372,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    gap: 0.75rem;
 }
 
 .section-sub-title h3 {
@@ -394,8 +386,13 @@
 }
 
 /* ==========================================
-   TABLEAU UX PREMIUM
+   TABLEAU
    ========================================== */
+.spec-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 table {
     width: 100%;
     border-collapse: separate;
@@ -425,13 +422,9 @@ td {
     transition: var(--transition);
 }
 
-tr:last-child td {
-    border-bottom: none;
-}
+tr:last-child td { border-bottom: none; }
 
-tbody tr:hover td {
-    background-color: var(--primary-light);
-}
+tbody tr:hover td { background-color: var(--primary-light); }
 
 .cell-truncate {
     max-width: 200px;
@@ -441,15 +434,12 @@ tbody tr:hover td {
 }
 
 /* ==========================================
-   MODALES - DESIGN MODERN & ANIMÉ
+   MODALES
    ========================================== */
 .modal-overlay {
     display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(15, 23, 42, 0.7);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -473,39 +463,14 @@ tbody tr:hover td {
     width: 100%;
     max-width: 540px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.15);
     animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     position: relative;
     margin: auto;
 }
 
 @keyframes modalSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px) scale(0.96);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-.modal-container::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary), var(--warning), var(--primary));
-    background-size: 200% 100%;
-    animation: shimmer 3s ease-in-out infinite;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-}
-
-@keyframes shimmer {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+    from { opacity: 0; transform: translateY(30px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .modal-header {
@@ -538,7 +503,6 @@ tbody tr:hover td {
     font-size: 1.5rem;
     color: var(--text-muted);
     cursor: pointer;
-    line-height: 1;
     padding: 4px;
     border-radius: var(--radius-sm);
     transition: var(--transition);
@@ -555,7 +519,6 @@ tbody tr:hover td {
     transform: rotate(90deg);
 }
 
-/* Formulaires dans les Modales */
 .form-group {
     margin-bottom: 1.25rem;
 }
@@ -568,14 +531,7 @@ tbody tr:hover td {
     color: var(--text-primary);
 }
 
-.form-group label span {
-    color: var(--danger);
-}
-
-.form-group label .optional {
-    color: var(--text-muted);
-    font-weight: 400;
-}
+.form-group label span { color: var(--danger); }
 
 .form-control {
     width: 100%;
@@ -596,9 +552,7 @@ tbody tr:hover td {
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-.form-control:hover {
-    border-color: var(--text-muted);
-}
+.form-control:hover { border-color: var(--text-muted); }
 
 .form-row {
     display: grid;
@@ -629,7 +583,6 @@ tbody tr:hover td {
 .btn-secondary-modal:hover {
     background-color: var(--border);
     color: var(--text-primary);
-    transform: translateY(-1px);
 }
 
 .btn-primary-modal {
@@ -649,15 +602,9 @@ tbody tr:hover td {
     box-shadow: 0 8px 15px rgba(37, 99, 235, 0.3);
 }
 
-.btn-primary-modal:active {
-    transform: translateY(0);
-}
-
 /* ==========================================
-   RESPONSIVE DESIGN OPTIMISÉ
+   RESPONSIVE — TABLETTE
    ========================================== */
-
-/* Tablettes et petits écrans */
 @media (max-width: 1024px) {
     .dashboard-container {
         grid-template-columns: 1fr;
@@ -669,30 +616,33 @@ tbody tr:hover td {
         overflow-y: auto;
     }
 
-    .filiere-list {
-        max-height: 320px;
+    .panel { padding: 1.25rem; }
+
+    th, td {
+        padding: 0.65rem 0.75rem;
+        font-size: 0.8rem;
     }
 
-    .panel {
-        padding: 1.25rem;
+    .btn-action-square {
+        width: 32px;
+        height: 32px;
+        font-size: 0.95rem;
     }
 }
 
-/* Tablettes en portrait et grands mobiles */
+/* ==========================================
+   RESPONSIVE — MOBILE
+   ========================================== */
 @media (max-width: 768px) {
+
     .main-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
 
-    .main-header h1 {
-        font-size: 1.5rem;
-    }
-
-    .main-header p {
-        font-size: 0.85rem;
-    }
+    .main-header h1 { font-size: 1.5rem; }
+    .main-header p { font-size: 0.85rem; }
 
     .details-header {
         flex-direction: column;
@@ -705,66 +655,195 @@ tbody tr:hover td {
         width: 100%;
     }
 
+    /* Actions en grille 2 colonnes, 3e bouton pleine largeur */
     .actions-top {
-        width: 100%;
-        justify-content: flex-start;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         gap: 0.5rem;
+        width: 100%;
     }
 
+    .actions-top > form { display: contents; }
+
     .actions-top .btn {
+        width: 100%;
+        justify-content: center;
         font-size: 0.8rem;
-        padding: 0.5rem 0.875rem;
+        padding: 0.6rem 0.75rem;
+    }
+
+    .actions-top > form:last-child {
+        grid-column: 1 / -1;
     }
 
     .section-sub-title {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: stretch;
         gap: 0.75rem;
     }
 
-    .section-sub-title h3 {
-        font-size: 1rem;
+    .section-sub-title h3 { font-size: 1rem; }
+
+    .section-sub-title .btn {
+        width: 100%;
+        justify-content: center;
     }
 
-    /* Responsive Tableau */
-    table {
+    /* Tableau → cartes empilées */
+    .spec-table-wrapper { overflow-x: visible; }
+
+    .spec-table {
         display: block;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-        white-space: nowrap;
+        width: 100%;
+        border: none;
     }
 
-    table thead {
-        display: table-header-group;
+    .spec-table thead { display: none; }
+
+    .spec-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 0.875rem;
     }
 
-    table tbody {
-        display: table-row-group;
+    .spec-table tbody tr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "name    name"
+            "price1  price2"
+            "price3  price4"
+            "actions actions";
+        gap: 0.75rem;
+        padding: 1rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-sm);
+        transition: var(--transition);
     }
 
-    table tr {
-        display: table-row;
+    .spec-table tbody tr:hover {
+        box-shadow: var(--shadow-md);
+        border-color: var(--primary);
     }
 
-    table th, table td {
-        padding: 0.625rem 0.75rem;
-        font-size: 0.8rem;
-        min-width: 80px;
+    .spec-table tbody tr:hover td { background: transparent; }
+
+    /* Numéro masqué */
+    .spec-table tbody tr td:nth-child(1) { display: none; }
+
+    /* Nom en pleine largeur */
+    .spec-table tbody tr td:nth-child(2) {
+        grid-area: name;
+        font-size: 1rem;
+        font-weight: 700;
+        padding: 0 0 0.5rem 0;
+        border: none;
+        border-bottom: 1px solid var(--border);
+        max-width: 100%;
+        white-space: normal;
     }
 
-    table td:first-child {
-        min-width: 40px;
+    /* Les 4 tarifs en boîtes */
+    .spec-table tbody tr td:nth-child(3),
+    .spec-table tbody tr td:nth-child(4),
+    .spec-table tbody tr td:nth-child(5),
+    .spec-table tbody tr td:nth-child(6) {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        padding: 0.6rem 0.75rem;
+        background: var(--bg-main);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        text-align: left;
+        white-space: normal;
     }
 
-    table td:last-child {
-        min-width: 90px;
+    .spec-table tbody tr td:nth-child(3) { grid-area: price1; }
+    .spec-table tbody tr td:nth-child(4) { grid-area: price2; }
+    .spec-table tbody tr td:nth-child(5) { grid-area: price3; }
+    .spec-table tbody tr td:nth-child(6) { grid-area: price4; }
+
+    .spec-table tbody tr td:nth-child(3)::before {
+        content: "Préinscription";
+        font-size: 0.68rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
     }
 
-    .cell-truncate {
-        max-width: 120px;
+    .spec-table tbody tr td:nth-child(4)::before {
+        content: "Tranche 1";
+        font-size: 0.68rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
     }
 
+    .spec-table tbody tr td:nth-child(5)::before {
+        content: "Tranche 2";
+        font-size: 0.68rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    .spec-table tbody tr td:nth-child(6)::before {
+        content: "Tranche 3";
+        font-size: 0.68rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    /* Actions en bas */
+    .spec-table tbody tr td:nth-child(7) {
+        grid-area: actions;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0.75rem 0 0 0;
+        border-top: 1px solid var(--border);
+        border-bottom: none;
+        margin-top: 0.25rem;
+    }
+
+    .spec-table tbody tr td:nth-child(7) > div {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    .spec-table tbody tr td:nth-child(7) form { display: inline-flex; }
+
+    /* Message "aucune spécialité" */
+    .spec-table tbody tr td[colspan] {
+        display: block;
+        grid-area: auto;
+        text-align: center;
+        padding: 2rem 1rem;
+        background: var(--bg-main);
+        border: 1px dashed var(--border);
+        border-radius: var(--radius-md);
+        white-space: normal;
+    }
+
+    /* Boutons d'action plus grands */
+    .btn-action-square {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+    }
+
+    /* Formulaires */
     .form-row {
         grid-template-columns: 1fr;
         gap: 0;
@@ -776,9 +855,7 @@ tbody tr:hover td {
         max-width: 95%;
     }
 
-    .modal-header h3 {
-        font-size: 1.1rem;
-    }
+    .modal-header h3 { font-size: 1.1rem; }
 
     .modal-footer {
         flex-wrap: wrap;
@@ -794,11 +871,12 @@ tbody tr:hover td {
     }
 }
 
-/* Mobiles (petits écrans) */
+/* ==========================================
+   RESPONSIVE — PETIT MOBILE
+   ========================================== */
 @media (max-width: 480px) {
-    .main-header h1 {
-        font-size: 1.25rem;
-    }
+
+    .main-header h1 { font-size: 1.25rem; }
 
     .panel {
         padding: 1rem;
@@ -811,7 +889,7 @@ tbody tr:hover td {
     }
 
     .filiere-card {
-        padding: 0.7rem 0.75rem;
+        padding: 0.75rem 0.875rem;
         gap: 0.75rem;
     }
 
@@ -821,22 +899,21 @@ tbody tr:hover td {
         font-size: 0.9rem;
     }
 
-    .card-info .name {
-        font-size: 0.85rem;
-    }
+    .card-info .name { font-size: 0.85rem; }
 
     .card-info .sub {
-        font-size: 0.7rem;
-        flex-wrap: wrap;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+        font-size: 0.72rem;
     }
 
     .filiere-title-text {
-        font-size: 1.1rem;
+        font-size: 1.15rem;
+        line-height: 1.3;
     }
 
-    .subtitle {
-        font-size: 0.8rem;
-    }
+    .subtitle { font-size: 0.8rem; }
 
     .btn {
         font-size: 0.8rem;
@@ -844,42 +921,34 @@ tbody tr:hover td {
     }
 
     .btn-action-square {
-        width: 30px;
-        height: 30px;
-        font-size: 0.8rem;
-    }
-
-    /* Amélioration du tableau mobile */
-    table th, table td {
-        padding: 0.5rem 0.6rem;
-        font-size: 0.75rem;
-        min-width: 70px;
-    }
-
-    table td:first-child {
-        min-width: 30px;
-    }
-
-    table td:last-child {
-        min-width: 80px;
-    }
-
-    .cell-truncate {
-        max-width: 90px;
+        width: 42px;
+        height: 42px;
+        font-size: 1.15rem;
     }
 
     .empty-state {
-        padding: 2rem 1rem;
+        padding: 2.5rem 1rem;
     }
 
-    .empty-state i {
-        font-size: 2.5rem;
+    .empty-state i { font-size: 2.75rem; }
+    .empty-state p { font-size: 0.85rem; line-height: 1.5; }
+
+    .count-badge {
+        font-size: 0.7rem;
+        padding: 0.15rem 0.5rem;
+    }
+
+    .modal-overlay {
+        padding: 0.5rem;
+        padding-top: 1rem;
+        align-items: flex-start;
     }
 
     .modal-container {
         padding: 1.25rem;
-        margin: 0.25rem;
+        margin: 0;
         border-radius: var(--radius-md);
+        max-width: 100%;
     }
 
     .modal-header {
@@ -887,21 +956,11 @@ tbody tr:hover td {
         padding-bottom: 0.5rem;
     }
 
-    .modal-header h3 {
-        font-size: 1rem;
-    }
+    .modal-header h3 { font-size: 1rem; }
+    .modal-header h3 i { font-size: 1.2rem; }
 
-    .modal-header h3 i {
-        font-size: 1.2rem;
-    }
-
-    .form-group {
-        margin-bottom: 0.9rem;
-    }
-
-    .form-group label {
-        font-size: 0.8rem;
-    }
+    .form-group { margin-bottom: 0.9rem; }
+    .form-group label { font-size: 0.8rem; }
 
     .form-control {
         padding: 0.5rem 0.75rem;
@@ -918,7 +977,6 @@ tbody tr:hover td {
     .modal-footer .btn,
     .modal-footer .btn-secondary-modal,
     .modal-footer .btn-primary-modal {
-        flex: 1;
         width: 100%;
         justify-content: center;
         padding: 0.6rem;
@@ -930,17 +988,23 @@ tbody tr:hover td {
         height: 32px;
         font-size: 1.25rem;
     }
+
+    /* Les grilles inline dans les formulaires passent en colonne */
+    .modal-container form > div[style*="grid-template-columns: 1fr 1fr"] {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.9rem !important;
+    }
 }
 
-/* Très petits écrans (anciens mobiles) */
+/* ==========================================
+   RESPONSIVE — TRÈS PETIT MOBILE
+   ========================================== */
 @media (max-width: 360px) {
-    .main-header h1 {
-        font-size: 1.1rem;
-    }
 
-    .panel {
-        padding: 0.75rem;
-    }
+    .main-header h1 { font-size: 1.1rem; }
+
+    .panel { padding: 0.75rem; }
 
     .filiere-card {
         padding: 0.5rem 0.6rem;
@@ -953,35 +1017,27 @@ tbody tr:hover td {
         font-size: 0.75rem;
     }
 
-    .card-info .name {
-        font-size: 0.75rem;
-    }
-
-    .card-info .sub {
-        font-size: 0.65rem;
-    }
-
-    table th, table td {
-        padding: 0.4rem 0.5rem;
-        font-size: 0.7rem;
-        min-width: 60px;
-    }
+    .card-info .name { font-size: 0.75rem; }
+    .card-info .sub { font-size: 0.65rem; }
 
     .btn {
         font-size: 0.7rem;
         padding: 0.4rem 0.7rem;
     }
 
-    .modal-container {
-        padding: 1rem;
+    .btn-action-square {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
     }
 
-    .modal-header h3 {
-        font-size: 0.95rem;
-    }
+    .modal-container { padding: 1rem; }
+    .modal-header h3 { font-size: 0.95rem; }
 }
 
-/* Support pour l'orientation paysage sur mobile */
+/* ==========================================
+   PAYSAGE MOBILE
+   ========================================== */
 @media (max-height: 600px) and (orientation: landscape) {
     .modal-container {
         max-height: 90vh;
@@ -989,87 +1045,31 @@ tbody tr:hover td {
         padding: 1.25rem;
     }
 
-    .filiere-list {
-        max-height: 200px;
-    }
-
-    .empty-state {
-        padding: 1.5rem 1rem;
-    }
-}
-
-/* Amélioration du défilement pour les tableaux */
-.table-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin: 0 -0.5rem;
-    padding: 0 0.5rem;
-}
-
-.table-wrapper table {
-    min-width: 600px;
-}
-
-@media (max-width: 768px) {
-    .table-wrapper {
-        margin: 0 -0.75rem;
-        padding: 0 0.75rem;
-    }
-
-    .table-wrapper table {
-        min-width: 500px;
-    }
-}
-
-@media (max-width: 480px) {
-    .table-wrapper {
-        margin: 0 -0.5rem;
-        padding: 0 0.5rem;
-    }
-
-    .table-wrapper table {
-        min-width: 400px;
-    }
+    .filiere-list { max-height: 200px; }
+    .empty-state { padding: 1.5rem 1rem; }
 }
 
 /* ==========================================
-   MESSAGE D'ÉTAT - AMÉLIORATION VISUELLE
+   SCROLLBARS FINES
    ========================================== */
-.status-pill.message {
-    padding: 1rem;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.95rem;
-    border-radius: var(--radius-md);
-    animation: slideDown 0.4s ease;
+.filiere-list::-webkit-scrollbar,
+.spec-table-wrapper::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.filiere-list::-webkit-scrollbar-track,
+.spec-table-wrapper::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.status-pill.message i {
-    font-size: 1.2rem;
-    flex-shrink: 0;
+.filiere-list::-webkit-scrollbar-thumb,
+.spec-table-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
 }
 
-.status-pill.message.success {
-    background-color: var(--success-light);
-    color: var(--success-text);
-    border: 1px solid var(--success-border);
-}
-
-.status-pill.message.error {
-    background-color: var(--danger-light);
-    color: var(--danger-text);
-    border: 1px solid var(--danger-border);
+.filiere-list::-webkit-scrollbar-thumb:hover,
+.spec-table-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
 }

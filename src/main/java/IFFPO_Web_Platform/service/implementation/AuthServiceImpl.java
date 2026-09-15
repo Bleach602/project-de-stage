@@ -10,6 +10,8 @@ import IFFPO_Web_Platform.service.AuthService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -34,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
         utilisateur.setTelephone(inscriptionDTO.getTelephone());
         utilisateur.setMotDePasse(passwordEncoder.encode(inscriptionDTO.getMdp()));
         utilisateur.setStatutCompte(StatutCompte.ACTIF);
+        utilisateur.setDateInscription(LocalDateTime.now());
 
         Role roleUser = roleRepository.findByIntitule("ROLE_CANDIDAT")
                 .orElseThrow(()-> new RuntimeException("Role non trouvé"));

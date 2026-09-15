@@ -803,6 +803,12 @@
         input: "candCni",
         list: "cniFileList"
     },
+
+            {
+                input: "photo",
+                list: "PhotoFileList"
+            },
+
     {
         input: "candDiplome",
         list: "diplomeFileList"
