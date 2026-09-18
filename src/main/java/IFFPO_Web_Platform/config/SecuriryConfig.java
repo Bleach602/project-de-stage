@@ -2,12 +2,16 @@ package IFFPO_Web_Platform.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorityAuthorizationManager;
+import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.AuthorizationManagers;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 
 @Configuration
 @EnableWebSecurity
@@ -39,8 +43,11 @@ public class SecuriryConfig {
                                 "/img/**", "/css/**", "/js/**","/archive","/robots.txt","/orientation",
                                 "/login","/api/contact/**").permitAll()
 
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
                         .requestMatchers("/candidat/**").hasRole("CANDIDAT")
+                   // .requestMatchers("/admin/**").hasRole("ADMIN")
+                        //Back-office ADMIN: accessible à TOUT UTILISATEUR CONNECTÉ QUI N'EST PAS UN CANDIDAT
+                        .requestMatchers("/admin/**").not().hasRole("CANDIDAT")
 
                         .anyRequest().authenticated())
                 .formLogin(form-> form

@@ -25,12 +25,12 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect("/candidat/dashboard");
         }
 
-        else if ("ROLE_ADMIN".equals(utilisateur.getRole().getIntitule())){
-            response.sendRedirect("/admin/dashboard");
-        }
+//        else if ("ROLE_ADMIN".equals(utilisateur.getRole().getIntitule())){
+//            response.sendRedirect("/admin/dashboard");
+//        }
 
         else {
-            response.sendRedirect("/login?error=role");
+            response.sendRedirect("/admin/dashboard");
         }
     }
 }

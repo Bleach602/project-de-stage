@@ -131,39 +131,879 @@
 }
 
 
-@keyframes pulseBadge {
-    0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
-    50%      { transform: scale(1.06); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+/* ============================================================
+   HERO.CSS — IFP-PO Les Perles d'Or (version finale)
+   ============================================================ */
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero-section {
+    padding-top: 120px;
+    padding-bottom: 60px;
+    background:
+            radial-gradient(circle at 85% 20%, rgba(0, 150, 220, 0.04) 0%, transparent 45%),
+            radial-gradient(circle at 10% 80%, rgba(212, 175, 55, 0.03) 0%, transparent 35%);
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+/* Hauteur min sur grand écran UNIQUEMENT */
+@media (min-width: 1024px) {
+    .hero-section {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.hero-container {
+    width: 90%;
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 60px;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.hero-content > * {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-content .badge-diplome      { animation-delay: 0.15s; }
+.hero-content .hero-title         { animation-delay: 0.3s; }
+.hero-content .hero-description   { animation-delay: 0.45s; }
+.hero-content .hero-actions       { animation-delay: 0.6s; }
+.hero-content .hero-trust         { animation-delay: 0.75s; }
+
+@keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ============================================================
-   PRÉFIXE DATE — "Clôture le" / "Ouverture le" / "Prochaine session :"
+   BADGE DATE
    ============================================================ */
+.badge-diplome {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: var(--bleu-cyan-transparent);
+    color: var(--bleu-cyan);
+    padding: 8px 20px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 28px;
+    border: 1px solid rgba(0, 150, 220, 0.12);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.badge-diplome::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+            105deg,
+            transparent 30%,
+            rgba(255, 255, 255, 0.3) 45%,
+            rgba(255, 255, 255, 0.3) 55%,
+            transparent 70%
+    );
+    background-size: 300% 100%;
+    animation: shimmerBadge 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmerBadge {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.badge-diplome > i {
+    color: var(--or);
+    font-size: 1rem;
+    animation: pulseIcon 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes pulseIcon {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50%      { transform: scale(1.15); opacity: 0.8; }
+}
+
+#badgeLabel {
+    display: inline;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================================
+   WRAPPER DATE
+   ============================================================ */
+.date-rentree-wrapper {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-left: 4px;
+    padding: 2px 12px 2px 8px;
+    border-radius: 40px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.date-rentree-wrapper:hover {
+    background: rgba(212, 175, 55, 0.2);
+    transform: scale(1.02);
+}
+
+.date-rentree-wrapper .cal-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: var(--or);
+    animation: calendarShake 3s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+@keyframes calendarShake {
+    0%, 100% { transform: rotate(0deg); }
+    5%       { transform: rotate(-8deg); }
+    10%      { transform: rotate(8deg); }
+    15%      { transform: rotate(-4deg); }
+    20%      { transform: rotate(4deg); }
+    25%      { transform: rotate(0deg); }
+}
+
+#datePrefix,
 .date-prefix {
     font-size: 0.78em;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.75);
     letter-spacing: 0.02em;
     margin-right: 4px;
-    text-transform: none;
     opacity: 0.9;
+    white-space: nowrap;
 }
 
-/* Sur mobile : on masque le préfixe pour gagner de la place */
+.rentree-date {
+    font-weight: 800;
+    color: var(--or);
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+    background: linear-gradient(135deg, var(--or), var(--or-fonce));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    padding: 0 2px;
+    white-space: nowrap;
+}
+
+.rentree-date::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--or-gradient);
+    border-radius: 4px;
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: underlinePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes underlinePulse {
+    0%, 100% { transform: scaleX(0.3); opacity: 0.4; }
+    50%      { transform: scaleX(1); opacity: 1; }
+}
+
+.date-badge-important {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.55rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 40px;
+    background: #22c55e;
+    color: var(--blanc);
+    animation: pulseBadge 2s ease-in-out infinite;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+@keyframes pulseBadge {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.05); }
+}
+
+.jours-restants {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--gris-clair);
+    padding: 2px 10px;
+    border-radius: 40px;
+    margin-left: 2px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.jours-restants span {
+    font-weight: 800;
+    color: var(--bleu-cyan);
+    font-size: 0.85rem;
+}
+
+.date-particles {
+    position: absolute;
+    inset: -4px;
+    border-radius: 40px;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.date-particles span {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--or);
+    border-radius: 50%;
+    opacity: 0;
+    animation: particleFloat 6s ease-in-out infinite;
+}
+
+.date-particles span:nth-child(1) { top: 0; left: 10%; animation-delay: 0s; }
+.date-particles span:nth-child(2) { top: 30%; left: 80%; animation-delay: 1.5s; width: 6px; height: 6px; }
+.date-particles span:nth-child(3) { bottom: 20%; left: 20%; animation-delay: 3s; }
+.date-particles span:nth-child(4) { bottom: 0; right: 15%; animation-delay: 4.5s; width: 3px; height: 3px; }
+
+@keyframes particleFloat {
+    0%, 100% { opacity: 0; transform: translateY(0) scale(0); }
+    20%      { opacity: 1; transform: translateY(-10px) scale(1); }
+    80%      { opacity: 1; transform: translateY(-25px) scale(0.8); }
+    100%     { opacity: 0; transform: translateY(-35px) scale(0); }
+}
+
+/* ============================================================
+   TITRE HERO
+   ============================================================ */
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.14;
+    letter-spacing: -1.8px;
+    margin-bottom: 24px;
+    color: var(--text-color);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: 100%;
+}
+
+.hero-title .highlight {
+    color: var(--bleu-cyan);
+    position: relative;
+}
+
+.hero-title .highlight::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--or-gradient);
+    border-radius: 4px;
+    opacity: 0.4;
+}
+
+.hero-title .or-text {
+    color: var(--or);
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+/* ============================================================
+   DESCRIPTION
+   ============================================================ */
+.hero-description {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 36px;
+    max-width: 520px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* ============================================================
+   BOUTONS
+   ============================================================ */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bleu-cyan-gradient);
+    color: var(--blanc);
+    padding: 18px 40px;
+    border-radius: 18px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 12px 30px rgba(0, 150, 220, 0.22);
+    transition: var(--transition);
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 35px rgba(0, 150, 220, 0.32);
+}
+
+.btn-primary i {
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.btn-primary:hover i {
+    transform: translateX(6px);
+}
+
+.btn-secondary-hero {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 18px 32px;
+    border-radius: 18px;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--text-color);
+    border: 1.5px solid var(--gris-medium);
+    transition: var(--transition);
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: normal;
+    text-align: center;
+}
+
+.btn-secondary-hero:hover {
+    border-color: var(--bleu-cyan);
+    color: var(--bleu-cyan);
+    transform: translateY(-2px);
+}
+
+.btn-secondary-hero i {
+    color: var(--or);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* ============================================================
+   TRUST ITEMS
+   ============================================================ */
+.hero-trust {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    width: 100%;
+    max-width: 100%;
+}
+
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    max-width: 100%;
+}
+
+.trust-item i {
+    color: var(--bleu-cyan);
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   HERO VISUAL
+   ============================================================ */
+.hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.image-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 440px;
+    height: 520px;
+    box-sizing: border-box;
+}
+
+.campus-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    border-radius: 40px;
+    border: 4px solid var(--or);
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.12);
+    display: block;
+}
+
+/* ============================================================
+   CARTES FLOTTANTES
+   ============================================================ */
+.floating-card {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    padding: 16px 20px;
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.06);
+    transition: var(--transition);
+    max-width: calc(100% - 20px);
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
+    z-index: 2;
+}
+
+.floating-card:hover {
+    transform: scale(1.05) translateY(-5px);
+}
+
+.card-1 {
+    top: 10%;
+    left: -40px;
+    animation: floatSmooth 5s ease-in-out infinite;
+}
+
+.card-2 {
+    bottom: 10%;
+    right: -30px;
+    animation: floatSmooth 6s ease-in-out infinite 1s;
+}
+
+@keyframes floatSmooth {
+    0%, 100% { transform: translateY(0px); }
+    50%      { transform: translateY(-10px); }
+}
+
+.icon-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blanc);
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+.icon-box.cyan { background: var(--bleu-cyan-gradient); }
+.icon-box.gold { background: var(--or-gradient); }
+
+.floating-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.floating-card p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+/* Tablette */
+@media (max-width: 1024px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+
+    .hero-content {
+        align-items: center;
+    }
+
+    .hero-title,
+    .hero-description {
+        text-align: center;
+    }
+
+    .hero-actions,
+    .hero-trust {
+        justify-content: center;
+    }
+
+    .image-wrapper {
+        max-width: 420px;
+        height: auto;
+        aspect-ratio: 4 / 5;
+        margin: 0 auto;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .hero-section {
+        padding-top: 100px;
+        padding-bottom: 2rem;
+        min-height: auto !important;
+    }
+
+    .hero-title {
+        font-size: 2rem;
+        letter-spacing: -0.5px;
+    }
+
+    .hero-description {
+        font-size: 0.95rem;
+        text-align: left;
+        hyphens: auto;
+    }
+
+    .badge-diplome {
+        font-size: 0.75rem;
+        padding: 6px 14px;
+        gap: 4px;
+        justify-content: center;
+    }
+
+    .date-rentree-wrapper {
+        padding: 2px 8px 2px 6px;
+        gap: 4px;
+    }
+
+    .rentree-date {
+        font-size: 0.95rem;
+    }
+
+    .date-badge-important {
+        font-size: 0.45rem;
+        padding: 1px 6px;
+    }
+
+    .jours-restants {
+        font-size: 0.6rem;
+        padding: 1px 6px;
+    }
+
+    .jours-restants span {
+        font-size: 0.7rem;
+    }
+
+    .date-particles span {
+        display: none;
+    }
+
+    .image-wrapper {
+        max-width: 100%;
+        aspect-ratio: 4 / 5;
+        border-radius: 24px;
+    }
+
+    .campus-photo {
+        border-radius: 22px;
+        border-width: 3px;
+    }
+
+    .floating-card {
+        padding: 10px 12px;
+        gap: 10px;
+        border-radius: 16px;
+        max-width: 62%;
+    }
+
+    .floating-card h4 {
+        font-size: 0.82rem;
+    }
+
+    .floating-card p {
+        font-size: 0.68rem;
+    }
+
+    .icon-box {
+        width: 34px;
+        height: 34px;
+        font-size: 0.95rem;
+        border-radius: 10px;
+    }
+
+    .card-1 {
+        top: 6%;
+        left: 3%;
+    }
+
+    .card-2 {
+        bottom: 6%;
+        right: 3%;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        align-items: stretch;
+    }
+
+    .btn-primary,
+    .btn-secondary-hero {
+        width: 100%;
+        justify-content: center;
+        padding: 15px 24px;
+        font-size: 0.95rem;
+        border-radius: 14px;
+    }
+
+    .hero-trust {
+        gap: 12px;
+        font-size: 0.78rem;
+    }
+
+    .trust-item {
+        font-size: 0.78rem;
+    }
+}
+
+/* Petit mobile */
 @media (max-width: 480px) {
+    .hero-section {
+        padding-top: 90px;
+        padding-bottom: 1.5rem;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+        letter-spacing: -0.3px;
+    }
+
+    .badge-diplome {
+        font-size: 0.65rem;
+        padding: 4px 10px;
+    }
+
+    .rentree-date {
+        font-size: 0.8rem;
+    }
+
+    .date-rentree-wrapper .cal-icon {
+        font-size: 0.6rem;
+    }
+
+    .date-badge-important {
+        font-size: 0.4rem;
+        padding: 1px 4px;
+    }
+
+    .jours-restants {
+        font-size: 0.5rem;
+        padding: 1px 4px;
+    }
+
+    .jours-restants span {
+        font-size: 0.6rem;
+    }
+
+    #datePrefix,
     .date-prefix {
         display: none;
     }
+
+    .floating-card {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    .floating-card h4 {
+        font-size: 0.75rem;
+    }
+
+    .floating-card p {
+        font-size: 0.62rem;
+    }
+
+    .icon-box {
+        width: 30px;
+        height: 30px;
+        font-size: 0.85rem;
+    }
 }
 
-/* Animation pulse pour le badge "Derniers jours !" */
-@keyframes pulseBadge {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+/* Très petit mobile */
+@media (max-width: 380px) {
+    .hero-section {
+        padding-top: 80px;
     }
-    50% {
-        transform: scale(1.06);
-        box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+
+    .hero-title {
+        font-size: 1.5rem;
+        letter-spacing: -0.2px;
+    }
+
+    .badge-diplome {
+        font-size: 0.6rem;
+        padding: 4px 8px;
+    }
+
+    .floating-card {
+        padding: 6px 8px;
+        gap: 6px;
+        max-width: 70%;
+    }
+
+    .floating-card h4 {
+        font-size: 0.7rem;
+    }
+
+    .floating-card p {
+        font-size: 0.58rem;
     }
 }
+
+/* Ultra-small < 300px */
+@media (max-width: 300px) {
+    .hero-section {
+        padding-top: 70px;
+        padding-bottom: 1rem;
+    }
+
+    .hero-title {
+        font-size: 1.25rem;
+        line-height: 1.2;
+    }
+
+    .hero-description {
+        font-size: 0.8rem;
+        line-height: 1.5;
+    }
+
+    .badge-diplome {
+        font-size: 0.55rem;
+        padding: 3px 6px;
+        gap: 3px;
+    }
+
+    .date-rentree-wrapper {
+        padding: 1px 4px;
+        gap: 2px;
+    }
+
+    .rentree-date {
+        font-size: 0.7rem;
+    }
+
+    .date-badge-important {
+        font-size: 0.35rem;
+        padding: 1px 3px;
+    }
+
+    .jours-restants {
+        font-size: 0.45rem;
+        padding: 1px 3px;
+    }
+
+    .jours-restants span {
+        font-size: 0.55rem;
+    }
+
+    .btn-primary,
+    .btn-secondary-hero {
+        padding: 10px 14px;
+        font-size: 0.75rem;
+        border-radius: 10px;
+    }
+
+    .floating-card {
+        padding: 5px 7px;
+        gap: 5px;
+        max-width: 75%;
+        border-radius: 10px;
+    }
+
+    .floating-card h4 {
+        font-size: 0.62rem;
+    }
+
+    .floating-card p {
+        font-size: 0.5rem;
+    }
+
+    .icon-box {
+        width: 24px;
+        height: 24px;
+        font-size: 0.7rem;
+        border-radius: 6px;
+    }
+}
+

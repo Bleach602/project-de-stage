@@ -24,5 +24,5 @@ Tech Stack (Technologies Utilisées)
     Backend : Java, Spring Boot (Spring MVC, Spring Data JPA, Spring Security)
     Frontend : HTML5, CSS3, JavaScript, Thymeleaf
     Base de données : PostgreSQL
-    Document & Cloud : Génération PDF (iText / JasperReports), Stockage Cloud (AWS S3 / Cloudinary)
+    Document & Cloud : Génération PDF (OpenPDF ), Stockage Cloud (Cloudinary)
     Build & Outillage : Maven, Git/GitHub

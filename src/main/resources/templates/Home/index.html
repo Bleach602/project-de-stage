@@ -106,13 +106,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/home/style-830a4c7a90cf7513ac0b7ba30604a3c6.css">
-    <link rel="stylesheet" href="/css/home/filiere-c64ee5c7959d6f86769d3c282001bcf8.css">
-    <link rel="stylesheet" href="/css/home/equipe-b777229bead69d440d1104b3abe3c21b.css">
+    <!-- ✅ BASE EN PREMIER (décommenté) -->
+    <link rel="stylesheet" th:href="@{/css/home/base.css}">
+
+    <!-- Puis les autres CSS -->
+    <link rel="stylesheet" th:href="@{/css/home/style.css}">
+    <link rel="stylesheet" th:href="@{/css/home/filiere.css}">
+    <link rel="stylesheet" th:href="@{/css/home/hero.css}">
+    <link rel="stylesheet" th:href="@{/css/home/equipe.css}">
     <link rel="stylesheet" th:href="@{/css/home/header.css}">
-    <link rel="stylesheet" href="/css/home/actu-c88a6dcad2220d2ba41bdc32359b8f5f.css">
-    <link rel="stylesheet" href="/css/home/footer-8bcc4f4613b3ff144ee4262e6c6f791d.css">
-    <link rel="stylesheet" href="/css/home/responsive-362c5e230098257330428ec4ad8ee8ce.css">
+    <link rel="stylesheet" th:href="@{/css/home/actu.css}">
+    <link rel="stylesheet" th:href="@{/css/home/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/home/responsive.css}">
+    <link rel="stylesheet" th:href="@{/css/home/ultra-small.css}">
 
 </head>
 <body>
@@ -126,15 +132,17 @@
 </div>
 
 <div th:replace="~{Home/fragments/header :: header}"></div>
-
 <!-- HERO -->
 <section class="hero-section" id="accueil">
     <div class="hero-container">
+
+        <!-- Colonne gauche : contenu texte -->
         <div class="hero-content">
 
+            <!-- Badge date dynamique -->
             <div class="badge-diplome">
                 <i class="fas fa-certificate"></i>
-                <span id="badgeLabel">Inscriptions</span>
+                <span id="badgeLabel">Inscriptions ouvertes jusqu'au</span>
                 <span class="date-rentree-wrapper" id="dateRentreeWrapper">
                     <span class="cal-icon"><i class="fas fa-calendar-alt"></i></span>
                     <span class="date-prefix" id="datePrefix">Clôture le</span>
@@ -151,14 +159,17 @@
                 </span>
             </div>
 
+            <!-- Titre -->
             <h1 class="hero-title">
                 Votre métier vous attend chez <span class="highlight">Les Perles</span> <span class="or-text">d'Or</span>
             </h1>
 
+            <!-- Description -->
             <p class="hero-description">
                 L'Institut de Formation Professionnelle agréé par le <strong>MINEFOP</strong>, où chaque promotion depuis 2021 affiche <strong>100% de réussite</strong> aux examens nationaux. Sept filières, un encadrement rigoureux et une seule ambition&nbsp;: faire de vous un professionnel recherché.
             </p>
 
+            <!-- Boutons -->
             <div class="hero-actions">
                 <a th:href="@{/login}" class="btn-primary">
                     S'inscrire en ligne <i class="fas fa-arrow-right-long"></i>
@@ -168,12 +179,19 @@
                 </a>
             </div>
 
+            <!-- Trust items -->
             <div class="hero-trust">
-                <div class="trust-item"><i class="fas fa-shield-alt"></i> Agrément N° 00000444/MINEFOP</div>
-                <div class="trust-item"><i class="fas fa-users"></i> Formateurs expérimentés</div>
+                <div class="trust-item">
+                    <i class="fas fa-shield-alt"></i> Agrément N° 00000444/MINEFOP
+                </div>
+                <div class="trust-item">
+                    <i class="fas fa-users"></i> Formateurs expérimentés
+                </div>
             </div>
+
         </div>
 
+        <!-- Colonne droite : visuel -->
         <div class="hero-visual">
             <div class="image-wrapper">
                 <img th:src="@{/img/fond.jpg}"
@@ -181,16 +199,23 @@
                      decoding="async"
                      alt="Campus de l'IFP-PO Les Perles d'Or à Foumban"
                      class="campus-photo">
+
+                <!-- Carte flottante 1 -->
                 <div class="floating-card card-1">
-                    <div class="icon-box gold"><i class="fas fa-trophy"></i></div>
+                    <div class="icon-box gold">
+                        <i class="fas fa-trophy"></i>
+                    </div>
                     <div>
                         <h4>100% de réussite</h4>
                         <p>Depuis l'ouverture en 2021</p>
                     </div>
                 </div>
 
+                <!-- Carte flottante 2 -->
                 <div class="floating-card card-2">
-                    <div class="icon-box cyan"><i class="fas fa-laptop"></i></div>
+                    <div class="icon-box cyan">
+                        <i class="fas fa-laptop"></i>
+                    </div>
                     <div>
                         <h4>1 ordinateur offert</h4>
                         <p>Pour les apprenants en informatique</p>
@@ -198,6 +223,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </section>
 

@@ -5,7 +5,8 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.4</version>
+<!--		<version>3.2.4</version>-->
+		<version>4.1.0</version>
 		<relativePath/>
 	</parent>
 	<groupId>IFFPO_</groupId>
@@ -114,6 +115,17 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+
+<!--&lt;!&ndash;		&lt;!&ndash; Dependences pour la gestion du cache&ndash;&gt;&ndash;&gt;&ndash;&gt;-->
+<!--				<dependency>-->
+<!--					<groupId>com.github.ben-manes.caffeine</groupId>-->
+<!--					<artifactId>caffeine</artifactId>-->
+<!--				</dependency> -->
+<!--				<dependency>-->
+<!--					<groupId>org.springframework.boot</groupId>-->
+<!--					<artifactId>spring-boot-starter-cache</artifactId>-->
+<!--				</dependency>-->
 	</dependencies>
 
 	<build>

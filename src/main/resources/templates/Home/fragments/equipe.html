@@ -1,58 +1,93 @@
 <div th:fragment="equipe">
 
     <!-- ============================================================
-       SECTION ÉQUIPE (SLIDER)
+       SECTION ÉQUIPE (GRILLE — comme les actualités)
        ============================================================ -->
     <section class="equipe-section" id="equipe">
         <div class="container">
+
+            <!-- En-tête -->
             <div class="section-header" data-aos="fade-up">
-                <span class="sub-title">Notre équipe</span>
+                <span class="sub-title">
+                    <i class="fas fa-users"></i> Notre équipe
+                </span>
                 <h2>Des formateurs <span>d'exception</span></h2>
                 <p>Des professionnels expérimentés et passionnés, entièrement dédiés à votre réussite.</p>
             </div>
 
-            <!-- Conteneur du slider -->
-            <div class="slider-wrapper">
-                <div class="slider-container" id="equipeSlider" data-aos="fade-up">
-                    <!-- ============================================================
-                    TH:EACH PLACÉ SUR CHAQUE SLIDE INDIVIDUELLE
-                    ============================================================ -->
-                    <div class="slide" th:each="formateur : ${formateurs}">
-                        <div class="equipe-card">
-                            <div class="avatar avatar-initials">
-                                <img th:src="${formateur.photoUrl != null ? formateur.photoUrl : '/images/default-avatar.png'}"
-                                     th:alt="'Photo de ' + ${formateur.prenom} + ' ' + ${formateur.nom}"
-                                     loading="lazy"
-                                     onerror="this.src='/images/default-avatar.png'">
-                            </div>
-                            <h3 th:text="${formateur.prenom} + ' ' + ${formateur.nom}">Dr. Jean KAMGA</h3>
-                            <p class="poste" th:text="${formateur.poste}">Directeur Général</p>
-                            <p class="bio" th:text="${formateur.bio}">Expert en formation professionnelle, 20 ans d'expérience dans l'éducation.</p>
-                            <div class="social">
-                                <a th:href="${'mailto:' + (formateur.adresseMail ?: '')}"
-                                   target="_blank" title="Email">
-                                    <i class="fas fa-envelope"></i>
-                                </a>
-                                <a th:href="@{|https://wa.me/${formateur.whatsAppNumber != null ? formateur.whatsAppNumber : ''}|}"
-                                   target="_blank" title="WhatsApp">
-                                    <i class="fab fa-whatsapp"></i>
-                                </a>
-                            </div>
+            <!-- Grille des formateurs -->
+            <div class="equipe-grid" th:if="${formateurs != null and !formateurs.empty}">
+
+                <div class="equipe-card"
+                     data-aos="fade-up"
+                     th:each="formateur, iter : ${formateurs}"
+                     th:attr="data-aos-delay=${iter.index * 100}">
+
+                    <!-- Avatar -->
+                    <div class="equipe-avatar">
+                        <img th:if="${formateur.photoUrl != null and !formateur.photoUrl.isEmpty()}"
+                             th:src="${formateur.photoUrl}"
+                             th:alt="'Photo de ' + ${formateur.prenom} + ' ' + ${formateur.nom}"
+                             loading="lazy"
+                             onerror="this.style.display='none'; this.parentElement.querySelector('.avatar-placeholder').style.display='flex';">
+
+                        <!-- Placeholder avec initiales -->
+                        <div class="avatar-placeholder"
+                             th:unless="${formateur.photoUrl != null and !formateur.photoUrl.isEmpty()}"
+                             th:text="${#strings.substring(formateur.prenom, 0, 1) + #strings.substring(formateur.nom, 0, 1)}">
+                            JK
                         </div>
                     </div>
-                </div>
 
-                <!-- Flèches de navigation -->
-                <button class="slider-btn prev" id="prevSlide" aria-label="Précédent">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="slider-btn next" id="nextSlide" aria-label="Suivant">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+                    <!-- Nom -->
+                    <h3 th:text="${formateur.prenom} + ' ' + ${formateur.nom}">
+                        Dr. Jean KAMGA
+                    </h3>
+
+                    <!-- Poste -->
+                    <span class="equipe-poste"
+                          th:text="${formateur.poste != null ? formateur.poste : 'Formateur'}">
+                        Directeur Général
+                    </span>
+
+                    <!-- Bio -->
+                    <p class="equipe-bio"
+                       th:text="${formateur.bio != null ? formateur.bio : 'Formateur passionné et dévoué.'}">
+                        Expert en formation professionnelle, 20 ans d'expérience dans l'éducation.
+                    </p>
+
+                    <!-- Réseaux sociaux -->
+                    <div class="equipe-social">
+                        <a th:if="${formateur.adresseMail != null and !formateur.adresseMail.isEmpty()}"
+                           th:href="${'mailto:' + formateur.adresseMail}"
+                           target="_blank"
+                           rel="noopener"
+                           title="Email"
+                           aria-label="Envoyer un email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a th:if="${formateur.whatsAppNumber != null and !formateur.whatsAppNumber.isEmpty()}"
+                           th:href="@{|https://wa.me/${formateur.whatsAppNumber}|}"
+                           target="_blank"
+                           rel="noopener"
+                           title="WhatsApp"
+                           aria-label="Contacter sur WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+
+                </div>
             </div>
 
-            <!-- Indicateurs (dots) -->
-            <div class="slider-dots" id="sliderDots"></div>
+            <!-- État vide -->
+            <div class="equipe-empty" th:if="${formateurs == null or formateurs.empty}">
+                <div class="empty-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Aucun formateur disponible</h3>
+                <p>Les informations sur notre équipe seront bientôt disponibles.</p>
+            </div>
+
         </div>
     </section>
 
@@ -61,15 +96,18 @@
        ============================================================ -->
     <section class="palmares-section" id="palmares">
         <div class="container">
+
             <div class="section-header" data-aos="fade-up">
-                <span class="sub-title">Palmarès</span>
+                <span class="sub-title">
+                    <i class="fas fa-trophy"></i> Palmarès
+                </span>
                 <h2>Nos <span>lauréats</span></h2>
                 <p>100% de réussite aux examens nationaux depuis 2021.</p>
             </div>
 
             <div class="palmares-grid">
                 <div class="palmares-card" data-aos="fade-up" data-aos-delay="100">
-                    <img th:src="@{/img/WhatsApp Image 2026-09-11 at 20.01.51.jpeg}" alt="Promo 2025">
+                    <img th:src="@{/img/WhatsApp Image 2026-09-11 at 20.01.51.jpeg}" alt="Promo 2025" loading="lazy">
                     <div class="info">
                         <h4>Promotion 2025</h4>
                         <p class="filiere">Toutes filières confondues</p>
@@ -78,7 +116,7 @@
                 </div>
 
                 <div class="palmares-card" data-aos="fade-up" data-aos-delay="200">
-                    <img th:src="@{/img/IMG-20250725-WA0092.jpg}" alt="Promo 2024">
+                    <img th:src="@{/img/IMG-20250725-WA0092.jpg}" alt="Promo 2024" loading="lazy">
                     <div class="info">
                         <h4>Promotion 2024</h4>
                         <p class="filiere">Toutes filières confondues</p>
@@ -87,7 +125,7 @@
                 </div>
 
                 <div class="palmares-card" data-aos="fade-up" data-aos-delay="300">
-                    <img th:src="@{/img/IMG-20250729-WA0011.jpg}" alt="Promo 2023">
+                    <img th:src="@{/img/IMG-20250729-WA0011.jpg}" alt="Promo 2023" loading="lazy">
                     <div class="info">
                         <h4>Promotion 2023</h4>
                         <p class="filiere">Toutes filières confondues</p>
@@ -96,7 +134,7 @@
                 </div>
 
                 <div class="palmares-card" data-aos="fade-up" data-aos-delay="400">
-                    <img th:src="@{/img/WhatsApp Image 2026-09-11 at 20.02.32.jpeg}" alt="Promo 2022">
+                    <img th:src="@{/img/WhatsApp Image 2026-09-11 at 20.02.32.jpeg}" alt="Promo 2022" loading="lazy">
                     <div class="info">
                         <h4>Promotion 2022</h4>
                         <p class="filiere">Toutes filières confondues</p>
@@ -107,10 +145,11 @@
 
             <div class="stats-detailed">
                 <div class="stat-box"><h3>100%</h3><p>Taux de réussite</p></div>
-                <div class="stat-box"><h3>85%</h3><p>Insertion à 6 mois</p></div>
-                <div class="stat-box"><h3>50+</h3><p>Entreprises partenaires</p></div>
-                <div class="stat-box"><h3>7</h3><p>Filières d'excellence</p></div>
+                <div class="stat-box"><h3>65%</h3><p>Insertion à 6 mois</p></div>
+                <div class="stat-box"><h3>20+</h3><p>Entreprises partenaires</p></div>
+                <div class="stat-box"><h3>5</h3><p>Filières d'excellence</p></div>
             </div>
+
         </div>
     </section>
 

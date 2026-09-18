@@ -1,5 +1,6 @@
 /* ============================================================
    ÉQUIPE & PALMARÈS — DESIGN PREMIUM
+   Structure alignée sur actus.css (grille robuste)
    ============================================================ */
 
 /* ============================================================
@@ -13,7 +14,6 @@
     --eq-gold: #f5a623;
     --eq-gold-gradient: linear-gradient(135deg, #f5a623, #f7c948);
     --eq-gold-light: rgba(245, 166, 35, 0.12);
-    --eq-gold-soft: #fef3c7;
 
     --eq-blue: #0096dc;
     --eq-blue-gradient: linear-gradient(135deg, #0096dc, #00b4d8);
@@ -22,7 +22,6 @@
     --eq-bg: #f8fafc;
     --eq-surface: #ffffff;
     --eq-border: #e2e8f0;
-    --eq-border-hover: #cbd5e1;
 
     --eq-text-primary: #0f172a;
     --eq-text-secondary: #64748b;
@@ -63,6 +62,7 @@
     background: radial-gradient(circle, rgba(0, 150, 220, 0.03) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
+    max-width: 100vw;
 }
 
 .equipe-section::after {
@@ -75,6 +75,7 @@
     background: radial-gradient(circle, rgba(245, 166, 35, 0.03) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
+    max-width: 100vw;
 }
 
 /* ============================================================
@@ -87,6 +88,8 @@
     padding: 0 clamp(1rem, 3vw, 2rem);
     position: relative;
     z-index: 1;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* ============================================================
@@ -100,20 +103,23 @@
 .section-header .sub-title {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
     font-size: 0.7rem;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     font-weight: 700;
     color: var(--eq-gold);
     background: var(--eq-gold-light);
-    padding: 0.3rem 1.2rem;
+    padding: 0.3rem 1rem;
     border-radius: var(--eq-radius-full);
     margin-bottom: 0.8rem;
+    max-width: 100%;
+    overflow-wrap: anywhere;
 }
 
 .section-header .sub-title i {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    flex-shrink: 0;
 }
 
 .section-header h2 {
@@ -122,6 +128,9 @@
     color: var(--eq-text-primary);
     margin: 0 0 0.5rem 0;
     letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
 }
 
 .section-header h2 span {
@@ -136,60 +145,40 @@
     color: var(--eq-text-secondary);
     max-width: 600px;
     margin: 0 auto;
+    overflow-wrap: anywhere;
 }
 
 /* ============================================================
-   SLIDER WRAPPER
+   GRILLE DES FORMATEURS (comme .actus-grid)
    ============================================================ */
-.slider-wrapper {
-    position: relative;
-    padding: 0 3rem;
-    margin: 0 -1rem;
+.equipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: clamp(1.5rem, 2.5vw, 2.5rem);
+    width: 100%;
+    max-width: 100%;
 }
 
 /* ============================================================
-   SLIDER CONTAINER
-   ============================================================ */
-.slider-container {
-    display: flex;
-    gap: 2rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    padding: 0.5rem 0.25rem 1rem;
-    scrollbar-width: none;
-}
-
-.slider-container::-webkit-scrollbar {
-    display: none;
-}
-
-/* ============================================================
-   SLIDE INDIVIDUELLE
-   ============================================================ */
-.slide {
-    flex: 0 0 calc(33.333% - 1.33rem);
-    min-width: 280px;
-    scroll-snap-align: start;
-}
-
-/* ============================================================
-   CARTE FORMATEUR — DESIGN PREMIUM
+   CARTE FORMATEUR (comme .actus-card)
    ============================================================ */
 .equipe-card {
     background: var(--eq-surface);
     border-radius: var(--eq-radius-lg);
-    padding: clamp(1.5rem, 2vw, 2rem);
-    text-align: center;
+    overflow: hidden;
     box-shadow: var(--eq-shadow-sm);
     border: 1px solid var(--eq-border);
     transition: var(--eq-transition-slow);
     position: relative;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding: clamp(1.5rem, 2.5vw, 2rem) clamp(1.2rem, 2vw, 1.5rem);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 /* Effet de brillance au survol */
@@ -203,7 +192,7 @@
     background: var(--eq-gold-gradient);
     opacity: 0;
     transition: var(--eq-transition);
-    border-radius: var(--eq-radius-lg) var(--eq-radius-lg) 0 0;
+    z-index: 2;
 }
 
 .equipe-card:hover {
@@ -219,7 +208,7 @@
 /* ============================================================
    AVATAR
    ============================================================ */
-.equipe-card .avatar {
+.equipe-avatar {
     width: 120px;
     height: 120px;
     border-radius: 50%;
@@ -229,9 +218,13 @@
     transition: var(--eq-transition);
     position: relative;
     flex-shrink: 0;
+    background: var(--eq-blue-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.equipe-card .avatar::after {
+.equipe-avatar::after {
     content: '';
     position: absolute;
     inset: -4px;
@@ -242,15 +235,15 @@
     z-index: -1;
 }
 
-.equipe-card:hover .avatar {
+.equipe-card:hover .equipe-avatar {
     border-color: transparent;
 }
 
-.equipe-card:hover .avatar::after {
+.equipe-card:hover .equipe-avatar::after {
     opacity: 1;
 }
 
-.equipe-card .avatar img {
+.equipe-avatar img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -258,66 +251,87 @@
     transition: var(--eq-transition);
 }
 
-.equipe-card:hover .avatar img {
+.equipe-card:hover .equipe-avatar img {
     transform: scale(1.05);
 }
 
-/* Avatar avec initiales (fallback) */
-.equipe-card .avatar.avatar-initials {
-    background: var(--eq-blue-gradient);
+/* Placeholder avec initiales */
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
     font-size: 2.5rem;
     font-weight: 700;
+    text-transform: uppercase;
 }
 
 /* ============================================================
    CONTENU DE LA CARTE
    ============================================================ */
 .equipe-card h3 {
-    font-size: clamp(1.05rem, 1.2vw, 1.2rem);
+    font-size: clamp(1.05rem, 1.3vw, 1.2rem);
     font-weight: 700;
     color: var(--eq-text-primary);
-    margin: 0 0 0.2rem 0;
+    margin: 0 0 0.4rem 0;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: 100%;
 }
 
-.equipe-card .poste {
-    font-size: 0.8rem;
-    font-weight: 600;
+.equipe-card .equipe-poste {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.7rem;
+    font-weight: 700;
     color: var(--eq-gold);
-    margin: 0 0 0.8rem 0;
-    padding: 0.15rem 0.8rem;
     background: var(--eq-gold-light);
+    padding: 0.25rem 0.8rem;
     border-radius: var(--eq-radius-full);
-    display: inline-block;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
-.equipe-card .bio {
-    font-size: 0.85rem;
+.equipe-card .equipe-bio {
+    font-size: 0.88rem;
     color: var(--eq-text-secondary);
     line-height: 1.6;
     margin: 0 0 1.2rem 0;
     flex: 1;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+    max-width: 100%;
 }
 
 /* ============================================================
    RÉSEAUX SOCIAUX
    ============================================================ */
-.equipe-card .social {
+.equipe-card .equipe-social {
     display: flex;
     align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
     gap: 0.6rem;
     margin-top: auto;
+    width: 100%;
+    max-width: 100%;
 }
 
-.equipe-card .social a {
+.equipe-card .equipe-social a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background: var(--eq-bg);
     color: var(--eq-text-secondary);
@@ -325,9 +339,10 @@
     transition: var(--eq-transition);
     text-decoration: none;
     font-size: 1rem;
+    flex-shrink: 0;
 }
 
-.equipe-card .social a:hover {
+.equipe-card .equipe-social a:hover {
     background: var(--eq-gold-gradient);
     color: #ffffff;
     border-color: transparent;
@@ -335,79 +350,48 @@
     box-shadow: 0 4px 16px rgba(245, 166, 35, 0.3);
 }
 
-.equipe-card .social a[href*="mailto"]:hover {
+.equipe-card .equipe-social a[href*="mailto"]:hover {
     background: var(--eq-blue-gradient);
     box-shadow: 0 4px 16px rgba(0, 150, 220, 0.3);
 }
 
 /* ============================================================
-   BOUTONS DU SLIDER
+   ÉTAT VIDE
    ============================================================ */
-.slider-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
+.equipe-empty {
+    text-align: center;
+    padding: 3rem 1.5rem;
     background: var(--eq-surface);
-    border: 1px solid var(--eq-border);
-    color: var(--eq-text-secondary);
-    cursor: pointer;
-    transition: var(--eq-transition);
+    border-radius: var(--eq-radius-lg);
+    border: 1px dashed var(--eq-border);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.equipe-empty .empty-icon {
+    width: 70px;
+    height: 70px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: var(--eq-blue-light);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
-    box-shadow: var(--eq-shadow-md);
-    z-index: 2;
+    color: var(--eq-blue);
+    font-size: 1.8rem;
 }
 
-.slider-btn:hover {
-    background: var(--eq-gold-gradient);
-    color: #ffffff;
-    border-color: transparent;
-    transform: translateY(-50%) scale(1.05);
-    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.3);
+.equipe-empty h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--eq-text-primary);
+    margin: 0 0 0.5rem 0;
 }
 
-.slider-btn.prev {
-    left: 0;
-}
-
-.slider-btn.next {
-    right: 0;
-}
-
-/* ============================================================
-   INDICATEURS (DOTS)
-   ============================================================ */
-.slider-dots {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-top: 1.5rem;
-}
-
-.slider-dots .dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--eq-border);
-    border: none;
-    cursor: pointer;
-    transition: var(--eq-transition);
-    padding: 0;
-}
-
-.slider-dots .dot.active {
-    background: var(--eq-gold);
-    width: 30px;
-    border-radius: var(--eq-radius-full);
-}
-
-.slider-dots .dot:hover {
-    background: var(--eq-gold);
+.equipe-empty p {
+    font-size: 0.9rem;
+    color: var(--eq-text-secondary);
+    margin: 0;
 }
 
 /* ============================================================
@@ -437,6 +421,8 @@
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: clamp(1.2rem, 2vw, 1.8rem);
     margin-bottom: 2.5rem;
+    width: 100%;
+    max-width: 100%;
 }
 
 /* ============================================================
@@ -450,6 +436,12 @@
     border: 1px solid var(--eq-border);
     transition: var(--eq-transition-slow);
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .palmares-card::before {
@@ -470,6 +462,7 @@
 
 .palmares-card img {
     width: 100%;
+    max-width: 100%;
     height: 200px;
     object-fit: cover;
     display: block;
@@ -482,6 +475,10 @@
 
 .palmares-card .info {
     padding: 1.2rem 1.2rem 1.5rem;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .palmares-card .info h4 {
@@ -489,12 +486,15 @@
     font-weight: 700;
     color: var(--eq-text-primary);
     margin: 0 0 0.2rem 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .palmares-card .info .filiere {
     font-size: 0.8rem;
     color: var(--eq-text-secondary);
     margin: 0 0 0.3rem 0;
+    overflow-wrap: anywhere;
 }
 
 .palmares-card .info .annee {
@@ -502,6 +502,7 @@
     font-weight: 600;
     color: var(--eq-gold);
     margin: 0;
+    overflow-wrap: anywhere;
 }
 
 /* ============================================================
@@ -512,6 +513,8 @@
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 1.2rem;
     margin-top: 1.5rem;
+    width: 100%;
+    max-width: 100%;
 }
 
 .stat-box {
@@ -521,6 +524,11 @@
     text-align: center;
     border: 1px solid var(--eq-border);
     transition: var(--eq-transition);
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-wrap: anywhere;
 }
 
 .stat-box:hover {
@@ -538,6 +546,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    overflow-wrap: anywhere;
 }
 
 .stat-box p {
@@ -545,51 +554,98 @@
     color: var(--eq-text-secondary);
     margin: 0.2rem 0 0 0;
     font-weight: 500;
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE — TABLETTES
    ============================================================ */
-
-/* Tablettes */
 @media (max-width: 1024px) {
-    .slide {
-        flex: 0 0 calc(50% - 1rem);
-    }
-
-    .slider-wrapper {
-        padding: 0 2rem;
+    .equipe-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 1.5rem;
     }
 
     .palmares-grid {
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
+
+    .equipe-avatar {
+        width: 100px;
+        height: 100px;
+    }
+
+    .avatar-placeholder {
+        font-size: 2.2rem;
+    }
 }
 
-/* Mobiles grands */
+/* ============================================================
+   RESPONSIVE — MOBILES GRANDS
+   ============================================================ */
 @media (max-width: 768px) {
-    .slide {
-        flex: 0 0 calc(85% - 0.5rem);
-        min-width: 250px;
+    .equipe-section,
+    .palmares-section {
+        padding: 2.5rem 0;
     }
 
-    .slider-wrapper {
-        padding: 0 1.5rem;
+    .section-header {
+        margin-bottom: 2rem;
     }
 
-    .slider-btn {
-        width: 36px;
-        height: 36px;
-        font-size: 0.85rem;
+    .section-header .sub-title {
+        font-size: 0.6rem;
+        padding: 0.2rem 0.8rem;
+    }
+
+    .section-header h2 {
+        font-size: 1.6rem;
+    }
+
+    .section-header p {
+        font-size: 0.9rem;
+    }
+
+    .equipe-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
     }
 
     .equipe-card {
-        padding: 1.2rem;
+        padding: 1.3rem 1rem;
     }
 
-    .equipe-card .avatar {
-        width: 100px;
-        height: 100px;
+    .equipe-avatar {
+        width: 90px;
+        height: 90px;
+        border-width: 3px;
+        margin-bottom: 1rem;
+    }
+
+    .avatar-placeholder {
+        font-size: 2rem;
+    }
+
+    .equipe-card h3 {
+        font-size: 1rem;
+    }
+
+    .equipe-card .equipe-poste {
+        font-size: 0.62rem;
+        padding: 0.2rem 0.7rem;
+    }
+
+    .equipe-card .equipe-bio {
+        font-size: 0.8rem;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .equipe-card .equipe-social a {
+        width: 38px;
+        height: 38px;
+        font-size: 0.9rem;
     }
 
     .palmares-grid {
@@ -615,56 +671,45 @@
     }
 }
 
-/* Petits mobiles */
+/* ============================================================
+   RESPONSIVE — PETITS MOBILES
+   ============================================================ */
 @media (max-width: 480px) {
-    .slide {
-        flex: 0 0 calc(100% - 0.5rem);
-        min-width: 0;
+    .equipe-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
     }
 
-    .slider-wrapper {
-        padding: 0 0.5rem;
+    .equipe-card {
+        border-radius: var(--eq-radius-md);
+        padding: 1.5rem 1.2rem;
     }
 
-    .slider-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 0.75rem;
+    .equipe-avatar {
+        width: 100px;
+        height: 100px;
     }
 
-    .slider-btn.prev {
-        left: -4px;
-    }
-
-    .slider-btn.next {
-        right: -4px;
-    }
-
-    .equipe-card .avatar {
-        width: 80px;
-        height: 80px;
-    }
-
-    .equipe-card .avatar.avatar-initials {
-        font-size: 1.8rem;
+    .avatar-placeholder {
+        font-size: 2.2rem;
     }
 
     .equipe-card h3 {
-        font-size: 0.95rem;
+        font-size: 1.05rem;
     }
 
-    .equipe-card .poste {
-        font-size: 0.7rem;
+    .equipe-card .equipe-poste {
+        font-size: 0.65rem;
     }
 
-    .equipe-card .bio {
-        font-size: 0.8rem;
-    }
-
-    .equipe-card .social a {
-        width: 36px;
-        height: 36px;
+    .equipe-card .equipe-bio {
         font-size: 0.85rem;
+    }
+
+    .equipe-card .equipe-social a {
+        width: 40px;
+        height: 40px;
+        font-size: 0.95rem;
     }
 
     .palmares-grid {
@@ -692,39 +737,180 @@
     .stat-box p {
         font-size: 0.75rem;
     }
-
-    .slider-dots .dot {
-        width: 8px;
-        height: 8px;
-    }
-
-    .slider-dots .dot.active {
-        width: 24px;
-    }
 }
 
-/* Très petits écrans */
+/* ============================================================
+   RESPONSIVE — TRÈS PETITS ÉCRANS
+   ============================================================ */
 @media (max-width: 380px) {
-    .slide {
-        flex: 0 0 100%;
+    .equipe-section,
+    .palmares-section {
+        padding: 2rem 0;
     }
 
-    .slider-btn {
-        display: none;
+    .section-header h2 {
+        font-size: 1.3rem;
     }
 
-    .slider-wrapper {
-        padding: 0;
+    .equipe-card {
+        padding: 1.2rem 0.9rem;
     }
 
-    .equipe-card .avatar {
-        width: 70px;
-        height: 70px;
+    .equipe-avatar {
+        width: 80px;
+        height: 80px;
+        border-width: 3px;
+    }
+
+    .avatar-placeholder {
+        font-size: 1.8rem;
+    }
+
+    .equipe-card h3 {
+        font-size: 0.95rem;
+    }
+
+    .equipe-card .equipe-bio {
+        font-size: 0.78rem;
+    }
+
+    .equipe-card .equipe-social a {
+        width: 36px;
+        height: 36px;
+        font-size: 0.85rem;
+    }
+
+    .palmares-card img {
+        height: 170px;
     }
 
     .stats-detailed {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE — ULTRA-SMALL (< 300px)
+   ============================================================ */
+@media (max-width: 300px) {
+    .equipe-section,
+    .palmares-section {
+        padding: 1.5rem 0;
+    }
+
+    .equipe-section .container,
+    .palmares-section .container {
+        padding: 0 0.5rem;
+    }
+
+    .section-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .section-header .sub-title {
+        font-size: 0.55rem;
+        padding: 0.15rem 0.6rem;
+        letter-spacing: 0.1em;
+    }
+
+    .section-header h2 {
+        font-size: 1rem;
+        line-height: 1.25;
+    }
+
+    .section-header p {
+        font-size: 0.7rem;
+        line-height: 1.4;
+    }
+
+    .equipe-grid {
+        gap: 0.6rem;
+    }
+
+    .equipe-card {
+        padding: 0.9rem 0.7rem;
+        border-radius: 10px;
+    }
+
+    .equipe-avatar {
+        width: 60px;
+        height: 60px;
+        border-width: 2px;
+        margin-bottom: 0.6rem;
+    }
+
+    .avatar-placeholder {
+        font-size: 1.4rem;
+    }
+
+    .equipe-card h3 {
+        font-size: 0.78rem;
+        line-height: 1.2;
+    }
+
+    .equipe-card .equipe-poste {
+        font-size: 0.55rem;
+        padding: 0.15rem 0.5rem;
+    }
+
+    .equipe-card .equipe-bio {
+        font-size: 0.65rem;
+        line-height: 1.4;
+        margin-bottom: 0.6rem;
+    }
+
+    .equipe-card .equipe-social {
         gap: 0.4rem;
+    }
+
+    .equipe-card .equipe-social a {
+        width: 30px;
+        height: 30px;
+        font-size: 0.7rem;
+    }
+
+    .palmares-grid {
+        gap: 0.5rem;
+    }
+
+    .palmares-card {
+        border-radius: 10px;
+    }
+
+    .palmares-card img {
+        height: 140px;
+    }
+
+    .palmares-card .info {
+        padding: 0.6rem 0.5rem;
+    }
+
+    .palmares-card .info h4 {
+        font-size: 0.72rem;
+    }
+
+    .palmares-card .info .filiere,
+    .palmares-card .info .annee {
+        font-size: 0.6rem;
+    }
+
+    .stats-detailed {
+        gap: 0.4rem;
+        margin-top: 1rem;
+    }
+
+    .stat-box {
+        padding: 0.6rem 0.5rem;
+        border-radius: 9px;
+    }
+
+    .stat-box h3 {
+        font-size: 1rem;
+    }
+
+    .stat-box p {
+        font-size: 0.6rem;
     }
 }
 
@@ -756,8 +942,8 @@
 @media (prefers-reduced-motion: reduce) {
     .equipe-card,
     .equipe-card::before,
-    .equipe-card .avatar img,
-    .equipe-card .social a,
+    .equipe-avatar img,
+    .equipe-card .equipe-social a,
     .palmares-card,
     .palmares-card img,
     .stat-box {
@@ -775,9 +961,5 @@
     [data-aos] {
         opacity: 1;
         transform: none;
-    }
-
-    .slider-container {
-        scroll-behavior: auto;
     }
 }
