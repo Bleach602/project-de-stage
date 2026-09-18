@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -104,17 +105,56 @@ public class CandidatureServiceImpl implements CandidatureService {
 
     }
 
-    @Override
-    public String demanderCorrection(Long id, String messageCorrection) {
 
-        if (messageCorrection == null || messageCorrection.isBlank()){
+
+//    @Override
+//    public String demanderCorrection(Long id, String messageCorrection) {
+//
+//        if (messageCorrection == null || messageCorrection.isBlank()){
+//            throw new IllegalArgumentException("Message de correction est obligatoire.");
+//        }
+//
+//        Candidature candidature = trouverParId(id);
+//        verifierTransitionDepuisEnAttente(candidature);
+//        candidature.setStatutCandidature(StatutCandidature.EN_COURS_DE_CORRECTION);
+//        candidature.setMessageCorrection(messageCorrection);
+//        candidatureRepository.save(candidature);
+//
+//        return genererUrlWhatsApp(id);
+//    }
+
+    @Override
+    @Transactional
+    public String demanderCorrection(Long id,
+                                     List<TypeDocument> documents,
+                                     String messageCorrection) {
+
+        if (messageCorrection == null || messageCorrection.isBlank()) {
             throw new IllegalArgumentException("Message de correction est obligatoire.");
         }
 
+        if (documents == null || documents.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Veuillez sélectionner au moins un document à corriger.");
+        }
+
         Candidature candidature = trouverParId(id);
+
+        // Vérifie que la limite de 2 corrections n'est pas atteinte
+        if (candidature.getNombreTentativesCorrection() >= 2) {
+            throw new IllegalStateException(
+                    "Limite de corrections atteinte (maximum 2).");
+        }
+
         verifierTransitionDepuisEnAttente(candidature);
+
+        // ✅ Remplir la liste des docs à corriger
+        candidature.getDocumentsACorriger().clear();
+        candidature.getDocumentsACorriger().addAll(documents);
+
         candidature.setStatutCandidature(StatutCandidature.EN_COURS_DE_CORRECTION);
         candidature.setMessageCorrection(messageCorrection);
+
         candidatureRepository.save(candidature);
 
         return genererUrlWhatsApp(id);
@@ -270,6 +310,14 @@ public class CandidatureServiceImpl implements CandidatureService {
     }
 
 
+    @Override
+    public Optional<Candidature> findDerniereCandidature(String email) {
+        Utilisateur utilisateur = utilisateurRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable."));
+        return candidatureRepository
+                .findFirstByUtilisateurOrderByDateCandidatureDesc(utilisateur);
+    }
 
 
     public MultipartFile validateImage(MultipartFile file) {
@@ -350,35 +398,72 @@ public class CandidatureServiceImpl implements CandidatureService {
             return String.format(
                     "Bonjour %s %s,\n\n" +
                             "Email : %s\n\n" +
-                            "Sujet : VALIDATION DE VOTRE DEMANDE\n\n" +
-                            "Message : Votre candidature pour la Spécialité « %s » a été validée.\n" +
-                            "Vous pouvez retourner sur votre tableau de bord pour effectuer le paiement des frais d'inscription.\n\n" +
-                            "Merci de nous avoir fait confiance.",
+                            "Sujet : ✅ VALIDATION DE VOTRE CANDIDATURE\n\n" +
+                            "Message :\n" +
+                            "Excellente nouvelle ! Votre candidature pour la Spécialité « %s » " +
+                            "a été validée par l'administration.\n\n" +
+                            "👉 Prochaine étape : connectez-vous à votre tableau de bord " +
+                            "pour effectuer le paiement des frais d'inscription.\n\n" +
+                            "Merci de votre confiance.",
+
                     prenom, nom, email, specialite
             );
         }
 
-        else if(candidature.getStatutCandidature() == StatutCandidature.EN_COURS_DE_CORRECTION){
+        else if (candidature.getStatutCandidature() == StatutCandidature.EN_COURS_DE_CORRECTION) {
+
+            String documents = "vos documents";
+
+            if (candidature.getDocumentsACorriger() != null
+                    && !candidature.getDocumentsACorriger().isEmpty()) {
+
+                documents = candidature.getDocumentsACorriger()
+                        .toString()
+                        .replace("[", "")
+                        .replace("]", "");
+            }
+
+            int tentative = candidature.getNombreTentativesCorrection() + 1;
+
             return String.format(
                     "Bonjour %s %s,\n\n" +
                             "Email : %s\n\n" +
-                            "Sujet :CORRECTION DE VOTRE DEMANDE\n\n" +
-                            "Message : Votre candidature pour la Spécialité « %s » est en encours de correction.\n" +
-                            "Vous pouvez retourner sur votre tableau de bord pour effectuer les modifications nécessaire.\n\n" +
-                            "Merci de nous avoir fait confiance.",
-                    prenom, nom, email, specialite
+                            "Sujet : CORRECTION DEMANDÉE SUR VOTRE CANDIDATURE\n\n" +
+                            "Message : Votre dossier pour la Spécialité « %s » nécessite une correction.\n" +
+                            "Documents concernés : %s\n" +
+                            "Motif : %s\n" +
+                            "Tentative : %d/2\n\n" +
+                            "Connectez-vous à votre tableau de bord, rubrique Mes documents, " +
+                            "pour déposer les fichiers corrigés.\n\n" +
+                            "Merci.",
+
+                    prenom, nom, email, specialite,
+                    documents,
+                    candidature.getMessageCorrection(),
+                    tentative
             );
         }
+
         else {
             return String.format(
+
                     "Bonjour %s %s,\n\n" +
                             "Email : %s\n\n" +
-                            "Sujet : REJET DE VOTRE DEMANDE\n\n" +
-                            "Message : Votre candidature pour la Spécialité « %s » a été rejetée.\n" +
-                            "Motif : %s",
+                            "Sujet : ❌ REJET DE VOTRE CANDIDATURE\n\n" +
+                            "Message :\n" +
+                            "Après étude attentive de votre dossier pour la Spécialité « %s », " +
+                            "nous sommes au regret de vous informer que votre candidature n'a pas été retenue.\n\n" +
+                            "💬 Motif : %s\n\n" +
+                            "Vous pouvez néanmoins déposer une nouvelle candidature si une autre " +
+                            "session est ouverte.\n\n" +
+                            "Merci de votre compréhension.",
+
                     prenom, nom, email, specialite, candidature.getMotifRejet()
             );
         }
     }
 
 }
+
+
+

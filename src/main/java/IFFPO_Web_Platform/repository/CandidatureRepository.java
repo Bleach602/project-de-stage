@@ -59,4 +59,11 @@ public interface CandidatureRepository extends JpaRepository<Candidature, Long>,
     List<Object[]> countCandidaturesParFiliere(@Param("debut") LocalDate debut, @Param("fin") LocalDate fin);
 
 
+    @Query("SELECT c FROM Candidature c " +
+            "WHERE c.statutCandidature = :statut " +
+            "AND c.nombreTentativesCorrection > 0")
+    List<Candidature> findCorrigeesEnAttenteRelecture(
+            @Param("statut") StatutCandidature statut);
+
+
 }

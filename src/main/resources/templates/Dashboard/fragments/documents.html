@@ -17,6 +17,27 @@
         </div>
 
         <!-- ============================================================
+        BANDEAU D'ALERTE (si correction demandée)
+        ============================================================ -->
+        <div th:if="${candidature != null
+                      and candidature.statutCandidature.name() == 'EN_COURS_DE_CORRECTION'}"
+             class="alert alert-warning d-flex align-items-center m-3"
+             role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            <div>
+                <strong>Correction demandée.</strong>
+                <span th:text="${candidature.messageCorrection}">Motif...</span>
+                <br>
+                <small>
+                    Tentative
+                    <span th:text="${candidature.nombreTentativesCorrection + 1}">1</span>
+                    / 2 — Documents concernés :
+                    <span th:text="${#strings.setJoin(candidature.documentsACorriger, ', ')}">CNI</span>
+                </small>
+            </div>
+        </div>
+
+        <!-- ============================================================
         TABLEAU DES DOCUMENTS
         ============================================================ -->
         <div class="table-responsive documents-table" style="overflow: scroll; scrollbar-width: none">
@@ -30,36 +51,45 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="document : ${documents}">
-                    <!-- Type de document avec icône -->
+                <tr th:each="document : ${documents}"
+                    th:classappend="${document.aCorriger} ? 'row-a-corriger' : ''">
+
+                    <!-- Type de document avec icône + badge -->
                     <td>
-                            <span class="doc-type-badge" th:classappend="${document.typeDocument}">
-                                <i class="fas" th:classappend="${document.typeDocument == 'CNI' ? 'fa-id-card' : 
-                                                                   document.typeDocument == 'Diplôme' ? 'fa-certificate' : 
-                                                                   document.typeDocument == 'Acte de naissance' ? 'fa-file-alt' : 
-                                                                   'fa-file'}"></i>
-                                <span th:text="${document.typeDocument}">CNI</span>
-                            </span>
+                        <span class="doc-type-badge" th:classappend="${document.typeDocument}">
+                            <i class="fas" th:classappend="${document.typeDocument == 'CNI' ? 'fa-id-card' :
+                                                               document.typeDocument == 'Diplôme' ? 'fa-certificate' :
+                                                               document.typeDocument == 'Acte de naissance' ? 'fa-file-alt' :
+                                                               'fa-file'}"></i>
+                            <span th:text="${document.typeDocument}">CNI</span>
+                        </span>
+                        <span th:if="${document.aCorriger}"
+                              class="badge bg-warning text-dark ms-2">
+                            <i class="fas fa-exclamation-triangle"></i> À corriger
+                        </span>
                     </td>
 
                     <!-- Nom du fichier -->
                     <td>
-                            <span class="doc-file-name">
-                                <i class="fas fa-file-pdf" th:if="${document.nomFichier.endsWith('.pdf')}"></i>
-                                <i class="fas fa-file-image" th:if="${document.nomFichier.endsWith('.jpg') or document.nomFichier.endsWith('.png')}"></i>
-                                <span th:text="${document.nomFichier}">document.pdf</span>
-                            </span>
+                        <span class="doc-file-name">
+                            <i class="fas fa-file-pdf" th:if="${document.nomFichier.endsWith('.pdf')}"></i>
+                            <i class="fas fa-file-image" th:if="${document.nomFichier.endsWith('.jpg') or document.nomFichier.endsWith('.png')}"></i>
+                            <span th:text="${document.nomFichier}">document.pdf</span>
+                        </span>
                     </td>
 
                     <!-- Date de modification -->
                     <td>
-                            <span class="doc-date">
-                                <i class="far fa-calendar-alt"></i>
-                                <span th:text="${#temporals.format(document.dateModification, 'dd/MM/yyyy HH:mm')}">15/06/2026 14:30</span>
-                            </span>
+                        <span class="doc-date">
+                            <i class="far fa-calendar-alt"></i>
+                            <span th:text="${#temporals.format(document.dateModification, 'dd/MM/yyyy HH:mm')}">15/06/2026 14:30</span>
+                        </span>
                     </td>
 
                     <!-- Actions -->
+                    <td>
+
+                        <!-- Actions -->
                     <td>
                         <div class="doc-actions">
                             <a th:href="@{/candidat/document/{id}/voir(id=${document.id})}"
@@ -67,15 +97,49 @@
                                class="btn btn-info btn-sm">
                                 <i class="fas fa-eye"></i> Voir
                             </a>
+
+                            <!-- Bouton Modifier : 2 styles distincts -->
                             <button type="button"
-                                    class="btn btn-warning btn-sm btnModifier"
+                                    class="btn btn-sm btnModifier"
+                                    th:classappend="${document.aCorriger}
+                                ? 'btn-corriger-pulse'
+                                : 'btn-outline-secondary'"
+                                    th:disabled="${candidature != null
+                               and candidature.nombreTentativesCorrection >= 2
+                               and !document.aCorriger}"
                                     th:data-id="${document.id}"
                                     th:data-type="${document.typeDocument}"
                                     th:data-nom="${document.nomFichier}">
-                                <i class="fas fa-edit"></i> Modifier
+                                <i class="fas"
+                                   th:classappend="${document.aCorriger} ? 'fa-edit' : 'fa-edit'"></i>
+                                <span th:text="${document.aCorriger} ? 'Corriger' : 'Modifier'">Modifier</span>
                             </button>
                         </div>
                     </td>
+
+<!--                        <div class="doc-actions">-->
+<!--                            <a th:href="@{/candidat/document/{id}/voir(id=${document.id})}"-->
+<!--                               target="_blank"-->
+<!--                               class="btn btn-info btn-sm">-->
+<!--                                <i class="fas fa-eye"></i> Voir-->
+<!--                            </a>-->
+
+<!--                            &lt;!&ndash; Bouton Modifier :-->
+<!--                                 - désactivé si limite atteinte ET doc pas à corriger-->
+<!--                                 - surligné si doc à corriger &ndash;&gt;-->
+<!--                            <button type="button"-->
+<!--                                    class="btn btn-warning btn-sm btnModifier"-->
+<!--                                    th:classappend="${document.aCorriger} ? 'pulse-correction' : ''"-->
+<!--                                    th:disabled="${candidature != null-->
+<!--                                                   and candidature.nombreTentativesCorrection >= 2-->
+<!--                                                   and !document.aCorriger}"-->
+<!--                                    th:data-id="${document.id}"-->
+<!--                                    th:data-type="${document.typeDocument}"-->
+<!--                                    th:data-nom="${document.nomFichier}">-->
+<!--                                <i class="fas fa-edit"></i> Modifier-->
+<!--                            </button>-->
+<!--                        </div>-->
+<!--                    </td>-->
                 </tr>
 
                 <!-- Si aucun document -->
@@ -92,13 +156,8 @@
             </table>
         </div>
 
-        <!-- ============================================================
-        FOOTER DE LA CARTE (bouton d'ajout)
-        ============================================================ -->
+        <!-- Footer -->
         <div class="documents-footer">
-<!--            <button type="button" class="btn btn-outline btn-add-document" id="addDocumentBtn">-->
-<!--                <i class="fas fa-plus"></i> Ajouter un document-->
-<!--            </button>-->
             <span class="documents-info">
                 <i class="fas fa-info-circle"></i> Formats acceptés : PDF, JPG, PNG (max 5 Mo)
             </span>
@@ -126,19 +185,15 @@
             <form th:action="@{/candidat/document/remplacer}" method="post" enctype="multipart/form-data">
                 <input type="hidden"
                        th:name="${_csrf.parameterName}"
-                       th:value="${_csrf.token}"
-                >
-
+                       th:value="${_csrf.token}">
 
                 <input type="hidden" id="documentId" name="documentId">
 
-                <!-- Document actuel -->
                 <div class="popup-current-file">
                     <span class="current-label">Document actuel :</span>
                     <span class="current-name" id="currentDocName">document.pdf</span>
                 </div>
 
-                <!-- Nouveau fichier -->
                 <div class="form-group file-upload-group">
                     <label>
                         <i class="fas fa-upload"></i> Nouveau fichier *

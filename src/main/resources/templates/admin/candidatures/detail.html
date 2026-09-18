@@ -951,23 +951,58 @@
      aria-modal="true"
      aria-labelledby="modalCorrectionTitle">
 
-    ```
     <div class="modal-box">
 
         <h3 id="modalCorrectionTitle">
-
             <i class="bx bx-edit-alt"></i>
-
-            <span>
-            Demander une correction
-        </span>
-
+            <span>Demander une correction</span>
         </h3>
-
 
         <form th:action="@{/dashboard/candidatures/{id}/demander-correction(id=${candidature.id})}"
               method="post">
 
+            <!-- ⚠️ NOUVEAU : sélection des documents -->
+            <div class="form-group">
+
+                <label>
+                    Documents à corriger <span aria-hidden="true">*</span>
+                </label>
+
+                <div class="checkbox-group">
+
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="documents" value="CNI">
+                        <span>
+                            <i class="bx bx-id-card"></i>
+                            CNI
+                        </span>
+                    </label>
+
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="documents" value="DIPLOME">
+                        <span>
+                            <i class="bx bx-certification"></i>
+                            Diplôme
+                        </span>
+                    </label>
+
+                    <label class="checkbox-item">
+                        <input type="checkbox" name="documents" value="ACTE_NAISSANCE">
+                        <span>
+                            <i class="bx bx-file"></i>
+                            Acte de naissance
+                        </span>
+                    </label>
+
+                </div>
+
+                <small class="form-hint">
+                    Sélectionnez au moins un document.
+                </small>
+
+            </div>
+
+            <!-- Message pour le candidat -->
             <div class="form-group">
 
                 <label for="messageCorrection">
@@ -979,35 +1014,23 @@
                           name="messageCorrection"
                           rows="5"
                           required
-                          placeholder="Ex : Votre acte de naissance est illisible, merci de le redéposer."></textarea>
+                          placeholder="Ex : Votre CNI est floue, merci de la redéposer."></textarea>
 
             </div>
-
 
             <div class="form-actions">
 
                 <button type="submit"
                         class="btn btn-primary">
-
                     <i class="bx bx-send"></i>
-
-                    <span>
-                    Envoyer la demande
-                </span>
-
+                    <span>Envoyer la demande</span>
                 </button>
-
 
                 <button type="button"
                         class="btn btn-outline"
                         onclick="fermerModal('modalCorrection')">
-
                     <i class="bx bx-x"></i>
-
-                    <span>
-                    Annuler
-                </span>
-
+                    <span>Annuler</span>
                 </button>
 
             </div>
@@ -1015,7 +1038,6 @@
         </form>
 
     </div>
-    ```
 
 </div>
 

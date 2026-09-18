@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -97,5 +99,28 @@ public class Candidature {
 
 
 
+
+    @ElementCollection(targetClass = TypeDocument.class, fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "candidature_documents_a_corriger",
+            joinColumns = @JoinColumn(name = "candidature_id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type_document")
+    private Set<TypeDocument> documentsACorriger = new HashSet<>();
+
+    // Méthodes utilitaires
+    public boolean peutEncoreCorriger() {
+        return this.nombreTentativesCorrection < 2;
+    }
+
+    public boolean estEnCorrection() {
+        return this.statutCandidature == StatutCandidature.EN_COURS_DE_CORRECTION;
+    }
+
+    public boolean estModifiable() {
+        return this.statutCandidature == StatutCandidature.EN_ATTENTE
+                || this.statutCandidature == StatutCandidature.EN_COURS_DE_CORRECTION;
+    }
 
 }

@@ -5,6 +5,7 @@ import IFFPO_Web_Platform.entity.FicheInscription;
 import IFFPO_Web_Platform.entity.SessionCandidature;
 import IFFPO_Web_Platform.entity.Utilisateur;
 import IFFPO_Web_Platform.entity.enums.StatutCandidature;
+import IFFPO_Web_Platform.entity.enums.TypeDocument;
 import IFFPO_Web_Platform.repository.FiliereRepository;
 import IFFPO_Web_Platform.repository.SessionRepository;
 import IFFPO_Web_Platform.repository.SpecialiteRepository;
@@ -24,6 +25,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/dashboard/candidatures")
@@ -123,11 +126,21 @@ public class CandidatureController {
     }
 
     @PostMapping("/{id}/demander-correction")
-    public String demanderCorrection(@PathVariable Long id, @RequestParam String messageCorrection,
-                                     RedirectAttributes redirectAttributes){
+    public String demanderCorrection(
+            @PathVariable Long id,
+            @RequestParam(required = false) List<TypeDocument> documents,
+            @RequestParam String messageCorrection,
+            RedirectAttributes redirectAttributes) {
 
         try {
-            String whatsappUrl  = candidatureService.demanderCorrection(id, messageCorrection);
+            // ⚠️ vérif : au moins un document coché
+            if (documents == null || documents.isEmpty()) {
+                throw new IllegalArgumentException(
+                        "Veuillez sélectionner au moins un document à corriger.");
+            }
+
+            String whatsappUrl = candidatureService.demanderCorrection(
+                    id, documents, messageCorrection);
 
             redirectAttributes.addFlashAttribute("succes",
                     "Demande de correction envoyée au candidat");
@@ -135,8 +148,7 @@ public class CandidatureController {
             return "redirect:" + whatsappUrl;
 
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("erreur",
-                    e.getMessage());
+            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
         }
 
         return "redirect:/dashboard/candidatures/" + id;

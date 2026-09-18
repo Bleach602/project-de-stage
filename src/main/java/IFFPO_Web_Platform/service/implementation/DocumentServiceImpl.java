@@ -4,6 +4,7 @@ import IFFPO_Web_Platform.dto.DocumentDTO;
 import IFFPO_Web_Platform.dto.cloudinary.CloudinaryResponse;
 import IFFPO_Web_Platform.entity.*;
 import IFFPO_Web_Platform.entity.enums.StatutCandidature;
+import IFFPO_Web_Platform.entity.enums.TypeDocument;
 import IFFPO_Web_Platform.repository.*;
 import IFFPO_Web_Platform.service.Cloudinary.CloudinaryService;
 import IFFPO_Web_Platform.service.DocumentService;
@@ -162,6 +163,144 @@ public class DocumentServiceImpl
     // REMPLACER UN DOCUMENT
     // ============================================================
 
+//    @Override
+//    @Transactional
+//    public void remplacerDocument(
+//            Long documentId,
+//            MultipartFile nouveauFichier
+//    ) throws IOException {
+//
+//
+//        if (nouveauFichier == null ||
+//                nouveauFichier.isEmpty()) {
+//
+//            throw new IllegalArgumentException(
+//                    "Aucun nouveau fichier sélectionné."
+//            );
+//        }
+//
+//
+//        /*
+//         * Recherche du document.
+//         */
+//        Document document =
+//                documentRepository
+//                        .findById(documentId)
+//                        .orElseThrow(() ->
+//                                new RuntimeException(
+//                                        "Document introuvable."
+//                                )
+//                        );
+//
+//
+//        /*
+//         * Vérification de la candidature.
+//         */
+//        Candidature candidature =
+//                document.getCandidature();
+//
+//
+//        if (candidature == null) {
+//
+//            throw new RuntimeException(
+//                    "Ce document n'est associé à aucune candidature."
+//            );
+//        }
+//
+//
+//        /*
+//         * Le document ne peut être modifié
+//         * que lorsque la candidature est EN_ATTENTE.
+//         */
+//        if (candidature.getStatutCandidature()
+//                != StatutCandidature.EN_ATTENTE) {
+//
+//            throw new RuntimeException(
+//                    "Votre dossier est déjà traité. " +
+//                            "Les documents ne peuvent plus être modifiés."
+//            );
+//        }
+//
+//
+//        /*
+//         * Sauvegarde des anciennes informations
+//         * au cas où nous aurions besoin de supprimer
+//         * l'ancien fichier Cloudinary après le nouvel upload.
+//         */
+//        String ancienPublicId =
+//                document.getPublicId();
+//
+//        String ancienResourceType =
+//                document.getResourceType();
+//
+//
+//        /*
+//         * Upload du nouveau document.
+//         */
+//        CloudinaryResponse response =
+//                cloudinaryService.uploadFile(
+//                        nouveauFichier,
+//                        document.getTypeDocument()
+//                );
+//
+//
+//        /*
+//         * Mise à jour des informations.
+//         */
+//        document.setNomFichier(
+//                nouveauFichier.getOriginalFilename()
+//        );
+//
+//
+//        document.setUrl(
+//                response.getSecureUrl()
+//        );
+//
+//
+//        document.setPublicId(
+//                response.getPublicId()
+//        );
+//
+//
+//        document.setResourceType(
+//                response.getResourceType()
+//        );
+//
+//
+//        documentRepository.save(document);
+//
+//
+//        /*
+//         * Suppression de l'ancien fichier
+//         * seulement après que le nouveau fichier
+//         * a été correctement envoyé.
+//         */
+//        if (ancienPublicId != null &&
+//                !ancienPublicId.isBlank()) {
+//
+//            try {
+//
+//                cloudinaryService.deleteFile(
+//                        ancienPublicId,
+//                        ancienResourceType
+//                );
+//
+//            } catch (Exception e) {
+//
+//                /*
+//                 * Le nouveau document est déjà enregistré.
+//                 *
+//                 * On ne fait donc pas échouer
+//                 * toute l'opération.
+//                 */
+//                System.err.println(
+//                        "Impossible de supprimer l'ancien fichier Cloudinary : "
+//                                + e.getMessage()
+//                );
+//            }
+//        }
+//    }
+
     @Override
     @Transactional
     public void remplacerDocument(
@@ -169,134 +308,108 @@ public class DocumentServiceImpl
             MultipartFile nouveauFichier
     ) throws IOException {
 
-
-        if (nouveauFichier == null ||
-                nouveauFichier.isEmpty()) {
-
+        if (nouveauFichier == null || nouveauFichier.isEmpty()) {
             throw new IllegalArgumentException(
-                    "Aucun nouveau fichier sélectionné."
-            );
+                    "Aucun nouveau fichier sélectionné.");
         }
 
+        // 1. Récupérer le document
+        Document document = documentRepository
+                .findById(documentId)
+                .orElseThrow(() -> new RuntimeException("Document introuvable."));
 
-        /*
-         * Recherche du document.
-         */
-        Document document =
-                documentRepository
-                        .findById(documentId)
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Document introuvable."
-                                )
-                        );
-
-
-        /*
-         * Vérification de la candidature.
-         */
-        Candidature candidature =
-                document.getCandidature();
-
-
+        // 2. Récupérer la candidature
+        Candidature candidature = document.getCandidature();
         if (candidature == null) {
-
             throw new RuntimeException(
-                    "Ce document n'est associé à aucune candidature."
-            );
+                    "Ce document n'est associé à aucune candidature.");
         }
 
+        // 3. ⚠️ VÉRIFICATION ÉTENDUE
+        //    EN_ATTENTE  → modif libre
+        //    EN_COURS_DE_CORRECTION → modif autorisée UNIQUEMENT sur les docs demandés
+        StatutCandidature statut = candidature.getStatutCandidature();
 
-        /*
-         * Le document ne peut être modifié
-         * que lorsque la candidature est EN_ATTENTE.
-         */
-        if (candidature.getStatutCandidature()
-                != StatutCandidature.EN_ATTENTE) {
-
+        if (statut != StatutCandidature.EN_ATTENTE
+                && statut != StatutCandidature.EN_COURS_DE_CORRECTION) {
             throw new RuntimeException(
                     "Votre dossier est déjà traité. " +
-                            "Les documents ne peuvent plus être modifiés."
-            );
+                            "Les documents ne peuvent plus être modifiés.");
         }
 
+        TypeDocument typeDoc = document.getTypeDocument();
+        boolean docConcerneParCorrection = candidature
+                .getDocumentsACorriger()
+                .contains(typeDoc);
 
-        /*
-         * Sauvegarde des anciennes informations
-         * au cas où nous aurions besoin de supprimer
-         * l'ancien fichier Cloudinary après le nouvel upload.
-         */
-        String ancienPublicId =
-                document.getPublicId();
+        // 4. Si en correction : autoriser uniquement les docs demandés
+        if (statut == StatutCandidature.EN_COURS_DE_CORRECTION
+                && !docConcerneParCorrection) {
+            throw new RuntimeException(
+                    "Ce document n'est pas concerné par la correction demandée.");
+        }
 
-        String ancienResourceType =
-                document.getResourceType();
+        // 5. Si en correction et limite atteinte → bloquer
+        if (statut == StatutCandidature.EN_COURS_DE_CORRECTION
+                && !candidature.peutEncoreCorriger()) {
+            throw new RuntimeException(
+                    "Limite de corrections atteinte. " +
+                            "Contactez l'administration.");
+        }
 
+        // 6. Upload du nouveau fichier
+        String ancienPublicId = document.getPublicId();
+        String ancienResourceType = document.getResourceType();
 
-        /*
-         * Upload du nouveau document.
-         */
-        CloudinaryResponse response =
-                cloudinaryService.uploadFile(
-                        nouveauFichier,
-                        document.getTypeDocument()
-                );
-
-
-        /*
-         * Mise à jour des informations.
-         */
-        document.setNomFichier(
-                nouveauFichier.getOriginalFilename()
+        CloudinaryResponse response = cloudinaryService.uploadFile(
+                nouveauFichier,
+                typeDoc
         );
 
-
-        document.setUrl(
-                response.getSecureUrl()
-        );
-
-
-        document.setPublicId(
-                response.getPublicId()
-        );
-
-
-        document.setResourceType(
-                response.getResourceType()
-        );
-
+        // 7. Mise à jour du document
+        document.setNomFichier(nouveauFichier.getOriginalFilename());
+        document.setUrl(response.getSecureUrl());
+        document.setPublicId(response.getPublicId());
+        document.setResourceType(response.getResourceType());
 
         documentRepository.save(document);
 
-
-        /*
-         * Suppression de l'ancien fichier
-         * seulement après que le nouveau fichier
-         * a été correctement envoyé.
-         */
-        if (ancienPublicId != null &&
-                !ancienPublicId.isBlank()) {
-
+        // 8. Suppression ancien fichier Cloudinary
+        if (ancienPublicId != null && !ancienPublicId.isBlank()) {
             try {
-
-                cloudinaryService.deleteFile(
-                        ancienPublicId,
-                        ancienResourceType
-                );
-
+                cloudinaryService.deleteFile(ancienPublicId, ancienResourceType);
             } catch (Exception e) {
-
-                /*
-                 * Le nouveau document est déjà enregistré.
-                 *
-                 * On ne fait donc pas échouer
-                 * toute l'opération.
-                 */
                 System.err.println(
                         "Impossible de supprimer l'ancien fichier Cloudinary : "
-                                + e.getMessage()
-                );
+                                + e.getMessage());
             }
+        }
+
+        // ============================================================
+        // 9. LOGIQUE DE CORRECTION
+        // ============================================================
+        if (statut == StatutCandidature.EN_COURS_DE_CORRECTION
+                && docConcerneParCorrection) {
+
+            // Retirer ce doc de la liste "à corriger"
+            candidature.getDocumentsACorriger().remove(typeDoc);
+
+            // Si TOUS les docs demandés ont été corrigés → 1 tentative consommée
+            if (candidature.getDocumentsACorriger().isEmpty()) {
+
+                candidature.setNombreTentativesCorrection(
+                        candidature.getNombreTentativesCorrection() + 1
+                );
+
+                candidature.setStatutCandidature(StatutCandidature.EN_ATTENTE);
+                candidature.setMessageCorrection(null);
+
+                // NOTE : la notification "correction reçue" sera
+                // automatiquement visible via getNotifications()
+                // (voir le case EN_ATTENTE modifié dans NotificationServiceImpl)
+            }
+
+            candidatureRepository.save(candidature);
         }
     }
 
@@ -567,51 +680,43 @@ public class DocumentServiceImpl
 
     @Override
     @Transactional
-    public List<DocumentDTO> getDocuments(
-            String email
-    ) {
-
+    public List<DocumentDTO> getDocuments(String email) {
 
         /*
          * Recherche du candidat.
          */
-        Utilisateur utilisateur =
-                utilisateurRepository
-                        .findByEmail(email)
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Utilisateur introuvable."
-                                )
-                        );
-
+        Utilisateur utilisateur = utilisateurRepository
+                .findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("Utilisateur introuvable."));
 
         /*
          * Recherche de sa dernière candidature.
          */
         Optional<Candidature> candidatureOpt =
                 candidatureRepository
-                        .findFirstByUtilisateurOrderByDateCandidatureDesc(
-                                utilisateur
-                        );
-
+                        .findFirstByUtilisateurOrderByDateCandidatureDesc(utilisateur);
 
         if (candidatureOpt.isEmpty()) {
-
             return Collections.emptyList();
         }
 
-
-        Candidature candidature =
-                candidatureOpt.get();
-
+        Candidature candidature = candidatureOpt.get();
 
         /*
          * Recherche des documents.
          */
         List<Document> documents =
-                documentRepository
-                        .findByCandidature(candidature);
+                documentRepository.findByCandidature(candidature);
 
+        /*
+         * ⚠️ NOUVEAU : liste des types de documents à corriger
+         * (vide si la candidature n'est pas en correction).
+         */
+        java.util.Set<IFFPO_Web_Platform.entity.enums.TypeDocument> aCorriger =
+                candidature.getDocumentsACorriger() != null
+                        ? candidature.getDocumentsACorriger()
+                        : Collections.emptySet();
 
         /*
          * Transformation en DTO.
@@ -619,35 +724,107 @@ public class DocumentServiceImpl
         return documents.stream()
                 .map(document -> {
 
-                    DocumentDTO dto =
-                            new DocumentDTO();
+                    DocumentDTO dto = new DocumentDTO();
 
+                    dto.setId(document.getId());
+                    dto.setNomFichier(document.getNomFichier());
+                    dto.setTypeDocument(document.getTypeDocument());
+                    dto.setDateModification(document.getDateModification());
 
-                    dto.setId(
-                            document.getId()
+                    // ⚠️ NOUVEAU : flag "à corriger"
+                    dto.setACorriger(
+                            aCorriger.contains(document.getTypeDocument())
                     );
-
-
-                    dto.setNomFichier(
-                            document.getNomFichier()
-                    );
-
-
-                    dto.setTypeDocument(
-                            document.getTypeDocument()
-                    );
-
-
-                    dto.setDateModification(
-                            document.getDateModification()
-                    );
-
 
                     return dto;
 
                 })
                 .toList();
     }
+
+//    @Override
+//    @Transactional
+//    public List<DocumentDTO> getDocuments(
+//            String email
+//    ) {
+//
+//
+//        /*
+//         * Recherche du candidat.
+//         */
+//        Utilisateur utilisateur =
+//                utilisateurRepository
+//                        .findByEmail(email)
+//                        .orElseThrow(() ->
+//                                new RuntimeException(
+//                                        "Utilisateur introuvable."
+//                                )
+//                        );
+//
+//
+//        /*
+//         * Recherche de sa dernière candidature.
+//         */
+//        Optional<Candidature> candidatureOpt =
+//                candidatureRepository
+//                        .findFirstByUtilisateurOrderByDateCandidatureDesc(
+//                                utilisateur
+//                        );
+//
+//
+//        if (candidatureOpt.isEmpty()) {
+//
+//            return Collections.emptyList();
+//        }
+//
+//
+//        Candidature candidature =
+//                candidatureOpt.get();
+//
+//
+//        /*
+//         * Recherche des documents.
+//         */
+//        List<Document> documents =
+//                documentRepository
+//                        .findByCandidature(candidature);
+//
+//
+//        /*
+//         * Transformation en DTO.
+//         */
+//        return documents.stream()
+//                .map(document -> {
+//
+//                    DocumentDTO dto =
+//                            new DocumentDTO();
+//
+//
+//                    dto.setId(
+//                            document.getId()
+//                    );
+//
+//
+//                    dto.setNomFichier(
+//                            document.getNomFichier()
+//                    );
+//
+//
+//                    dto.setTypeDocument(
+//                            document.getTypeDocument()
+//                    );
+//
+//
+//                    dto.setDateModification(
+//                            document.getDateModification()
+//                    );
+//
+//
+//                    return dto;
+//
+//                })
+//                .toList();
+//    }
 
 
     // ============================================================

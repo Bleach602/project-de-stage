@@ -95,13 +95,16 @@ public class DashboardController {
                 nombreNotifications);
 
 
+        candidatureService.findDerniereCandidature(email)
+                        .ifPresent(c -> model.addAttribute("candidature", c));
+
+
         model.addAttribute("paiement", paymentService.getDernierPaiement(authentication.getName()));
 
         model.addAttribute("payment", new PaymentRequest());
 
         return "Dashboard/Candidat";
         }
-
 
         @PostMapping("/profile/update")
         public String UpdateProfil( @ModelAttribute InscriptionDTO inscriptionDTO,

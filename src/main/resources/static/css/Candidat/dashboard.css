@@ -2050,6 +2050,155 @@ td img {
     box-shadow: 0 8px 24px rgba(0, 150, 220, 0.3);
 }
 
+/*//pour le boutton de doc*/
+/* ============================================================
+   LIGNE À CORRIGER
+   ============================================================ */
+
+tr.doc-row-corriger {
+    background: #fff8e1 !important;
+    border-left: 4px solid #ff9800;
+}
+
+tr.doc-row-corriger td {
+    background: transparent !important;
+}
+
+tr.doc-row-corriger:hover {
+    background: #ffecb3 !important;
+}
+
+/* ============================================================
+   BADGE "À CORRIGER"
+   ============================================================ */
+
+.badge-corriger {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    margin-left: 8px;
+    background: #ff9800;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border-radius: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 6px rgba(255, 152, 0, 0.4);
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.badge-corriger i {
+    font-size: 0.7rem;
+}
+
+/* ============================================================
+   CELLULE TYPE DOCUMENT (pour aligner badge + type)
+   ============================================================ */
+
+.doc-type-cell {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+/* ============================================================
+   BOUTON "CORRIGER" (orange vif + pulse)
+   ============================================================ */
+
+.btn-corriger-pulse {
+    background: #ff9800 !important;
+    border: 1px solid #ff9800 !important;
+    color: #fff !important;
+    font-weight: 600;
+    animation: pulse-orange 1.8s infinite;
+    transition: all 0.2s;
+}
+
+.btn-corriger-pulse:hover {
+    background: #f57c00 !important;
+    border-color: #f57c00 !important;
+    animation: none;
+    transform: scale(1.05);
+}
+
+@keyframes pulse-orange {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+    }
+}
+
+/* ============================================================
+   BOUTON "MODIFIER" NORMAL (gris discret)
+   ============================================================ */
+
+.btn-outline-secondary {
+    background: #fff;
+    border: 1px solid #cfd8dc;
+    color: #546e7a;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-outline-secondary:hover {
+    background: #eceff1;
+    border-color: #90a4ae;
+    color: #37474f;
+}
+
+/* ============================================================
+   BOUTON DÉSACTIVÉ
+   ============================================================ */
+
+.btnModifier:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    animation: none !important;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+/* ============================================================
+   BANDEAU D'ALERTE (plus joli)
+   ============================================================ */
+
+.alert.alert-warning {
+    background: #fff8e1;
+    border-left: 5px solid #ff9800;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 20px;
+    box-shadow: 0 2px 10px rgba(255, 152, 0, 0.12);
+    color: #5d4037;
+}
+
+.alert.alert-warning strong {
+    color: #e65100;
+    font-size: 1rem;
+}
+
+.alert.alert-warning .fas {
+    font-size: 1.4rem;
+    color: #ff9800;
+}
+
+.alert.alert-warning small {
+    display: inline-block;
+    margin-top: 6px;
+    color: #6d4c41;
+    font-size: 0.85rem;
+}
+
+
 /* ============================================================
    ONGLET CONTACTER L'ADMINISTRATION
    ============================================================ */
@@ -3243,3 +3392,4 @@ td img {
         transition-duration: 0.01ms !important;
     }
 }
+

@@ -28,5 +28,5 @@ public class DocumentDTO {
 
     private LocalDateTime dateModification;
 
-
+    private boolean aCorriger;  // + getter/setter Lombok
 }

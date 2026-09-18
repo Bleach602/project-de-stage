@@ -2,11 +2,14 @@ package IFFPO_Web_Platform.service;
 
 import IFFPO_Web_Platform.entity.Candidature;
 import IFFPO_Web_Platform.entity.enums.StatutCandidature;
+import IFFPO_Web_Platform.entity.enums.TypeDocument;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 public interface CandidatureService {
 
@@ -17,7 +20,7 @@ public interface CandidatureService {
 
     String valider(Long id);
     String rejeter(Long id, String motifRejet);
-    String demanderCorrection(Long id, String messageCorrection);
+    String demanderCorrection(Long id, List<TypeDocument> documents, String messageCorrection);
 
     void verifierTransitionDepuisEnAttente(Candidature candidature);
 
@@ -44,5 +47,7 @@ public interface CandidatureService {
      * une candidature validée.
      */
     boolean candidatureValidee(String email);
+
+    Optional<Candidature> findDerniereCandidature(String email);
 
 }

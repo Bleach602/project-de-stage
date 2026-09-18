@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static IFFPO_Web_Platform.entity.enums.PaymentStatus.EXPIRED;
 
@@ -90,25 +91,7 @@ public class NotificationServiceImpl implements NotificationService {
 
                     switch (candidature.getStatutCandidature()) {
 
-                        case EN_ATTENTE -> {
 
-                            NotificationDTO attente = new NotificationDTO();
-
-                            attente.setTitre(
-                                    "Dossier en cours d'étude");
-
-                            attente.setMessage(
-                                    "Votre candidature est en cours d'analyse par l'administration.");
-
-                            attente.setDate(
-                                    candidature.getDateCandidature().atStartOfDay());
-
-                            attente.setType(TypeNotification.WARNING);
-
-                            attente.setNouvelle(false);
-
-                            notifications.add(attente);
-                        }
 
                         case VALIDER -> {
 
@@ -149,6 +132,58 @@ public class NotificationServiceImpl implements NotificationService {
                             rejet.setNouvelle(true);
 
                             notifications.add(rejet);
+                        }
+
+                        case EN_COURS_DE_CORRECTION -> {
+
+                            NotificationDTO correction = new NotificationDTO();
+
+                            correction.setTitre("Correction demandée");
+
+                            String docs = (candidature.getDocumentsACorriger() == null
+                                    || candidature.getDocumentsACorriger().isEmpty())
+                                    ? "certains documents"
+                                    : candidature.getDocumentsACorriger().stream()
+                                      .map(Enum::name)
+                                      .collect(Collectors.joining(", "));
+
+                            correction.setMessage(
+                                    "Votre candidature nécessite une correction sur : " + docs
+                                            + ". Motif : " + candidature.getMessageCorrection()
+                                            + ". Tentative " + (candidature.getNombreTentativesCorrection() + 1)
+                                            + "/2."
+                            );
+
+                            correction.setDate(LocalDateTime.now());
+                            correction.setType(TypeNotification.WARNING);
+                            correction.setIcon("fa-exclamation-triangle");
+                            correction.setNouvelle(true);
+
+                            notifications.add(correction);
+                        }
+
+                        case EN_ATTENTE -> {
+
+                            NotificationDTO attente = new NotificationDTO();
+
+                            if (candidature.getNombreTentativesCorrection() > 0) {
+                                // Retour après correction
+                                attente.setTitre("Correction reçue");
+                                attente.setMessage(
+                                        "Vos documents corrigés ont bien été reçus. "
+                                                + "Votre dossier est de nouveau en cours d'analyse.");
+                                attente.setType(TypeNotification.INFO);
+                                attente.setIcon("fa-check-circle");
+                            } else {
+                                attente.setTitre("Dossier en cours d'étude");
+                                attente.setMessage(
+                                        "Votre candidature est en cours d'analyse par l'administration.");
+                                attente.setType(TypeNotification.WARNING);
+                            }
+
+                            attente.setDate(candidature.getDateCandidature().atStartOfDay());
+                            attente.setNouvelle(candidature.getNombreTentativesCorrection() > 0);
+                            notifications.add(attente);
                         }
                     }
 
