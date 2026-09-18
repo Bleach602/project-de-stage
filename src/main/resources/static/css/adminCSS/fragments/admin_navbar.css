@@ -452,3 +452,327 @@
         right: -4px;
     }
 }
+
+/* ============================================================
+   OVERLAY NOTIFICATIONS ADMIN
+   ============================================================ */
+
+.notif-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.45);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+    padding: 70px 20px 20px 20px;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease;
+}
+
+.notif-overlay.notif-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.notif-panel {
+    width: 100%;
+    max-width: 420px;
+    max-height: calc(100vh - 100px);
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateX(20px) translateY(-10px);
+    transition: transform 0.25s ease;
+}
+
+.notif-overlay.notif-visible .notif-panel {
+    transform: translateX(0) translateY(0);
+}
+
+/* ---------- Header ---------- */
+.notif-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 18px;
+    border-bottom: 1px solid #e2e8f0;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+}
+
+.notif-header-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.notif-header-title i {
+    font-size: 1.4rem;
+    color: #2563eb;
+}
+
+.notif-header-title h4 {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e3a8a;
+}
+
+.notif-count-pill {
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    min-width: 22px;
+    text-align: center;
+}
+
+.notif-close {
+    background: transparent;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #64748b;
+    font-size: 1.4rem;
+    transition: background 0.15s;
+}
+
+.notif-close:hover {
+    background: rgba(255, 255, 255, 0.7);
+    color: #1e293b;
+}
+
+/* ---------- Filtres ---------- */
+.notif-filters {
+    display: flex;
+    gap: 6px;
+    padding: 12px 16px 6px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #ffffff;
+}
+
+.notif-filter {
+    background: transparent;
+    border: 1px solid transparent;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.notif-filter:hover {
+    background: #f1f5f9;
+}
+
+.notif-filter.active {
+    background: #dbeafe;
+    color: #1d4ed8;
+    border-color: #93c5fd;
+}
+
+/* ---------- Liste ---------- */
+.notif-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+}
+
+.notif-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notif-list::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+}
+
+/* ---------- Item ---------- */
+.notif-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: inherit;
+    border-left: 3px solid transparent;
+    transition: background 0.15s ease;
+    position: relative;
+}
+
+.notif-item:hover {
+    background: #f8fafc;
+    text-decoration: none;
+    color: inherit;
+}
+
+.notif-item-new {
+    background: #f0f9ff;
+    border-left-color: #0ea5e9;
+}
+
+.notif-item-new:hover {
+    background: #e0f2fe;
+}
+
+.notif-item-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.notif-type-info      { background: #dbeafe; color: #1d4ed8; }
+.notif-type-success   { background: #d1fae5; color: #059669; }
+.notif-type-warning   { background: #fef3c7; color: #d97706; }
+.notif-type-error     { background: #fee2e2; color: #dc2626; }
+
+.notif-item-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.notif-item-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.notif-item-head strong {
+    font-size: 0.88rem;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+.notif-time {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    white-space: nowrap;
+}
+
+.notif-item-body p {
+    margin: 0;
+    font-size: 0.82rem;
+    color: #475569;
+    line-height: 1.35;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.notif-dot {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 8px;
+    height: 8px;
+    background: #0ea5e9;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #ffffff;
+}
+
+/* ---------- Empty / Erreur ---------- */
+.notif-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    color: #94a3b8;
+    text-align: center;
+}
+
+.notif-empty i {
+    font-size: 2.4rem;
+    margin-bottom: 10px;
+    color: #cbd5e1;
+}
+
+.notif-empty.notif-error i {
+    color: #f87171;
+}
+
+.notif-empty p {
+    margin: 0;
+    font-size: 0.88rem;
+}
+
+/* ---------- Footer ---------- */
+.notif-footer {
+    padding: 12px 16px;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    text-align: center;
+}
+
+.notif-footer-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #2563eb;
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.notif-footer-link:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* ---------- Empêcher scroll body ---------- */
+body.notif-open {
+    overflow: hidden;
+}
+
+/* ---------- Badge cloche ---------- */
+.notification-badge .badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    font-size: 0.68rem;
+    font-weight: 700;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 520px) {
+    .notif-overlay {
+        padding: 60px 10px 10px 10px;
+    }
+    .notif-panel {
+        max-width: 100%;
+        max-height: calc(100vh - 80px);
+        border-radius: 12px;
+    }
+    .notif-filters {
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}

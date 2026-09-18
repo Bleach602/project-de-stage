@@ -30,13 +30,16 @@
             <span class="icon-label">Site</span>
         </a>
 
+
         <!-- Notifications -->
         <div class="notification-badge">
             <button class="icon-btn" id="notifBtn" aria-label="Notifications">
                 <i class='bx bx-bell'></i>
                 <span class="notif-ring"></span>
             </button>
-            <span class="badge" th:text="${notificationsCount != null ? notificationsCount : '3'}">3</span>
+            <span class="badge"
+                  id="notifCount"
+                  th:text="${notificationsCount != null ? notificationsCount : '0'}">0</span>
         </div>
 
         <!-- Profil utilisateur -->
@@ -86,5 +89,222 @@
         </div>
 
     </div>
+
+
+    <!-- ============================================================
+     OVERLAY NOTIFICATIONS ADMIN
+     ============================================================ -->
+    <div id="notifOverlay" class="notif-overlay" aria-hidden="true">
+
+        <div class="notif-panel" role="dialog" aria-labelledby="notifTitle">
+
+            <!-- En-tête -->
+            <div class="notif-header">
+                <div class="notif-header-title">
+                    <i class='bx bx-bell'></i>
+                    <h4 id="notifTitle">Notifications</h4>
+                    <span class="notif-count-pill" id="notifHeaderCount">0</span>
+                </div>
+                <button type="button" class="notif-close" id="notifCloseBtn" aria-label="Fermer">
+                    <i class='bx bx-x'></i>
+                </button>
+            </div>
+
+            <!-- Filtres -->
+            <div class="notif-filters">
+                <button type="button" class="notif-filter active" data-filter="all">
+                    Toutes
+                </button>
+                <button type="button" class="notif-filter" data-filter="nouvelle">
+                    Nouvelles
+                </button>
+                <button type="button" class="notif-filter" data-filter="correction">
+                    Corrections
+                </button>
+            </div>
+
+            <!-- Liste scrollable -->
+            <div class="notif-list" id="notifList">
+                <div class="notif-empty">
+                    <i class='bx bx-loader-circle bx-spin'></i>
+                    <p>Chargement...</p>
+                </div>
+            </div>
+
+            <!-- Pied -->
+            <div class="notif-footer">
+                <a th:href="@{/dashboard/candidatures}" class="notif-footer-link">
+                    <i class='bx bx-list-ul'></i>
+                    Voir toutes les candidatures
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script >
+        /* ============================================================
+   NOTIFICATIONS ADMIN — Overlay
+   ============================================================ */
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const notifBtn   = document.getElementById('notifBtn');
+            const overlay    = document.getElementById('notifOverlay');
+            const closeBtn   = document.getElementById('notifCloseBtn');
+            const listEl     = document.getElementById('notifList');
+            const countBadge = document.getElementById('notifCount');
+            const headerCount = document.getElementById('notifHeaderCount');
+            const filters    = document.querySelectorAll('.notif-filter');
+
+            if (!notifBtn || !overlay) return;
+
+            let notifications = [];
+            let currentFilter = 'all';
+
+            // ---------- Ouvrir / Fermer ----------
+            notifBtn.addEventListener('click', ouvrirOverlay);
+            closeBtn.addEventListener('click', fermerOverlay);
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) fermerOverlay();
+            });
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && overlay.classList.contains('notif-visible')) {
+                    fermerOverlay();
+                }
+            });
+
+            function ouvrirOverlay() {
+                overlay.classList.add('notif-visible');
+                overlay.setAttribute('aria-hidden', 'false');
+                document.body.classList.add('notif-open');
+                chargerNotifications();
+            }
+
+            function fermerOverlay() {
+                overlay.classList.remove('notif-visible');
+                overlay.setAttribute('aria-hidden', 'true');
+                document.body.classList.remove('notif-open');
+            }
+
+            // ---------- Fetch ----------
+            async function chargerNotifications() {
+                listEl.innerHTML = `
+            <div class="notif-empty">
+                <i class='bx bx-loader-circle bx-spin'></i>
+                <p>Chargement...</p>
+            </div>`;
+
+                try {
+                    const res = await fetch('/dashboard/notifications', {
+                        headers: { 'Accept': 'application/json' }
+                    });
+
+                    if (!res.ok) throw new Error('Erreur serveur');
+
+                    notifications = await res.json();
+                    majCompteur();
+                    afficherListe();
+
+                } catch (err) {
+                    listEl.innerHTML = `
+                <div class="notif-empty notif-error">
+                    <i class='bx bx-error-circle'></i>
+                    <p>Impossible de charger les notifications.</p>
+                </div>`;
+                }
+            }
+
+            function majCompteur() {
+                const nbNouvelles = notifications.filter(n => n.nouvelle).length;
+
+                if (countBadge) {
+                    if (nbNouvelles > 0) {
+                        countBadge.textContent = nbNouvelles;
+                        countBadge.style.display = 'flex';
+                    } else {
+                        countBadge.style.display = 'none';
+                    }
+                }
+
+                if (headerCount) {
+                    headerCount.textContent = notifications.length;
+                }
+            }
+
+            // ---------- Affichage ----------
+            function afficherListe() {
+                let filtrees = notifications;
+
+                if (currentFilter === 'nouvelle') {
+                    filtrees = notifications.filter(n => n.nouvelle);
+                } else if (currentFilter === 'correction') {
+                    filtrees = notifications.filter(n =>
+                        n.titre && n.titre.toLowerCase().includes('correction'));
+                }
+
+                if (filtrees.length === 0) {
+                    listEl.innerHTML = `
+                <div class="notif-empty">
+                    <i class='bx bx-bell-off'></i>
+                    <p>Aucune notification${currentFilter !== 'all' ? ' dans ce filtre' : ''}.</p>
+                </div>`;
+                    return;
+                }
+
+                listEl.innerHTML = filtrees.map(n => `
+            <a href="${n.lien || '#'}"
+               class="notif-item ${n.nouvelle ? 'notif-item-new' : ''}">
+                <div class="notif-item-icon notif-type-${(n.type || 'info').toLowerCase()}">
+                    <i class='bx ${n.icon || 'bx-bell'}'></i>
+                </div>
+                <div class="notif-item-body">
+                    <div class="notif-item-head">
+                        <strong>${escapeHtml(n.titre || '')}</strong>
+                        <span class="notif-time">${formatDate(n.date)}</span>
+                    </div>
+                    <p>${escapeHtml(n.message || '')}</p>
+                </div>
+                ${n.nouvelle ? '<span class="notif-dot"></span>' : ''}
+            </a>
+        `).join('');
+            }
+
+            // ---------- Filtres ----------
+            filters.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filters.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    afficherListe();
+                });
+            });
+
+            // ---------- Utilitaires ----------
+            function formatDate(dateStr) {
+                if (!dateStr) return '';
+                const d = new Date(dateStr);
+                const now = new Date();
+                const diffMs = now - d;
+                const diffMin = Math.floor(diffMs / 60000);
+                const diffH = Math.floor(diffMin / 60);
+                const diffJ = Math.floor(diffH / 24);
+
+                if (diffMin < 1) return "à l'instant";
+                if (diffMin < 60) return `il y a ${diffMin} min`;
+                if (diffH < 24) return `il y a ${diffH} h`;
+                if (diffJ < 7) return `il y a ${diffJ} j`;
+                return d.toLocaleDateString('fr-FR');
+            }
+
+            function escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+        });
+    </script>
 </div>
 
