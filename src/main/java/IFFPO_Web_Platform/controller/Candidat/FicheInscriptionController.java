@@ -47,6 +47,11 @@ public class FicheInscriptionController {
            Authentication authentication,
            RedirectAttributes redirectAttributes) {
 
+       if (bindingResult.hasErrors()) {
+           redirectAttributes.addFlashAttribute("errorMessage", "Formulaire invalide, vérifiez les champs.");
+           return  "redirect:/candidat/dashboard";
+       }
+
        try{
 
            ficheService.enregistrer(
