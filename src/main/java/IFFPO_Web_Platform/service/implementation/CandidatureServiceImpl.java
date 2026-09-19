@@ -106,23 +106,6 @@ public class CandidatureServiceImpl implements CandidatureService {
     }
 
 
-
-//    @Override
-//    public String demanderCorrection(Long id, String messageCorrection) {
-//
-//        if (messageCorrection == null || messageCorrection.isBlank()){
-//            throw new IllegalArgumentException("Message de correction est obligatoire.");
-//        }
-//
-//        Candidature candidature = trouverParId(id);
-//        verifierTransitionDepuisEnAttente(candidature);
-//        candidature.setStatutCandidature(StatutCandidature.EN_COURS_DE_CORRECTION);
-//        candidature.setMessageCorrection(messageCorrection);
-//        candidatureRepository.save(candidature);
-//
-//        return genererUrlWhatsApp(id);
-//    }
-
     @Override
     @Transactional
     public String demanderCorrection(Long id,
@@ -274,8 +257,6 @@ public class CandidatureServiceImpl implements CandidatureService {
         candidature.setStatutCandidature(
                 StatutCandidature.EN_ATTENTE);
 
-
-
         candidature.addDocument( fileStorageService.saveDocument(validateImage(cni), TypeDocument.CNI,"cni"));
         candidature.addDocument( fileStorageService.saveDocument(validateImage(diplome),TypeDocument.DIPLOME,"diplome"));
         candidature.addDocument( fileStorageService.saveDocument(validateImage(acte),TypeDocument.ACTE_NAISSANCE,"acte_naissance"));
@@ -398,11 +379,11 @@ public class CandidatureServiceImpl implements CandidatureService {
             return String.format(
                     "Bonjour %s %s,\n\n" +
                             "Email : %s\n\n" +
-                            "Sujet : ✅ VALIDATION DE VOTRE CANDIDATURE\n\n" +
+                            "Sujet :  VALIDATION DE VOTRE CANDIDATURE\n\n" +
                             "Message :\n" +
                             "Excellente nouvelle ! Votre candidature pour la Spécialité « %s » " +
                             "a été validée par l'administration.\n\n" +
-                            "👉 Prochaine étape : connectez-vous à votre tableau de bord " +
+                            " Prochaine étape : connectez-vous à votre tableau de bord " +
                             "pour effectuer le paiement des frais d'inscription.\n\n" +
                             "Merci de votre confiance.",
 
@@ -449,11 +430,11 @@ public class CandidatureServiceImpl implements CandidatureService {
 
                     "Bonjour %s %s,\n\n" +
                             "Email : %s\n\n" +
-                            "Sujet : ❌ REJET DE VOTRE CANDIDATURE\n\n" +
+                            "Sujet :  REJET DE VOTRE CANDIDATURE\n\n" +
                             "Message :\n" +
                             "Après étude attentive de votre dossier pour la Spécialité « %s », " +
                             "nous sommes au regret de vous informer que votre candidature n'a pas été retenue.\n\n" +
-                            "💬 Motif : %s\n\n" +
+                            " Motif : %s\n\n" +
                             "Vous pouvez néanmoins déposer une nouvelle candidature si une autre " +
                             "session est ouverte.\n\n" +
                             "Merci de votre compréhension.",

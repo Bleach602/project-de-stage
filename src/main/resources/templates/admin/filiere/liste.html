@@ -212,6 +212,11 @@
             </div>
 
             <form th:action="@{/dashboard/filieres/creer}" th:object="${filiereDTO}" method="POST">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
                 <div class="form-group">
                     <label>Nom de la filière <span>*</span></label>
                     <input type="text" th:field="*{nom}" class="form-control" placeholder="Entrez le nom de la filière"/>
@@ -262,6 +267,12 @@
 
             <form th:action="${filiereSelectionnee != null} ? @{/dashboard/filieres/{filiereId}/specialites/creer(filiereId=${filiereSelectionnee.id})} : '#'"
                   th:object="${specialiteDTO}" method="POST">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
                 <div class="form-group">
                     <label>Nom de la spécialité <span>*</span></label>
                     <input type="text" th:field="*{nom}" class="form-control" placeholder="Entrez le nom de la spécialité" required />
@@ -320,7 +331,13 @@
                 <button type="button" class="btn-close-icon close-modal">&times;</button>
             </div>
             <form id="editFiliereForm" th:action="@{/dashboard/filieres/modifier}" method="post">
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
                 <div class="modal-body">
+
+
                     <input type="hidden" id="editFiliereId" name="id" />
                     <div class="form-group">
                         <label for="editFiliereNom">Nom de la filière</label>
@@ -353,7 +370,14 @@
             <form id="editSpecialiteForm"
                   th:action="${filiereSelectionnee != null} ? @{/dashboard/filieres/{filiereId}/specialites/modifier(filiereId=${filiereSelectionnee.id})} : '#'"
                   method="post">
+
                 <div class="modal-body">
+
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"
+                    >
+
                     <input type="hidden" id="editSpecialiteId" name="id" />
                     <input type="hidden" id="editSpecialiteFiliereId" name="filiereId" />
                     <div class="form-group">

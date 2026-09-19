@@ -95,27 +95,25 @@ public class FiliereController {
         return "admin/filiere/updateFiliere";
     }
 
-    @PostMapping("/modifier/{id}")
-    public String formUpdate(@PathVariable("id") Long id,
-                             @Valid @ModelAttribute("filiereDTO") FiliereDTO filiereDTO,
-                             BindingResult bindingResult,
-                             RedirectAttributes redirectAttributes,
-                             Model model) {
+    @PostMapping("/modifier")
+    public String modifierFiliere(@Valid @ModelAttribute("filiereDTO") FiliereDTO filiereDTO,
+                                  BindingResult result,
+                                  RedirectAttributes redirectAttributes) {
 
-        if (bindingResult.hasErrors()){
+        if (result.hasErrors()){
             return "admin/filiere/updateFiliere";
         }
 
         try {
-            filiereService.modifierFiliere(id, filiereDTO);
-            redirectAttributes.addFlashAttribute("successMessage",
-                    "Filière modifiée avec succès !");
+            filiereService.modifierFiliere(filiereDTO.getId(), filiereDTO);
+            redirectAttributes.addFlashAttribute("successMessage", "Filière modifiée avec succès !");
+            return "redirect:/dashboard/filieres?filiereId=" + filiereDTO.getId();
 
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
 
-        return "redirect:/dashboard/filieres";
+        return "redirect:/dashboard/filieres?filiereId=" + filiereDTO.getId();
     }
 
     //BASCULER LE STATUT DE LA FILIERE

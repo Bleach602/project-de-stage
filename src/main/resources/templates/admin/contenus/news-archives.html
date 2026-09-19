@@ -149,6 +149,12 @@
                 <!-- Formulaire de recherche -->
                 <form th:action="@{/dashboard/actualites}" method="get" class="search-filter">
 
+                    <input type="hidden"
+                           th:name="${_csrf.parameterName}"
+                           th:value="${_csrf.token}"
+                    >
+
+
                     <div class="search-box">
                         <i class='bx bx-search'></i>
                         <input type="text"
@@ -684,6 +690,12 @@
                   method="post"
                   enctype="multipart/form-data">
 
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
+
                 <div class="modal-body">
 
                     <!-- IMAGE -->
@@ -827,6 +839,12 @@
                   method="post"
                   enctype="multipart/form-data">
 
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
+
                 <div class="modal-body">
 
                     <!-- IMAGE -->
@@ -965,6 +983,12 @@
 
             <form id="deleteForm"
                   method="post">
+
+                <input type="hidden"
+                       th:name="${_csrf.parameterName}"
+                       th:value="${_csrf.token}"
+                >
+
 
                 <div class="modal-footer">
 

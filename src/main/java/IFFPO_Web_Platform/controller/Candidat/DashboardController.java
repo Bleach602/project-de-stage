@@ -21,12 +21,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
+import java.util.List;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
 
 @RequiredArgsConstructor
@@ -138,82 +136,86 @@ public class DashboardController {
     /**
      * Redirection vers WhatsApp administration.
      */
-//    @PostMapping("/contact-whatsapp")
-//    public String contacterWhatsapp(
-//
-//            @RequestParam String sujet,
-//
-//            @RequestParam String message,
-//
-//            Authentication authentication
-//
-//    ){
-//
-//
-//        /*
-//         * Récupération du candidat connecté.
-//         */
-//        Utilisateur utilisateur =
-//                candidatService
-//                        .findByEmail(authentication.getName());
-//
-//        /*
-//         * Numéro WhatsApp administration.
-//         *
-//         * Format international sans +
-//         */
-//
-//        Utilisateur gest = utilisateurService.trouverParRole_id(3);
-//
-//        String numeroAdmin =
-//                "+237"+ gest.getTelephone();
-//
-//        /*
-//         * Construction du message.
-//         */
-//        String texte =
-//
-//                "Bonjour Administration IFP-PERLE D'OR\n\n"
-//
-//                        +"Nom : "
-//                        + utilisateur.getNom()
-//                        +" "
-//                        + utilisateur.getPrenom()
-//                        +"\n"
-//
-//                        +"Email : "
-//                        + utilisateur.getEmail()
-//                        +"\n\n"
-//
-//                        +"Sujet : "
-//                        + sujet
-//                        +"\n\n"
-//
-//                        +"Message : "
-//                        + message;
-//
-//
-//
-//        /*
-//         * Encodage URL.
-//         */
-//        String url =
-//
-//                "https://wa.me/"
-//
-//                        + numeroAdmin
-//
-//                        +"?text="
-//
-//                        + URLEncoder.encode(
-//                        texte,
-//                        StandardCharsets.UTF_8);
-//
-//
-//
-//        return "redirect:"+url;
-//
-//    }
+   @PostMapping("/contact-whatsapp")
+    public String contacterWhatsapp(
+
+            @RequestParam String sujet,
+
+            @RequestParam String message,
+
+            Authentication authentication
+
+    ){
+
+
+        /*
+         * Récupération du candidat connecté.
+         */
+        Utilisateur utilisateur =
+                candidatService
+                        .findByEmail(authentication.getName());
+
+        /*
+         * Numéro WhatsApp administration.
+         *
+         * Format international sans +
+         */
+
+       List<Utilisateur> gest = utilisateurService.trouverPermisions_Gest_Candidat_LimitDEUX();
+
+        String numeroAdmin = gest.get(0).getTelephone();
+
+       if (!numeroAdmin.startsWith("237")) {
+           numeroAdmin = "237" + numeroAdmin;
+       }
+
+
+       /*
+         * Construction du message.
+         */
+        String texte =
+
+                "Bonjour Administration IFP-PERLE D'OR\n\n"
+
+                        +"Nom : "
+                        + utilisateur.getNom()
+                        +" "
+                        + utilisateur.getPrenom()
+                        +"\n"
+
+                        +"Email : "
+                        + utilisateur.getEmail()
+                        +"\n\n"
+
+                        +"Sujet : "
+                        + sujet
+                        +"\n\n"
+
+                        +"Message : "
+                        + message;
+
+
+
+        /*
+         * Encodage URL.
+         */
+        String url =
+
+                "https://wa.me/"
+
+                        + numeroAdmin
+
+                        +"?text="
+
+                        + URLEncoder.encode(
+                        texte,
+                        StandardCharsets.UTF_8);
+
+
+
+        return "redirect:"+url;
+
+    }
 
     @GetMapping("/recu/{id}")
     public ResponseEntity<byte[]> telecharger(

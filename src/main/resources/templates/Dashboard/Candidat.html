@@ -26,10 +26,6 @@
         <div th:replace="~{Dashboard/fragments/sidebar :: sidebar}"> </div>
         <!-- Overlay mobile -->
         <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-        <!-- ============================================================
-  MAIN CONTENT
-  ============================================================ -->
         <!-- ============================================================
      TOP BAR – VERSION PREMIUM
      ============================================================ -->
@@ -63,10 +59,11 @@
 
                     <!-- Notifications (icône) -->
                     <div class="top-bar-notifications">
+                        <a href="#" data-tab="notifications">
                         <i class="fas fa-bell"></i>
                         <span class="notif-dot" th:if="${nombreNotifications > 0}">
                     <span th:text="${nombreNotifications}">3</span>
-                </span>
+                </span> </a>
                     </div>
 
                     <!-- Profil utilisateur -->

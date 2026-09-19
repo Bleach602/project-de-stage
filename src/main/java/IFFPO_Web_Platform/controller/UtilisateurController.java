@@ -134,16 +134,6 @@ public class UtilisateurController {
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes){
 
-//        try {
-//            utilisateurService.modifier(id, dto);
-//            redirectAttributes.addFlashAttribute("succes",
-//                    "Utilisateur modifié avec succès");
-//            return "redirect:/dashboard/utilisateurs";
-//        } catch (Exception e) {
-//            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
-//            return "redirect:/dashboard/utilisateurs/" + id + "/modifier";
-//        }
-
         if (bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("erreur", "Formulaire invalide, vérifiez les champs.");
             return "redirect:/dashboard/utilisateurs";

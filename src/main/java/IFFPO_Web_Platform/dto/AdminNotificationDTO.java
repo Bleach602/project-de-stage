@@ -20,5 +20,5 @@ public class AdminNotificationDTO {
     private String icon;
     private boolean nouvelle;
     private String lien;          // URL vers la candidature
-    private String candidatNom;   // "Jean Dupont"
+    private String candidatNom;
 }

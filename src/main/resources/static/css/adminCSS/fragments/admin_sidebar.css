@@ -84,6 +84,7 @@
     position: fixed;
     left: 0;
     top: 0;
+    scrollbar-width: none;
     z-index: 1000;
     transition: width var(--sb-transition),
     transform var(--sb-transition),
