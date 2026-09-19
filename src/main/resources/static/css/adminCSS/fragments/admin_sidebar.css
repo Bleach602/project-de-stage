@@ -1453,3 +1453,17 @@
 .footer-logout-fixed {
     animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ============================================================
+   ANIMATION D'ENTRÉE DES ITEMS (correction)
+   ============================================================ */
+@keyframes slideInItem {
+    from {
+        opacity: 0;
+        transform: translateX(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
